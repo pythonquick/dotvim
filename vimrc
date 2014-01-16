@@ -1,16 +1,42 @@
-set rtp+=~/dotvim/bundle/vundle/
+if has('win16') || has('win95') || has('win32') || has('win64')
+    let $MYVIM=$HOME.'/vimfiles'
+else
+    let $MYVIM=$HOME.'/.vim'
+endif
+
+set rtp+=$MYVIM/bundle/vundle/
 call vundle#rc()
-echo "hello"
 
 
 " vundle bundles / Plugins:
-so ~/dotvim/bundle.vim
+so $MYVIM/bundle.vim
 
 
 "" ---------- FUNCTIONS {{{
 function! EnsureExists(path)
     if !isdirectory(expand(a:path))
         call mkdir(expand(a:path))
+    endif
+endfunction
+
+
+function! Relpath(filename)
+    let cwd = getcwd()
+    let s = substitute(a:filename, l:cwd . "/" , "", "")
+    return s
+endfunction
+
+
+function! DeleteEmptyBuffers()
+    let [i, n; empty] = [1, bufnr('$')]
+    while i <= n
+        if bufexists(i) && bufname(i) == ''
+            call add(empty, i)
+        endif
+        let i += 1
+    endwhile
+    if len(empty) > 0
+        exe 'bdelete' join(empty)
     endif
 endfunction
 
@@ -77,16 +103,20 @@ set ttimeoutlen=50
 set t_Co=256
 set visualbell
 set go-=T
+set lines=999 columns=999
 
 if has("gui_running")
     "hi normal guibg=black
     set transp=0
-    colo koehler
+    "colo koehler
+    colo solarized
+    set background=dark
     set transparency=0
     "set guifont=Envy\ Code\ R:h16
-    "set guifont=Meslo\ LG\ L\ for\ Powerline:h16
     set guifont=Inconsolata-dz\ for\ Powerline:h16
+    "set guifont=Literation\ Mono\ Powerline:h16
 endif
+
 
 
 " whitepace
@@ -117,10 +147,11 @@ nnoremap <silent> k gk
 let mapleader = ","
 nmap <leader>a "ayiw
 nmap <leader>A diw"aP
+nmap <leader>b :call DeleteEmptyBuffers()<CR>
 nmap <leader>D :BD!<CR>
 nmap <leader>c :cd %:p:h<CR>:echom "Changed Dir to " . expand("%:p:h")<CR>
 nmap <leader>d :BD<CR>
-nmap <leader>n :NERDTree<CR>
+nmap <leader>n :NERDTreeToggle<CR>
 nmap <leader>s :setlocal spell!<CR>
 nmap <leader>t :e ~/Temp/Temp.txt<CR>
 nmap <leader>v :e $MYVIMRC<CR>
@@ -162,18 +193,18 @@ cabbr b Bs
 " persistent undo
 if exists('+undofile')
     set undofile
-    set undodir=~/dotvim/.cache/undo
+    set undodir=$MYVIM/.cache/undo
 endif
 
 " backups
 set backup
-set backupdir=~/dotvim/.cache/backup
+set backupdir=$MYVIM/.cache/backup
 
 " swap files
-set directory=~/dotvim/.cache/swap
+set directory=$MYVIM/.cache/swap
 set noswapfile
 
-call EnsureExists('~/dotvim/.cache')
+call EnsureExists('$MYVIM/.cache')
 call EnsureExists(&undodir)
 call EnsureExists(&backupdir)
 call EnsureExists(&directory)
@@ -182,10 +213,20 @@ call EnsureExists(&directory)
 
 " Airline (Vim status line) configuration:
 let g:airline_theme='dark'
+"let g:airline_theme='solarized'
+"let g:airline_theme='luna'
 let g:airline_powerline_fonts = 1
 let g:Powerline_symbols = 'fancy'
 let g:airline_section_b = '%{getcwd()}'
 let g:airline_section_c = '%t'
+let g:airline_detect_whitespace=0
 
+" Syntastic configuration:
+let g:syntastic_mode_map = { 'mode': 'active',
+                            \ 'active_filetypes': ['javascript', 'c'],
+                            \ 'passive_filetypes': ['puppet'] }
+
+" NERD Tree configuration:
+let NERDTreeQuitOnOpen = 1
 
 echo ".vimrc sourced"
