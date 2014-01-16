@@ -1,5 +1,5 @@
 if has('win16') || has('win95') || has('win32') || has('win64')
-    let $MYVIM=$HOME.'/_vim'
+    let $MYVIM=$HOME.'/.vim'
 else
     let $MYVIM=$HOME.'/dotvim'
 endif
