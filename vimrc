@@ -1,7 +1,7 @@
 if has('win16') || has('win95') || has('win32') || has('win64')
-    let $MYVIM=$HOME.'/vimfiles'
+    let $MYVIM=$HOME.'/_vim'
 else
-    let $MYVIM=$HOME.'/.vim'
+    let $MYVIM=$HOME.'/dotvim'
 endif
 
 set rtp+=$MYVIM/bundle/vundle/
@@ -94,7 +94,7 @@ set showcmd                 " show asdnumber of chars/lines selected in status l
 set linebreak
 set wildmenu
 set wildmode=list:full
-set wildignorecase
+"set wildignorecase
 set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store
 set nocompatible
 set laststatus=2
@@ -107,11 +107,9 @@ set lines=999 columns=999
 
 if has("gui_running")
     "hi normal guibg=black
-    set transp=0
     "colo koehler
     colo solarized
     set background=dark
-    set transparency=0
     "set guifont=Envy\ Code\ R:h16
     set guifont=Inconsolata-dz\ for\ Powerline:h16
     "set guifont=Literation\ Mono\ Powerline:h16
@@ -190,23 +188,20 @@ cabbr b Bs
 
 
 " vim file/folder management {{{
+call EnsureExists('$MYVIM/.cache')
 " persistent undo
 if exists('+undofile')
     set undofile
     set undodir=$MYVIM/.cache/undo
+    call EnsureExists(&undodir)
 endif
-
 " backups
 set backup
 set backupdir=$MYVIM/.cache/backup
-
+call EnsureExists(&backupdir)
 " swap files
 set directory=$MYVIM/.cache/swap
 set noswapfile
-
-call EnsureExists('$MYVIM/.cache')
-call EnsureExists(&undodir)
-call EnsureExists(&backupdir)
 call EnsureExists(&directory)
 "}}}
 
@@ -230,3 +225,4 @@ let g:syntastic_mode_map = { 'mode': 'active',
 let NERDTreeQuitOnOpen = 1
 
 echo ".vimrc sourced"
+
