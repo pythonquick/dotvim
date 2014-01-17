@@ -105,15 +105,6 @@ set visualbell
 set go-=T
 set lines=999 columns=999
 
-if has("gui_running")
-    "hi normal guibg=black
-    "colo koehler
-    colo solarized
-    set background=dark
-    "set guifont=Envy\ Code\ R:h16
-    set guifont=Inconsolata-dz\ for\ Powerline:h16
-    "set guifont=Literation\ Mono\ Powerline:h16
-endif
 
 
 
@@ -207,7 +198,8 @@ call EnsureExists(&directory)
 
 
 " Airline (Vim status line) configuration:
-let g:airline_theme='dark'
+let g:airline_theme='powerlineish'
+"let g:airline_theme='dark'
 "let g:airline_theme='solarized'
 "let g:airline_theme='luna'
 let g:airline_powerline_fonts = 1
@@ -223,6 +215,21 @@ let g:syntastic_mode_map = { 'mode': 'active',
 
 " NERD Tree configuration:
 let NERDTreeQuitOnOpen = 1
+
+
+if has("gui_running")
+    colo koehler
+    colo solarized
+    set background=dark
+    if has('win16') || has('win95') || has('win32') || has('win64')
+        set guifont=Inconsolata-dz_for_Powerline:h13:cANSI
+    else
+        set guifont=Inconsolata-dz\ for\ Powerline:h16
+    endif
+    " Override colorscheme cursor background on highlighted search result:
+    autocmd ColorScheme * hi Cursor guifg=bg guibg=Green
+endif
+
 
 echo ".vimrc sourced"
 
