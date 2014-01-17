@@ -1,7 +1,7 @@
 if has('win16') || has('win95') || has('win32') || has('win64')
     let $MYVIM=$HOME.'/.vim'
 else
-    let $MYVIM=$HOME.'/dotvim'
+    let $MYVIM=$HOME.'/.vim'
 endif
 
 set rtp+=$MYVIM/bundle/vundle/
