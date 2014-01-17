@@ -228,6 +228,7 @@ if has("gui_running")
         set guifont=Inconsolata-dz\ for\ Powerline:h16
     endif
     " Override colorscheme cursor background on highlighted search result:
+    exec "hi Cursor guifg=bg guibg=Green"
     autocmd ColorScheme * hi Cursor guifg=bg guibg=Green
 endif
 
