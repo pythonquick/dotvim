@@ -79,6 +79,7 @@ endif
 
 
 filetype indent on
+syntax on
 set wrap
 set shiftround
 set showmatch
