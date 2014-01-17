@@ -232,5 +232,3 @@ if has("gui_running")
 endif
 
 
-echo ".vimrc sourced"
-
