@@ -95,8 +95,12 @@ set showcmd                 " show asdnumber of chars/lines selected in status l
 set linebreak
 set wildmenu
 set wildmode=list:full
-"set wildignorecase
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store
+if has('win16') || has('win95') || has('win32') || has('win64')
+    set wildignore+=*\\.git\\*,*\\.hg\\*,*\\.svn\\*
+else
+    set wildignorecase
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+endif
 set nocompatible
 set laststatus=2
 set encoding=utf-8
@@ -137,15 +141,15 @@ nnoremap <silent> k gk
 let mapleader = ","
 nmap <leader>a "ayiw
 nmap <leader>A diw"aP
-nmap <leader>b :call DeleteEmptyBuffers()<CR>
+nmap <leader>B :call DeleteEmptyBuffers()<CR>
 nmap <leader>D :BD!<CR>
 nmap <leader>c :cd %:p:h<CR>:echom "Changed Dir to " . expand("%:p:h")<CR>
 nmap <leader>d :BD<CR>
+nmap <leader>f :FufFile<CR>
 nmap <leader>n :NERDTreeToggle<CR>
 nmap <leader>s :setlocal spell!<CR>
 nmap <leader>t :e ~/Temp/Temp.txt<CR>
 nmap <leader>v :e $MYVIMRC<CR>
-nmap <leader>w :w<CR>
 nmap <leader>W :%s/\s\+$//e<CR>:let @/ = ""<CR>:echo "Trimmed trailing whitespace from all lines"<CR>
 nmap <leader>z 1z=
 nmap <leader>1 :b1<CR>
@@ -195,6 +199,9 @@ call EnsureExists(&backupdir)
 set directory=$MYVIM/.cache/swap
 set noswapfile
 call EnsureExists(&directory)
+" CtrlP cache:
+let $CtrlPCache='$MYVIM/.cache/ctrlp'
+call EnsureExists($CtrlPCache)
 "}}}
 
 
@@ -218,8 +225,23 @@ let g:syntastic_mode_map = { 'mode': 'active',
 let NERDTreeQuitOnOpen = 1
 
 
+" CtrlP configuration:
+
+"let g:ctrlp_use_caching = 1             " Enable caching
+"let g:ctrlp_clear_cache_on_exit = 0
+"let g:ctrlp_cache_dir = $CtrlPCache
+"let g:ctrlp_match_window_bottom = 1     " Match window at botom of screen
+
+" EasyMotion configuration:
+let g:EasyMotion_leader_key = '\'
+let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[],.;'
+
+" Solarized colorscheme configuration:
+let g:solarized_termcolors=256
+
+
 if has("gui_running")
-    colo koehler
+    "colo koehler
     colo solarized
     set background=dark
     if has('win16') || has('win95') || has('win32') || has('win64')
