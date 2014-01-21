@@ -142,11 +142,12 @@ let mapleader = ","
 nmap <leader>a "ayiw
 nmap <leader>A diw"aP
 nmap <leader>B :call DeleteEmptyBuffers()<CR>
-nmap <leader>D :BD!<CR>
+nmap <leader>D :Bclose!<CR>
 nmap <leader>c :cd %:p:h<CR>:echom "Changed Dir to " . expand("%:p:h")<CR>
-nmap <leader>d :BD<CR>
+nmap <leader>d :Bclose<CR>
 nmap <leader>f :FufFile<CR>
 nmap <leader>n :NERDTreeToggle<CR>
+nmap <leader>N :NERDTreeFind<CR>
 nmap <leader>s :setlocal spell!<CR>
 nmap <leader>t :e ~/Temp/Temp.txt<CR>
 nmap <leader>v :e $MYVIMRC<CR>
