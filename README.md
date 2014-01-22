@@ -12,3 +12,14 @@ Installation:
      
 4.   Start VIM and run :BundleInstall to tell Vundle to setup plugins
 
+
+
+Miscellaneous notes:
+
+On Windows, set up context menu "Edit with Vim" by importing a .reg file with following content:
+
+        Windows Registry Editor Version 5.00
+        [HKEY_CLASSES_ROOT\*\shell\Edit with Vim]
+        [HKEY_CLASSES_ROOT\*\shell\Edit with Vim\command] 
+        @="C:\\Program Files\\Vim\\vim74\\gvim.exe \"%1\""
+
