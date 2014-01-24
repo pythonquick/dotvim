@@ -184,12 +184,13 @@ nmap <leader>A diw"aP
 nmap <leader>B :call DeleteEmptyBuffers()<CR>
 nmap <leader>D :Bclose!<CR>
 nmap <leader>c :cd %:p:h<CR>:echom "Changed Dir to " . expand("%:p:h")<CR>
-nmap <leader>d :write<CR>:Bclose<CR>
+nmap <leader>d :silent! write<CR>:Bclose<CR>
 nmap <leader>f :FufFile<CR>
 nmap <leader>n :NERDTreeToggle<CR>
 nmap <leader>N :NERDTreeFind<CR>
 nmap <leader>s :setlocal spell!<CR>
 nmap <leader>t :e ~/Temp/Temp.txt<CR>
+nmap <leader>q :q<CR>
 nmap <leader>v :e $MYVIMRC<CR>
 nmap <leader>W :%s/\s\+$//e<CR>:let @/ = ""<CR>:echo "Trimmed trailing whitespace from all lines"<CR>
 nmap <leader>z 1z=
