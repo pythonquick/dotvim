@@ -114,6 +114,7 @@ if has("autocmd")
     autocmd bufwritepost .vimrc source $MYVIMRC " auto-source vimrc
     autocmd FocusLost * silent! wa " auto-save but don't complain about new buffers
     autocmd BufRead *imap set syntax=java
+    cnoreabbrev w echoerr "No Guenther, you don't need to :w with \"autocmd FocusLost * silent! wa\""
 endif
 
 
@@ -183,10 +184,10 @@ nmap <leader>A diw"aP
 nmap <leader>B :call DeleteEmptyBuffers()<CR>
 nmap <leader>D :Bclose!<CR>
 nmap <leader>c :cd %:p:h<CR>:echom "Changed Dir to " . expand("%:p:h")<CR>
-nmap <leader>d :Bclose<CR>
+nmap <leader>d :write<CR>:Bclose<CR>
 nmap <leader>f :FufFile<CR>
-nmap <leader>n :vs.<CR>
-nmap <leader>N :Vex<CR>
+nmap <leader>n :NERDTreeToggle<CR>
+nmap <leader>N :NERDTreeFind<CR>
 nmap <leader>s :setlocal spell!<CR>
 nmap <leader>t :e ~/Temp/Temp.txt<CR>
 nmap <leader>v :e $MYVIMRC<CR>
@@ -294,8 +295,8 @@ if has("gui_running")
     autocmd ColorScheme * hi Cursor guifg=bg guibg=Green
 
     " Override listcar (e.g. end of line char) color:
-    exec "hi NonText ctermfg=7 guifg=#114550"
-    autocmd ColorScheme * hi NonText ctermfg=7 guifg=#114550
+    exec "hi NonText ctermfg=7 guifg=#135560"
+    autocmd ColorScheme * hi NonText ctermfg=7 guifg=#135560
 endif
 
 
