@@ -10,7 +10,6 @@ call vundle#rc()
 
 " vundle bundles / Plugins:
 so $MYVIM/bundle.vim
-so $MYVIM/plugin/minibufexpl.vim
 so $MYVIM/plugin/bclose.vim
 
 
