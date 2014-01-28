@@ -93,7 +93,6 @@ function! ToggleVExplorer()
       let t:expl_buf_num = bufnr("%")
   endif
 endfunction
-map <silent> <C-E> :call ToggleVExplorer()<CR>
 
 " Hit enter in the file browser to open the selected
 " file with :vsplit to the right of the browser.
@@ -125,6 +124,7 @@ set showmatch
 set ruler
 set incsearch
 set hlsearch
+set rnu
 set nu
 set cmdheight=1
 set scrolloff=1
@@ -162,15 +162,16 @@ set backspace=indent,eol,start                      "allow backspacing everythin
 set expandtab
 set shiftwidth=4
 
+" Remap home keys for cursor positioning on line:
+nnoremap H 0
+nnoremap L $
+
 " Remap arrow keys:
 nnoremap <left> :bprev<CR>
 nnoremap <right> :bnext<CR>
 nnoremap <up> :tabnext<CR>
 nnoremap <down> :tabprev<CR>
 
-" change cursor posision in insert mode
-inoremap <C-h> <left>
-inoremap <C-l> <right>
 
 " Scroll by screen line (even if line wraps multiple screen lines):
 nnoremap <silent> j gj
@@ -178,39 +179,47 @@ nnoremap <silent> k gk
 
 " Leader mappings:
 let mapleader = ","
-nmap <leader>a "ayiw
-nmap <leader>A diw"aP
-nmap <leader>B :call DeleteEmptyBuffers()<CR>
-nmap <leader>D :Bclose!<CR>
-nmap <leader>c :cd %:p:h<CR>:echom "Changed Dir to " . expand("%:p:h")<CR>
-nmap <leader>d :silent! write<CR>:Bclose<CR>
-nmap <leader>f :FufFile<CR>
-nmap <leader>n :NERDTreeToggle<CR>
-nmap <leader>N :NERDTreeFind<CR>
-nmap <leader>s :setlocal spell!<CR>
-nmap <leader>t :e ~/Temp/Temp.txt<CR>
-nmap <leader>q :q<CR>
-nmap <leader>v :e $MYVIMRC<CR>
-nmap <leader>W :%s/\s\+$//e<CR>:let @/ = ""<CR>:echo "Trimmed trailing whitespace from all lines"<CR>
-nmap <leader>z 1z=
-nmap <leader>1 :b1<CR>
-nmap <leader>2 :b2<CR>
-nmap <leader>3 :b3<CR>
-nmap <leader>4 :b4<CR>
-nmap <leader>5 :b5<CR>
-nmap <leader>6 :b6<CR>
-nmap <leader>7 :b7<CR>
-nmap <leader>8 :b8<CR>
-nmap <leader>9 :b9<CR>
+nnoremap <leader>a "ayiw
+nnoremap <leader>A diw"aP
+nnoremap <leader>B :call DeleteEmptyBuffers()<CR>
+nnoremap <leader>D :Bclose!<CR>
+nnoremap <leader>c :cd %:p:h<CR>:echom "Changed Dir to " . expand("%:p:h")<CR>
+nnoremap <leader>d :silent! write<CR>:Bclose<CR>
+nnoremap <leader>f :FufFile<CR>
+nnoremap <leader>n :NERDTreeToggle<CR>
+nnoremap <leader>N :NERDTreeFind<CR>
+nnoremap <leader>s :setlocal spell!<CR>
+nnoremap <leader>t :e ~/Temp/Temp.txt<CR>
+nnoremap <leader>q :q<CR>
+nnoremap <leader>ve :e $MYVIMRC<CR>
+nnoremap <leader>vs :source $MYVIMRC<CR>
+nnoremap <leader>W :%s/\s\+$//e<CR>:let @/ = ""<CR>:echo "Trimmed trailing whitespace from all lines"<CR>
+nnoremap <leader>z 1z=
+" Following will surround current word in quote or doublequote:
+nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
+nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
+
+"Insert Mode Mappings:
+" change word to upper-case (useful for typing uppercase contants):
+inoremap <c-u> <esc>hviwUe
+inoremap <C-h> <left>
+inoremap <C-l> <right>
+
+" EasyMotion configuration
+"let g:EasyMotion_leader_key = '\'
+let g:EasyMotion_mapping_b = '<C-h>'
+let g:EasyMotion_mapping_w = '<C-l>'
+let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[],.;'
+
 noremap <space> za
 
 
 " key mappings
-map! jj <esc>
-map <c-k> Ox<bs><esc>
-map <c-j> ox<bs><esc>
-map <c-,> :bp<cr>
-map <c-.> :bn<cr>
+noremap! jk <esc>
+noremap <c-k> Ox<bs><esc>
+noremap <c-j> ox<bs><esc>
+noremap <c-,> :bp<cr>
+noremap <c-.> :bn<cr>
 iab <expr> dts strftime("%c")
 vmap ,x :!tidy -q -i -xml<CR>
 
@@ -273,9 +282,6 @@ let NERDTreeQuitOnOpen = 1
 "let g:ctrlp_cache_dir = $CtrlPCache
 "let g:ctrlp_match_window_bottom = 1     " Match window at botom of screen
 
-" EasyMotion configuration:
-let g:EasyMotion_leader_key = '\'
-let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[],.;'
 
 " Solarized colorscheme configuration:
 let g:solarized_termcolors=256
