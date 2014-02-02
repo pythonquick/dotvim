@@ -172,13 +172,19 @@ nnoremap <right> :bnext<CR>
 nnoremap <up> :tabnext<CR>
 nnoremap <down> :tabprev<CR>
 
+" Remap line scroll up/down to move cursor up/down as well:
+nnoremap <c-y> <c-y>k
+nnoremap <c-e> <c-e>j
 
 " Scroll by screen line (even if line wraps multiple screen lines):
 nnoremap <silent> j gj
 nnoremap <silent> k gk
 
-" Leader mappings:
 let mapleader = ","
+
+" Leader mappings:
+vnoremap <leader>. "my
+nnoremap <leader>. "myiw
 nnoremap <leader>a "ayiw
 nnoremap <leader>A diw"aP
 nnoremap <leader>B :call DeleteEmptyBuffers()<CR>
@@ -186,6 +192,8 @@ nnoremap <leader>D :Bclose!<CR>
 nnoremap <leader>c :cd %:p:h<CR>:echom "Changed Dir to " . expand("%:p:h")<CR>
 nnoremap <leader>d :silent! write<CR>:Bclose<CR>
 nnoremap <leader>f :FufFile<CR>
+nnoremap <leader>m "mp
+nnoremap <leader>M "mP
 nnoremap <leader>n :NERDTreeToggle<CR>
 nnoremap <leader>N :NERDTreeFind<CR>
 nnoremap <leader>s :setlocal spell!<CR>
