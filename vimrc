@@ -11,6 +11,7 @@ call vundle#rc()
 " vundle bundles / Plugins:
 so $MYVIM/bundle.vim
 so $MYVIM/plugin/bclose.vim
+so $MYVIM/plugin/minibufexplpp.vim
 
 
 "" ---------- FUNCTIONS {{{
@@ -192,6 +193,7 @@ nnoremap <leader>D :Bclose!<CR>
 nnoremap <leader>c :cd %:p:h<CR>:echom "Changed Dir to " . expand("%:p:h")<CR>
 nnoremap <leader>d :silent! write<CR>:Bclose<CR>
 nnoremap <leader>f :FufFile<CR>
+nnoremap <leader>j :%!python -m json.tool<CR>
 nnoremap <leader>m "mp
 nnoremap <leader>M "mP
 nnoremap <leader>n :NERDTreeToggle<CR>
@@ -203,6 +205,9 @@ nnoremap <leader>ve :e $MYVIMRC<CR>
 nnoremap <leader>vs :source $MYVIMRC<CR>
 nnoremap <leader>W :%s/\s\+$//e<CR>:let @/ = ""<CR>:echo "Trimmed trailing whitespace from all lines"<CR>
 nnoremap <leader>z 1z=
+nnoremap <F6> :colorscheme peachpuff<CR>
+nnoremap <F7> :set background=dark<CR>:colorscheme solarized<CR>
+nnoremap <F8> :set background=dark<CR>:colorscheme vividchalk<CR>
 " Following will surround current word in quote or doublequote:
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
@@ -293,6 +298,7 @@ let NERDTreeQuitOnOpen = 1
 
 " Solarized colorscheme configuration:
 let g:solarized_termcolors=256
+let g:solarized_contrast="high"
 
 
 if has("gui_running")
