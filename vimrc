@@ -112,8 +112,10 @@ set autochdir
 if has("autocmd")
     autocmd bufwritepost .vimrc source $MYVIMRC " auto-source vimrc
     autocmd FocusLost * silent! wa " auto-save but don't complain about new buffers
+    autocmd FocusLost * set nornu
     autocmd BufRead *imap set syntax=java
     cnoreabbrev w echoerr "No Guenther, you don't need to :w with \"autocmd FocusLost * silent! wa\""
+    autocmd FocusGained * set rnu
 endif
 
 
@@ -294,6 +296,9 @@ let NERDTreeQuitOnOpen = 1
 "let g:ctrlp_clear_cache_on_exit = 0
 "let g:ctrlp_cache_dir = $CtrlPCache
 "let g:ctrlp_match_window_bottom = 1     " Match window at botom of screen
+
+" Snippet configuration:
+let g:snippets_dir = $MYVIM."/snippets"
 
 
 " Solarized colorscheme configuration:
