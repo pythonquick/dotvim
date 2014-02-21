@@ -175,13 +175,9 @@ nnoremap <right> :bnext<CR>
 nnoremap <up> :tabnext<CR>
 nnoremap <down> :tabprev<CR>
 
-" Remap line scroll up/down to move cursor up/down as well:
-nnoremap <c-y> <c-y>k
-nnoremap <c-e> <c-e>j
-
 " Scroll by screen line (even if line wraps multiple screen lines):
-nnoremap <silent> j gj
-nnoremap <silent> k gk
+"nnoremap <silent> j gj
+"nnoremap <silent> k gk
 
 let mapleader = ","
 
@@ -203,8 +199,7 @@ nnoremap <leader>N :NERDTreeFind<CR>
 nnoremap <leader>s :setlocal spell!<CR>
 nnoremap <leader>t :e ~/Temp/Temp.txt<CR>
 nnoremap <leader>q :q<CR>
-nnoremap <leader>ve :e $MYVIMRC<CR>
-nnoremap <leader>vs :source $MYVIMRC<CR>
+nnoremap <leader>v :e $MYVIMRC<CR>
 nnoremap <leader>W :%s/\s\+$//e<CR>:let @/ = ""<CR>:echo "Trimmed trailing whitespace from all lines"<CR>
 nnoremap <leader>z 1z=
 nnoremap <F6> :colorscheme peachpuff<CR>
@@ -269,12 +264,13 @@ let $CtrlPCache='$MYVIM/.cache/ctrlp'
 call EnsureExists($CtrlPCache)
 "}}}
 
+" Highlight long lines
+highlight ColorColumn ctermbg=red
+call matchadd('ColorColumn', '\%81v', 100)
+
 
 " Airline (Vim status line) configuration:
 let g:airline_theme='powerlineish'
-"let g:airline_theme='dark'
-"let g:airline_theme='solarized'
-"let g:airline_theme='luna'
 let g:airline_powerline_fonts = 1
 let g:Powerline_symbols = 'fancy'
 let g:airline_section_b = '%{getcwd()}'
@@ -304,6 +300,10 @@ let g:snippets_dir = $MYVIM."/snippets"
 " Solarized colorscheme configuration:
 let g:solarized_termcolors=256
 let g:solarized_contrast="high"
+
+" vmath plugin configuration
+vmap <expr>  ++  VMATH_YankAndAnalyse()
+
 
 
 if has("gui_running")
