@@ -199,7 +199,7 @@ nnoremap <leader>N :NERDTreeFind<CR>
 nnoremap <leader>s :setlocal spell!<CR>
 nnoremap <leader>t :e ~/Temp/Temp.txt<CR>
 nnoremap <leader>q :q<CR>
-nnoremap <leader>v :e $MYVIMRC<CR>
+nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>W :%s/\s\+$//e<CR>:let @/ = ""<CR>:echo "Trimmed trailing whitespace from all lines"<CR>
 nnoremap <leader>z 1z=
 nnoremap <F6> :colorscheme peachpuff<CR>
@@ -288,6 +288,7 @@ let NERDTreeQuitOnOpen = 1
 
 " CtrlP configuration:
 
+let g:ctrlp_map = '\'
 "let g:ctrlp_use_caching = 1             " Enable caching
 "let g:ctrlp_clear_cache_on_exit = 0
 "let g:ctrlp_cache_dir = $CtrlPCache
