@@ -121,6 +121,10 @@ endif
 
 filetype indent on
 syntax on
+set guioptions-=m  "remove menu bar
+set guioptions-=T  "remove toolbar
+set guioptions-=r  "remove right-hand scroll bar
+set guioptions-=L  "remove left-hand scroll bar
 set wrap
 set shiftround
 set showmatch
@@ -182,6 +186,7 @@ nnoremap <down> :tabprev<CR>
 let mapleader = ","
 
 " Leader mappings:
+nnoremap <tab> %
 vnoremap <leader>. "my
 nnoremap <leader>. "myiw
 nnoremap <leader>a "ayiw
