@@ -214,6 +214,10 @@ nnoremap <F8> :set background=dark<CR>:colorscheme vividchalk<CR>
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
 
+" Move to next/previous item in quickfix list:
+nnoremap <c-n> :cn<cr>
+nnoremap <c-p> :cp<cr>
+
 "Insert Mode Mappings:
 " change word to upper-case (useful for typing uppercase contants):
 inoremap <c-u> <esc>hviwUe
