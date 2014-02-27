@@ -218,6 +218,10 @@ nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
 nnoremap <c-n> :cn<cr>
 nnoremap <c-p> :cp<cr>
 
+" center cursor line when jumping to next/prev search result:
+nnoremap n nzz
+nnoremap N Nzz
+
 "Insert Mode Mappings:
 " change word to upper-case (useful for typing uppercase contants):
 inoremap <c-u> <esc>hviwUe
