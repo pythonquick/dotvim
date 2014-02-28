@@ -1,3 +1,4 @@
+" Preamble ---------------------------------------------------------------- {{{
 if has('win16') || has('win95') || has('win32') || has('win64')
     let $MYVIM=$HOME.'/.vim'
 else
@@ -13,8 +14,99 @@ so $MYVIM/bundle.vim
 so $MYVIM/plugin/bclose.vim
 so $MYVIM/plugin/minibufexplpp.vim
 
+"}}}
 
-"" ---------- FUNCTIONS {{{
+" Basic options ----------------------------------------------------------- {{{
+filetype indent on
+syntax on
+set guioptions-=m  "remove menu bar
+set guioptions-=T  "remove toolbar
+set guioptions-=r  "remove right-hand scroll bar
+set guioptions-=L  "remove left-hand scroll bar
+set shiftround
+set showmatch
+set ruler
+set incsearch
+set hlsearch
+set relativenumber
+set number
+set cmdheight=1
+set scrolloff=1
+set hidden             " allow buffer switching without saving
+set autoread           " auto reload if file saved externally
+set showcmd            " show asdnumber of chars/lines selected in status line:
+set ttyfast
+set nocompatible
+set laststatus=2
+set encoding=utf-8
+set ttimeoutlen=50
+set t_Co=256
+set visualbell
+set go-=T
+set lines=999 columns=999
+set cursorline
+set autochdir " Change directory to the current buffer when opening files.
+set list
+set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
+set showbreak=↪
+
+"}}}
+
+" Tabs, spaces, wrapping -------------------------------------------------- {{{
+set colorcolumn=80
+set expandtab
+set smartindent
+set tabstop=4
+set autoindent
+set backspace=indent,eol,start    "allow backspacing everything in insert mode
+set shiftwidth=4
+set linebreak
+set wrap
+" ------------------------------------------------------------------------- }}}
+
+
+" Folding ----------------------------------------------------------------- {{{
+set foldmethod=marker
+set foldlevelstart=0
+
+" Space to toggle folds.
+nnoremap <Space> za
+vnoremap <Space> za
+
+" Make zO recursively open whatever fold we're in, even if it's partially open.
+nnoremap zO zczO
+
+" "Focus" the current line.  Basically:
+"
+" 1. Close all folds.
+" 2. Open just the folds containing the current line.
+" 3. Move the line to a little bit (15 lines) above the center of the screen.
+" 4. Pulse the cursor line.  My eyes are bad.
+"
+" This mapping wipes out the z mark, which I never use.
+"
+" I use :sus for the rare times I want to actually background Vim.
+nnoremap <c-z> mzzMzvzz15<c-e>`z:Pulse<cr>
+
+function! MyFoldText() " {{{
+    let line = getline(v:foldstart)
+
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
+
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
+
+    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+endfunction " }}}
+set foldtext=MyFoldText()
+" }}}
+
+" Functions --------------------------------------------------------------- {{{
 function! EnsureExists(path)
     if !isdirectory(expand(a:path))
         call mkdir(expand(a:path))
@@ -72,42 +164,7 @@ function! DoPrettyXML()
 endfunction
 " ---------- FUNCTIONS }}}
 
-
-
-
-" Toggle Vexplore with Ctrl-E
-function! ToggleVExplorer()
-  if exists("t:expl_buf_num")
-      let expl_win_num = bufwinnr(t:expl_buf_num)
-      if expl_win_num != -1
-          let cur_win_nr = winnr()
-          exec expl_win_num . 'wincmd w'
-          close
-          exec cur_win_nr . 'wincmd w'
-          unlet t:expl_buf_num
-      else
-          unlet t:expl_buf_num
-      endif
-  else
-      exec '1wincmd w'
-      Vexplore
-      let t:expl_buf_num = bufnr("%")
-  endif
-endfunction
-
-" Hit enter in the file browser to open the selected
-" file with :vsplit to the right of the browser.
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-
-" Default to tree mode
-let g:netrw_liststyle=3
-
-" Change directory to the current buffer when opening files.
-set autochdir
-
-
-
+" Auto commands ----------------------------------------------------------- {{{
 
 if has("autocmd")
     autocmd bufwritepost .vimrc source $MYVIMRC " auto-source vimrc
@@ -117,58 +174,9 @@ if has("autocmd")
     cnoreabbrev w echoerr "No Guenther, you don't need to :w with \"autocmd FocusLost * silent! wa\""
     autocmd FocusGained * set rnu
 endif
+"}}}
 
-
-filetype indent on
-syntax on
-set guioptions-=m  "remove menu bar
-set guioptions-=T  "remove toolbar
-set guioptions-=r  "remove right-hand scroll bar
-set guioptions-=L  "remove left-hand scroll bar
-set wrap
-set shiftround
-set showmatch
-set ruler
-set incsearch
-set hlsearch
-set rnu
-set nu
-set cmdheight=1
-set scrolloff=1
-set hidden                  " allow buffer switching without saving
-set autoread                " auto reload if file saved externally
-set showcmd                 " show asdnumber of chars/lines selected in status line:
-set linebreak
-set wildmenu
-set wildmode=list:full
-if has('win16') || has('win95') || has('win32') || has('win64')
-    set wildignore+=*\\.git\\*,*\\.hg\\*,*\\.svn\\*
-else
-    set wildignorecase
-    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
-endif
-set nocompatible
-set laststatus=2
-set encoding=utf-8
-set ttimeoutlen=50
-set t_Co=256
-set visualbell
-set go-=T
-set lines=999 columns=999
-
-
-
-
-" whitepace
-set smartindent
-set tabstop=4
-set list
-set listchars=tab:▸\ ,eol:¬
-set autoindent
-set backspace=indent,eol,start                      "allow backspacing everything in insert mode
-set expandtab
-set shiftwidth=4
-
+" Key remapping ----------------------------------------------------------- {{{
 " Remap home keys for cursor positioning on line:
 nnoremap H 0
 nnoremap L $
@@ -184,6 +192,7 @@ nnoremap <down> :tabprev<CR>
 "nnoremap <silent> k gk
 
 let mapleader = ","
+let maplocalleader = "\\"
 
 " Leader mappings:
 nnoremap <tab> %
@@ -209,7 +218,7 @@ nnoremap <leader>W :%s/\s\+$//e<CR>:let @/ = ""<CR>:echo "Trimmed trailing white
 nnoremap <leader>z 1z=
 nnoremap <F6> :colorscheme peachpuff<CR>
 nnoremap <F7> :set background=dark<CR>:colorscheme solarized<CR>
-nnoremap <F8> :set background=dark<CR>:colorscheme vividchalk<CR>
+nnoremap <F8> :set background=dark<CR>:colorscheme koehler<CR>
 " Following will surround current word in quote or doublequote:
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
@@ -228,12 +237,6 @@ inoremap <c-u> <esc>hviwUe
 inoremap <C-h> <left>
 inoremap <C-l> <right>
 
-" EasyMotion configuration
-"let g:EasyMotion_leader_key = '\'
-let g:EasyMotion_mapping_b = '<C-h>'
-let g:EasyMotion_mapping_w = '<C-l>'
-let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[],.;'
-
 noremap <space> za
 
 
@@ -246,17 +249,79 @@ noremap <c-.> :bn<cr>
 iab <expr> dts strftime("%c")
 vmap ,x :!tidy -q -i -xml<CR>
 
+" shortcut for angle bracket text objects: 
+onoremap ir i[
+onoremap ar a[
+vnoremap ir i[
+vnoremap ar a[
 
-command! PrettyXML call DoPrettyXML()
+"}}}
 
+" Wildmenu completion ----------------------------------------------------- {{{
 
-cabbr b Bs
+set wildmenu
+set wildmode=list:longest
 
-" Abbreviations:
-" Abolish expands case-combinations:
+if !(has('win16') || has('win95') || has('win32') || has('win64'))
+    set wildignorecase
+endif
 
+set wildignore+=.hg,.git,.svn                    " Version control
+set wildignore+=*.aux,*.out,*.toc                " LaTeX intermediate files
+set wildignore+=*.jpg,*.bmp,*.gif,*.png,*.jpeg   " binary images
+set wildignore+=*.o,*.obj,*.exe,*.dll,*.manifest " compiled object files
+set wildignore+=*.spl                            " compiled spelling word lists
+set wildignore+=*.sw?                            " Vim swap files
+set wildignore+=*.DS_Store                       " OSX bullshit
+set wildignore+=*.luac                           " Lua byte code
+set wildignore+=migrations                       " Django migrations
+set wildignore+=*.pyc                            " Python byte code
+set wildignore+=*.orig                           " Merge resolution files
 
-" vim file/folder management {{{
+" ------------------------------------------------------------------------- }}}
+
+" Plugin configuration ---------------------------------------------------- {{{
+
+" EasyMotion configuration
+"let g:EasyMotion_leader_key = '\'
+let g:EasyMotion_mapping_b = '<C-h>'
+let g:EasyMotion_mapping_w = '<C-l>'
+let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[],.;'
+
+" Airline (Vim status line) configuration:
+let g:airline_theme='powerlineish'
+let g:airline_powerline_fonts = 1
+let g:Powerline_symbols = 'fancy'
+let g:airline_section_b = '%{getcwd()}'
+let g:airline_section_c = '%t'
+let g:airline_detect_whitespace=0
+
+" Syntastic configuration:
+let g:syntastic_mode_map = { 'mode': 'active',
+                            \ 'active_filetypes': ['javascript', 'c'],
+                            \ 'passive_filetypes': ['puppet'] }
+
+" NERD Tree configuration:
+let NERDTreeQuitOnOpen = 1
+
+" CtrlP configuration:
+
+let g:ctrlp_map = '\'
+"let g:ctrlp_use_caching = 1             " Enable caching
+"let g:ctrlp_clear_cache_on_exit = 0
+"let g:ctrlp_cache_dir = $CtrlPCache
+"let g:ctrlp_match_window_bottom = 1     " Match window at botom of screen
+
+" Snippet configuration:
+let g:snippets_dir = $MYVIM."/snippets"
+
+" Solarized colorscheme configuration:
+let g:solarized_termcolors=256
+let g:solarized_contrast="high"
+
+" --------------------------------------------------------------------------}}}
+
+" Vim file/folder management ---------------------------------------------- {{{
 call EnsureExists('$MYVIM/.cache')
 " persistent undo
 if exists('+undofile')
@@ -275,51 +340,20 @@ call EnsureExists(&directory)
 " CtrlP cache:
 let $CtrlPCache='$MYVIM/.cache/ctrlp'
 call EnsureExists($CtrlPCache)
-"}}}
+" ------------------------------------------------------------------------- }}}
 
+" Miscellaneous ----------------------------------------------------------- {{{
 " Highlight long lines
 highlight ColorColumn ctermbg=red
 call matchadd('ColorColumn', '\%81v', 100)
 
-
-" Airline (Vim status line) configuration:
-let g:airline_theme='powerlineish'
-let g:airline_powerline_fonts = 1
-let g:Powerline_symbols = 'fancy'
-let g:airline_section_b = '%{getcwd()}'
-let g:airline_section_c = '%t'
-let g:airline_detect_whitespace=0
-
-" Syntastic configuration:
-let g:syntastic_mode_map = { 'mode': 'active',
-                            \ 'active_filetypes': ['javascript', 'c'],
-                            \ 'passive_filetypes': ['puppet'] }
-
-" NERD Tree configuration:
-let NERDTreeQuitOnOpen = 1
-
-
-" CtrlP configuration:
-
-let g:ctrlp_map = '\'
-"let g:ctrlp_use_caching = 1             " Enable caching
-"let g:ctrlp_clear_cache_on_exit = 0
-"let g:ctrlp_cache_dir = $CtrlPCache
-"let g:ctrlp_match_window_bottom = 1     " Match window at botom of screen
-
-" Snippet configuration:
-let g:snippets_dir = $MYVIM."/snippets"
-
-
-" Solarized colorscheme configuration:
-let g:solarized_termcolors=256
-let g:solarized_contrast="high"
-
 " vmath plugin configuration
 vmap <expr>  ++  VMATH_YankAndAnalyse()
 
+command! PrettyXML call DoPrettyXML()
+" ------------------------------------------------------------------------- }}} 
 
-
+" GUI mode ---------------------------------------------------------------- {{{
 if has("gui_running")
     "colo koehler
     colo solarized
@@ -337,5 +371,4 @@ if has("gui_running")
     exec "hi NonText ctermfg=7 guifg=#135560"
     autocmd ColorScheme * hi NonText ctermfg=7 guifg=#135560
 endif
-
-
+" ------------------------------------------------------------------------- }}}
