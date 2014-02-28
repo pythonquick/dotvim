@@ -15,7 +15,6 @@ so $MYVIM/plugin/bclose.vim
 so $MYVIM/plugin/minibufexplpp.vim
 
 "}}}
-
 " Basic options ----------------------------------------------------------- {{{
 filetype indent on
 syntax on
@@ -51,7 +50,6 @@ set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 set showbreak=↪
 
 "}}}
-
 " Tabs, spaces, wrapping -------------------------------------------------- {{{
 set colorcolumn=80
 set expandtab
@@ -63,8 +61,6 @@ set shiftwidth=4
 set linebreak
 set wrap
 " ------------------------------------------------------------------------- }}}
-
-
 " Folding ----------------------------------------------------------------- {{{
 set foldmethod=marker
 set foldlevelstart=0
@@ -105,7 +101,6 @@ function! MyFoldText() " {{{
 endfunction " }}}
 set foldtext=MyFoldText()
 " }}}
-
 " Functions --------------------------------------------------------------- {{{
 function! EnsureExists(path)
     if !isdirectory(expand(a:path))
@@ -163,7 +158,6 @@ function! DoPrettyXML()
   exe "set ft=" . l:origft
 endfunction
 " ---------- FUNCTIONS }}}
-
 " Auto commands ----------------------------------------------------------- {{{
 
 if has("autocmd")
@@ -175,7 +169,6 @@ if has("autocmd")
     autocmd FocusGained * set rnu
 endif
 "}}}
-
 " Key remapping ----------------------------------------------------------- {{{
 " Remap home keys for cursor positioning on line:
 nnoremap H 0
@@ -256,7 +249,6 @@ vnoremap ir i[
 vnoremap ar a[
 
 "}}}
-
 " Wildmenu completion ----------------------------------------------------- {{{
 
 set wildmenu
@@ -279,7 +271,6 @@ set wildignore+=*.pyc                            " Python byte code
 set wildignore+=*.orig                           " Merge resolution files
 
 " ------------------------------------------------------------------------- }}}
-
 " Plugin configuration ---------------------------------------------------- {{{
 
 " EasyMotion configuration
@@ -320,7 +311,6 @@ let g:solarized_termcolors=256
 let g:solarized_contrast="high"
 
 " --------------------------------------------------------------------------}}}
-
 " Vim file/folder management ---------------------------------------------- {{{
 call EnsureExists('$MYVIM/.cache')
 " persistent undo
@@ -341,18 +331,16 @@ call EnsureExists(&directory)
 let $CtrlPCache='$MYVIM/.cache/ctrlp'
 call EnsureExists($CtrlPCache)
 " ------------------------------------------------------------------------- }}}
-
 " Miscellaneous ----------------------------------------------------------- {{{
 " Highlight long lines
-highlight ColorColumn ctermbg=red
-call matchadd('ColorColumn', '\%81v', 100)
+"highlight ColorColumn ctermbg=red
+"call matchadd('ColorColumn', '\%81v', 100)
 
 " vmath plugin configuration
 vmap <expr>  ++  VMATH_YankAndAnalyse()
 
 command! PrettyXML call DoPrettyXML()
 " ------------------------------------------------------------------------- }}} 
-
 " GUI mode ---------------------------------------------------------------- {{{
 if has("gui_running")
     "colo koehler
