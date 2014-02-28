@@ -158,6 +158,9 @@ function! DoPrettyXML()
   exe "set ft=" . l:origft
 endfunction
 " ---------- FUNCTIONS }}}
+" Searching --------------------------------------------------------------- {{{
+
+" ------------------------------------------------------------------------- }}}
 " Auto commands ----------------------------------------------------------- {{{
 
 if has("autocmd")
@@ -167,6 +170,15 @@ if has("autocmd")
     autocmd BufRead *imap set syntax=java
     cnoreabbrev w echoerr "No Guenther, you don't need to :w with \"autocmd FocusLost * silent! wa\""
     autocmd FocusGained * set rnu
+    
+    " Make sure Vim returns to the same line when you reopen a file.
+    augroup line_return
+        au!
+        au BufReadPost *
+            \ if line("'\"") > 0 && line("'\"") <= line("$") |
+            \     execute 'normal! g`"zvzz' |
+            \ endif
+    augroup END 
 endif
 "}}}
 " Key remapping ----------------------------------------------------------- {{{
@@ -197,18 +209,21 @@ nnoremap <leader>B :call DeleteEmptyBuffers()<CR>
 nnoremap <leader>D :Bclose!<CR>
 nnoremap <leader>c :cd %:p:h<CR>:echom "Changed Dir to " . expand("%:p:h")<CR>
 nnoremap <leader>d :silent! write<CR>:Bclose<CR>
+nnoremap <leader>ev :e $MYVIMRC<CR>
+nnoremap <leader>ep :e ~/projects<CR>
 nnoremap <leader>f :FufFile<CR>
 nnoremap <leader>j :%!python -m json.tool<CR>
 nnoremap <leader>m "mp
 nnoremap <leader>M "mP
 nnoremap <leader>n :NERDTreeToggle<CR>
 nnoremap <leader>N :NERDTreeFind<CR>
-nnoremap <leader>s :setlocal spell!<CR>
+nnoremap <leader>s :SETLOCAL spell!<CR>
 nnoremap <leader>t :e ~/Temp/Temp.txt<CR>
 nnoremap <leader>q :q<CR>
-nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>W :%s/\s\+$//e<CR>:let @/ = ""<CR>:echo "Trimmed trailing whitespace from all lines"<CR>
-nnoremap <leader>z 1z=
+"nnoremap <leader>z 1z=
+nnoremap <leader>z zMzvzz
+nnoremap * *<c-o>zz " Search word, but stay on initial word and center it
 nnoremap <F6> :colorscheme peachpuff<CR>
 nnoremap <F7> :set background=dark<CR>:colorscheme solarized<CR>
 nnoremap <F8> :set background=dark<CR>:colorscheme koehler<CR>
@@ -229,6 +244,8 @@ nnoremap N Nzz
 inoremap <c-u> <esc>hviwUe
 inoremap <C-h> <left>
 inoremap <C-l> <right>
+
+inoremap <c-f> <c-x><c-f>
 
 noremap <space> za
 
