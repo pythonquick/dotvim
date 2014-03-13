@@ -163,12 +163,13 @@ endfunction
 " ------------------------------------------------------------------------- }}}
 " Auto commands ----------------------------------------------------------- {{{
 
+
 if has("autocmd")
-    autocmd bufwritepost .vimrc source $MYVIMRC " auto-source vimrc
+    "autocmd BufWritePost $MYVIMRC source $MYVIMRC " auto-source vimrc
     autocmd FocusLost * silent! wa " auto-save but don't complain about new buffers
     autocmd FocusLost * set nornu
     autocmd BufRead *imap set syntax=java
-    cnoreabbrev w echoerr "No Guenther, you don't need to :w with \"autocmd FocusLost * silent! wa\""
+    "cnoreabbrev w echoerr "No Guenther, you don't need to :w with \"autocmd FocusLost * silent! wa\""
     autocmd FocusGained * set rnu
     
     " Make sure Vim returns to the same line when you reopen a file.
@@ -186,6 +187,7 @@ endif
 nnoremap H 0
 nnoremap L $
 
+
 " Remap arrow keys:
 nnoremap <left> :bprev<CR>
 nnoremap <right> :bnext<CR>
@@ -198,6 +200,10 @@ nnoremap <down> :tabprev<CR>
 
 let mapleader = ","
 let maplocalleader = "\\"
+
+" Insert new line before/after cursor:
+nnoremap <CR> m`o<Esc>``
+nnoremap <S-CR> m`O<Esc>``
 
 " Leader mappings:
 nnoremap <tab> %
@@ -215,15 +221,16 @@ nnoremap <leader>f :FufFile<CR>
 nnoremap <leader>j :%!python -m json.tool<CR>
 nnoremap <leader>m "mp
 nnoremap <leader>M "mP
-nnoremap <leader>n :NERDTreeToggle<CR>
-nnoremap <leader>N :NERDTreeFind<CR>
+"nnoremap <leader>n :NERDTreeToggle<CR>
+"nnoremap <leader>N :NERDTreeFind<CR>
 nnoremap <leader>s :SETLOCAL spell!<CR>
 nnoremap <leader>t :e ~/Temp/Temp.txt<CR>
 nnoremap <leader>q :q<CR>
+nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>W :%s/\s\+$//e<CR>:let @/ = ""<CR>:echo "Trimmed trailing whitespace from all lines"<CR>
 "nnoremap <leader>z 1z=
 nnoremap <leader>z zMzvzz
-nnoremap * *<c-o>zz " Search word, but stay on initial word and center it
+nnoremap * *<c-o> " Search word, but stay on initial word
 nnoremap <F6> :colorscheme peachpuff<CR>
 nnoremap <F7> :set background=dark<CR>:colorscheme solarized<CR>
 nnoremap <F8> :set background=dark<CR>:colorscheme koehler<CR>
@@ -241,10 +248,7 @@ nnoremap N Nzz
 
 "Insert Mode Mappings:
 " change word to upper-case (useful for typing uppercase contants):
-inoremap <c-u> <esc>hviwUe
-inoremap <C-h> <left>
-inoremap <C-l> <right>
-
+inoremap <c-i> <esc>hviwUe
 inoremap <c-f> <c-x><c-f>
 
 noremap <space> za
@@ -252,8 +256,8 @@ noremap <space> za
 
 " key mappings
 noremap! jk <esc>
-noremap <c-k> Ox<bs><esc>
-noremap <c-j> ox<bs><esc>
+"noremap <c-k> Ox<bs><esc>
+"noremap <c-j> ox<bs><esc>
 noremap <c-,> :bp<cr>
 noremap <c-.> :bn<cr>
 iab <expr> dts strftime("%c")
@@ -294,7 +298,9 @@ set wildignore+=*.orig                           " Merge resolution files
 "let g:EasyMotion_leader_key = '\'
 let g:EasyMotion_mapping_b = '<C-h>'
 let g:EasyMotion_mapping_w = '<C-l>'
-let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[],.;'
+let g:EasyMotion_mapping_j = '<C-j>'
+let g:EasyMotion_mapping_k = '<C-k>'
+let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[],.;-='''
 
 " Airline (Vim status line) configuration:
 let g:airline_theme='powerlineish'
@@ -310,7 +316,7 @@ let g:syntastic_mode_map = { 'mode': 'active',
                             \ 'passive_filetypes': ['puppet'] }
 
 " NERD Tree configuration:
-let NERDTreeQuitOnOpen = 1
+"let NERDTreeQuitOnOpen = 1
 
 " CtrlP configuration:
 

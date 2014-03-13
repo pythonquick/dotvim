@@ -1,7 +1,7 @@
 Bundle 'gmarik/vundle'
 "Bundle 'minibufexplorerpp'
 Bundle 'bling/vim-airline'
-Bundle 'scrooloose/nerdtree'
+"Bundle 'scrooloose/nerdtree'
 Bundle 'https://github.com/altercation/vim-colors-solarized.git'
 Bundle 'ctrlp.vim'
 Bundle 'EasyMotion'
