@@ -202,8 +202,8 @@ let mapleader = ","
 let maplocalleader = "\\"
 
 " Insert new line before/after cursor:
-nnoremap <CR> m`o<Esc>``
-nnoremap <S-CR> m`O<Esc>``
+nmap <S-Enter> O<Esc>
+nmap <CR> o<Esc>
 
 " Leader mappings:
 nnoremap <tab> %
