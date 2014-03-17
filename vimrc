@@ -1,3 +1,4 @@
+inoremap <c-i> <esc>hviwUe
 " Preamble ---------------------------------------------------------------- {{{
 if has('win16') || has('win95') || has('win32') || has('win64')
     let $MYVIM=$HOME.'/.vim'
@@ -203,7 +204,7 @@ let maplocalleader = "\\"
 
 " Insert new line before/after cursor:
 nmap <S-Enter> O<Esc>
-nmap <CR> o<Esc>
+nmap <c-Enter> o<Esc>
 
 " Leader mappings:
 nnoremap <tab> %
@@ -242,6 +243,7 @@ nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
 nnoremap <c-n> :cn<cr>
 nnoremap <c-p> :cp<cr>
 
+
 " center cursor line when jumping to next/prev search result:
 nnoremap n nzz
 nnoremap N Nzz
@@ -254,12 +256,8 @@ inoremap <c-f> <c-x><c-f>
 noremap <space> za
 
 
-" key mappings
-noremap! jk <esc>
 "noremap <c-k> Ox<bs><esc>
 "noremap <c-j> ox<bs><esc>
-noremap <c-,> :bp<cr>
-noremap <c-.> :bn<cr>
 iab <expr> dts strftime("%c")
 vmap ,x :!tidy -q -i -xml<CR>
 
@@ -383,3 +381,5 @@ if has("gui_running")
     autocmd ColorScheme * hi NonText ctermfg=7 guifg=#135560
 endif
 " ------------------------------------------------------------------------- }}}
+
+
