@@ -1,4 +1,3 @@
-inoremap <c-i> <esc>hviwUe
 " Preamble ---------------------------------------------------------------- {{{
 if has('win16') || has('win95') || has('win32') || has('win64')
     let $MYVIM=$HOME.'/.vim'
@@ -203,8 +202,9 @@ let mapleader = ","
 let maplocalleader = "\\"
 
 " Insert new line before/after cursor:
-nmap <S-Enter> O<Esc>
-nmap <c-Enter> o<Esc>
+nmap <S-Enter> -
+nmap <CS-Enter> mlO<Esc>`l
+nmap <C-Enter> o<Esc>
 
 " Leader mappings:
 nnoremap <tab> %
@@ -228,30 +228,25 @@ nnoremap <leader>s :SETLOCAL spell!<CR>
 nnoremap <leader>t :e ~/Temp/Temp.txt<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
-nnoremap <leader>W :%s/\s\+$//e<CR>:let @/ = ""<CR>:echo "Trimmed trailing whitespace from all lines"<CR>
+nnoremap <leader>w ml:%s/\s\+$//e<CR>`l
 "nnoremap <leader>z 1z=
 nnoremap <leader>z zMzvzz
 nnoremap * *<c-o> " Search word, but stay on initial word
 nnoremap <F6> :colorscheme peachpuff<CR>
 nnoremap <F7> :set background=dark<CR>:colorscheme solarized<CR>
 nnoremap <F8> :set background=dark<CR>:colorscheme koehler<CR>
-" Following will surround current word in quote or doublequote:
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
-
-" Move to next/previous item in quickfix list:
-nnoremap <c-n> :cn<cr>
-nnoremap <c-p> :cp<cr>
-
-
-" center cursor line when jumping to next/prev search result:
-nnoremap n nzz
-nnoremap N Nzz
+nnoremap <c-n> :cn<cr> "Quickfix next
+nnoremap <c-p> :cp<cr> "Quickfix prev
+nnoremap n nzz " Center cursor when jumping to next search result
+nnoremap N Nzz " Center cursor when jumping to prev search result
 
 "Insert Mode Mappings:
 " change word to upper-case (useful for typing uppercase contants):
-inoremap <c-i> <esc>hviwUe
-inoremap <c-f> <c-x><c-f>
+inoremap <c-i> <esc>hviwUe " change word to uppercase
+inoremap <c-f> <c-x><c-f>  " insert file name
+inoremap <c-l> <Del>       " Delete char forward
 
 noremap <space> za
 
