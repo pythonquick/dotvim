@@ -12,7 +12,6 @@ call vundle#rc()
 " vundle bundles / Plugins:
 so $MYVIM/bundle.vim
 so $MYVIM/plugin/bclose.vim
-so $MYVIM/plugin/minibufexplpp.vim
 
 "}}}
 " Basic options ----------------------------------------------------------- {{{
@@ -159,6 +158,7 @@ function! DoPrettyXML()
 endfunction
 " ---------- FUNCTIONS }}}
 " Searching --------------------------------------------------------------- {{{
+nnoremap <silent> <leader>/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
 
 " ------------------------------------------------------------------------- }}}
 " Auto commands ----------------------------------------------------------- {{{
@@ -184,8 +184,8 @@ endif
 "}}}
 " Key remapping ----------------------------------------------------------- {{{
 " Remap home keys for cursor positioning on line:
-nnoremap H 0
-nnoremap L $
+nnoremap H ^
+nnoremap L g_
 
 
 " Remap arrow keys:
@@ -208,24 +208,21 @@ nmap <C-Enter> o<Esc>
 
 " Leader mappings:
 nnoremap <tab> %
-vnoremap <leader>. "my
-nnoremap <leader>. "myiw
-nnoremap <leader>a "ayiw
-nnoremap <leader>A diw"aP
+nnoremap <leader>= mlgg=G'l
 nnoremap <leader>B :call DeleteEmptyBuffers()<CR>
 nnoremap <leader>D :Bclose!<CR>
 nnoremap <leader>c :cd %:p:h<CR>:echom "Changed Dir to " . expand("%:p:h")<CR>
 nnoremap <leader>d :silent! write<CR>:Bclose<CR>
+nnoremap <leader>eA :e ~/projects/A4MobileTime<CR>
+nnoremap <leader>eb :e $MYVIM/bundle.vim<CR>
+nnoremap <leader>eP :e ~/projects<CR>
+nnoremap <leader>eT :e ~/Temp<CR>
+nnoremap <leader>et :e ~/Temp/Temp.txt<CR>
 nnoremap <leader>ev :e $MYVIMRC<CR>
-nnoremap <leader>ep :e ~/projects<CR>
+nnoremap <leader>eV :e $MYVIM<CR>
 nnoremap <leader>f :FufFile<CR>
 nnoremap <leader>j :%!python -m json.tool<CR>
-nnoremap <leader>m "mp
-nnoremap <leader>M "mP
-"nnoremap <leader>n :NERDTreeToggle<CR>
-"nnoremap <leader>N :NERDTreeFind<CR>
 nnoremap <leader>s :SETLOCAL spell!<CR>
-nnoremap <leader>t :e ~/Temp/Temp.txt<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>w ml:%s/\s\+$//e<CR>`l
@@ -239,8 +236,11 @@ nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
 nnoremap <c-n> :cn<cr> "Quickfix next
 nnoremap <c-p> :cp<cr> "Quickfix prev
-nnoremap n nzz " Center cursor when jumping to next search result
-nnoremap N Nzz " Center cursor when jumping to prev search result
+
+ " Center cursor when jumping to next search result:
+nnoremap n nzz
+" Center cursor when jumping to prev search result:
+nnoremap N Nzz 
 
 "Insert Mode Mappings:
 " change word to upper-case (useful for typing uppercase contants):
@@ -296,20 +296,38 @@ let g:EasyMotion_mapping_k = '<C-k>'
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[],.;-='''
 
 " Airline (Vim status line) configuration:
-let g:airline_theme='powerlineish'
-let g:airline_powerline_fonts = 1
-let g:Powerline_symbols = 'fancy'
+if !exists("g:airline_symbols")
+  let g:airline_symbols = {}
+endif
+let g:airline_theme="powerlineish"
+let g:airline_powerline_fonts=1
+" let g:airline_section_warning = airline#section#create([ "syntastic" ])
+let g:airline#extensions#branch#empty_message = "No SCM"
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+let g:airline#extensions#tabline#fnamecollapse = 1 " /a/m/model.rb
+let g:airline#extensions#hunks#non_zero_only = 1 " git gutter
+let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_b = '%{getcwd()}'
 let g:airline_section_c = '%t'
 let g:airline_detect_whitespace=0
+if has("gui_running")
+    let g:Powerline_symbols = 'fancy'
+else
+    let g:airline_left_sep=''
+    let g:airline_right_sep=''
+    let g:airline#extensions#tabline#left_sep = ''
+    let g:airline#extensions#tabline#left_alt_sep = ''
+    let g:airline#extensions#tabline#right_sep = ''
+    let g:airline#extensions#tabline#right_alt_sep = ''
+endif
 
 " Syntastic configuration:
 let g:syntastic_mode_map = { 'mode': 'active',
                             \ 'active_filetypes': ['javascript', 'c'],
                             \ 'passive_filetypes': ['puppet'] }
-
-" NERD Tree configuration:
-"let NERDTreeQuitOnOpen = 1
 
 " CtrlP configuration:
 
@@ -356,12 +374,11 @@ call EnsureExists($CtrlPCache)
 vmap <expr>  ++  VMATH_YankAndAnalyse()
 
 command! PrettyXML call DoPrettyXML()
+colo solarized
+set background=dark
 " ------------------------------------------------------------------------- }}} 
 " GUI mode ---------------------------------------------------------------- {{{
 if has("gui_running")
-    "colo koehler
-    colo solarized
-    set background=dark
     if has('win16') || has('win95') || has('win32') || has('win64')
         set guifont=Inconsolata-dz_for_Powerline:h13:cANSI
     else
