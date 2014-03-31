@@ -218,6 +218,7 @@ nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
 nnoremap <leader>f :FufFile<CR>
 nnoremap <leader>j :%!python -m json.tool<CR>
+nnoremap <leader>n :NERDTreeToggle
 nnoremap <leader>s :SETLOCAL spell!<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
