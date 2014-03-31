@@ -30,6 +30,7 @@ set relativenumber
 set number
 set cmdheight=1
 set scrolloff=1
+
 set hidden             " allow buffer switching without saving
 set autoread           " auto reload if file saved externally
 set showcmd            " show asdnumber of chars/lines selected in status line:
@@ -41,7 +42,7 @@ set ttimeoutlen=50
 set t_Co=256
 set visualbell
 set go-=T
-set lines=999 columns=999
+"set lines=999 columns=999
 set cursorline
 set autochdir " Change directory to the current buffer when opening files.
 set list
@@ -201,11 +202,6 @@ nnoremap <down> :tabprev<CR>
 let mapleader = ","
 let maplocalleader = "\\"
 
-" Insert new line before/after cursor:
-nmap <S-Enter> -
-nmap <CS-Enter> mlO<Esc>`l
-nmap <C-Enter> o<Esc>
-
 " Leader mappings:
 nnoremap <tab> %
 nnoremap <leader>= mlgg=G'l
@@ -306,8 +302,10 @@ let g:airline#extensions#branch#empty_message = "No SCM"
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
-let g:airline#extensions#tabline#fnamecollapse = 1 " /a/m/model.rb
+let g:airline#extensions#tabline#buffer_nr_show = 1
+"let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
+"let g:airline#extensions#tabline#fnamecollapse = 1 " /a/m/model.rb
+let g:airline_inactive_collapse=0
 let g:airline#extensions#hunks#non_zero_only = 1 " git gutter
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_b = '%{getcwd()}'
@@ -393,5 +391,3 @@ if has("gui_running")
     autocmd ColorScheme * hi NonText ctermfg=7 guifg=#135560
 endif
 " ------------------------------------------------------------------------- }}}
-
-
