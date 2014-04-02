@@ -218,7 +218,7 @@ nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
 nnoremap <leader>f :FufFile<CR>
 nnoremap <leader>j :%!python -m json.tool<CR>
-nnoremap <leader>n :NERDTreeToggle
+nnoremap <leader>n :NERDTreeFind<CR>
 nnoremap <leader>s :SETLOCAL spell!<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
@@ -233,11 +233,10 @@ nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
 nnoremap <c-n> :cn<cr> "Quickfix next
 nnoremap <c-p> :cp<cr> "Quickfix prev
+nnoremap <c-/> :lnext<cr>
 
  " Center cursor when jumping to next search result:
 nnoremap n nzz
-" Center cursor when jumping to prev search result:
-nnoremap N Nzz 
 
 "Insert Mode Mappings:
 " change word to upper-case (useful for typing uppercase contants):
@@ -304,6 +303,7 @@ let g:airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 "let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
 "let g:airline#extensions#tabline#fnamecollapse = 1 " /a/m/model.rb
 let g:airline_inactive_collapse=0
