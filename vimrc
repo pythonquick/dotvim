@@ -291,6 +291,9 @@ let g:EasyMotion_mapping_j = '<C-j>'
 let g:EasyMotion_mapping_k = '<C-k>'
 let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[],.;-='''
 
+" NERDTree configuration:
+let NERDTreeQuitOnOpen = 1
+
 " Airline (Vim status line) configuration:
 if !exists("g:airline_symbols")
   let g:airline_symbols = {}
@@ -310,7 +313,7 @@ let g:airline_inactive_collapse=0
 let g:airline#extensions#hunks#non_zero_only = 1 " git gutter
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_b = '%{getcwd()}'
-let g:airline_section_c = '%t'
+let g:airline_section_c = ''
 let g:airline_detect_whitespace=0
 if has("gui_running")
     let g:Powerline_symbols = 'fancy'
