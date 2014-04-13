@@ -168,9 +168,9 @@ nnoremap <silent> <leader>/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
 if has("autocmd")
     "autocmd BufWritePost $MYVIMRC source $MYVIMRC " auto-source vimrc
     autocmd FocusLost * silent! wa " auto-save but don't complain about new buffers
-    autocmd FocusLost * set nornu
     autocmd BufRead *imap set syntax=java
     "cnoreabbrev w echoerr "No Guenther, you don't need to :w with \"autocmd FocusLost * silent! wa\""
+    autocmd FocusLost * set nornu
     autocmd FocusGained * set rnu
     
     " Make sure Vim returns to the same line when you reopen a file.
@@ -224,6 +224,8 @@ nnoremap <leader>q :q<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>w ml:%s/\s\+$//e<CR>`l
 "nnoremap <leader>z 1z=
+nnoremap <leader>x :silent !./%<CR>
+nnoremap <leader>X :!./%<CR>
 nnoremap <leader>z zMzvzz
 nnoremap * *<c-o> " Search word, but stay on initial word
 nnoremap <F6> :colorscheme peachpuff<CR>
@@ -240,7 +242,7 @@ nnoremap n nzz
 
 "Insert Mode Mappings:
 " change word to upper-case (useful for typing uppercase contants):
-inoremap <c-i> <esc>hviwUe " change word to uppercase
+"inoremap <c-i> <esc>hviwUe " change word to uppercase
 inoremap <c-f> <c-x><c-f>  " insert file name
 inoremap <c-l> <Del>       " Delete char forward
 
@@ -330,7 +332,19 @@ endif
 let g:syntastic_mode_map = { 'mode': 'active',
                             \ 'active_filetypes': ['javascript', 'c'],
                             \ 'passive_filetypes': ['puppet'] }
-
+let g:syntastic_html_tidy_ignore_errors = [
+    \"trimming empty <i>",
+    \"trimming empty <span>",
+    \"trimming empty <h1>",
+    \"trimming empty <li>",
+    \"<img> lacks \"alt\" attribute",
+    \"<input> proprietary attribute \"pattern\"",
+    \"<input> proprietary attribute \"min\"",
+    \"<input> proprietary attribute \"max\"",
+    \"<input> proprietary attribute \"autocomplete\"",
+    \"proprietary attribute \"role\"",
+    \"proprietary attribute \"hidden\"",
+\]
 " CtrlP configuration:
 
 let g:ctrlp_map = '\'
