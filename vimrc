@@ -390,8 +390,10 @@ call EnsureExists($CtrlPCache)
 vmap <expr>  ++  VMATH_YankAndAnalyse()
 
 command! PrettyXML call DoPrettyXML()
-colo solarized
+"colo solarized
 set background=dark
+let g:molokai_original = 0
+colo molokai
 " ------------------------------------------------------------------------- }}} 
 " GUI mode ---------------------------------------------------------------- {{{
 if has("gui_running")
