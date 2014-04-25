@@ -202,7 +202,6 @@ let mapleader = ","
 let maplocalleader = "\\"
 
 " Leader mappings:
-nnoremap M %
 nnoremap <leader>= mlgg=G'l
 nnoremap <leader>B :call DeleteEmptyBuffers()<CR>
 nnoremap <leader>D :Bclose!<CR>
@@ -241,6 +240,10 @@ nnoremap n nzz
 " Insert timestamp:
 nmap <F3> a<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
 imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
+
+" Jump easier to matching bracket/paren/tag using M instead of %:
+nmap M %
+vmap M %
 
 " change word to upper-case (useful for typing uppercase contants):
 "inoremap <c-i> <esc>hviwUe " change word to uppercase
