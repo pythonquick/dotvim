@@ -48,6 +48,7 @@ set autochdir " Change directory to the current buffer when opening files.
 set list
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 set showbreak=↪
+set path=.,..\\..\\root
 
 "}}}
 " Tabs, spaces, wrapping -------------------------------------------------- {{{
@@ -221,7 +222,6 @@ nnoremap <leader>s :SETLOCAL spell!<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>w ml:%s/\s\+$//e<CR>`l
-"nnoremap <leader>z 1z=
 nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
 nnoremap <leader>z zMzvzz
@@ -238,14 +238,15 @@ nnoremap <c-/> :lnext<cr>
  " Center cursor when jumping to next search result:
 nnoremap n nzz
 
-"Insert Mode Mappings:
+" Insert timestamp:
+nmap <F3> a<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
+
 " change word to upper-case (useful for typing uppercase contants):
 "inoremap <c-i> <esc>hviwUe " change word to uppercase
-inoremap <c-f> <c-x><c-f>  " insert file name
+inoremap <c-f> <c-x><c-f>
 inoremap <c-l> <Del>       " Delete char forward
-
 noremap <space> za
-
 
 "noremap <c-k> Ox<bs><esc>
 "noremap <c-j> ox<bs><esc>
