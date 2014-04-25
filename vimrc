@@ -16,6 +16,7 @@ so $MYVIM/plugin/bclose.vim
 "}}}
 " Basic options ----------------------------------------------------------- {{{
 filetype indent on
+filetype plugin on
 syntax on
 set guioptions-=m  "remove menu bar
 set guioptions-=T  "remove toolbar
@@ -30,7 +31,6 @@ set relativenumber
 set number
 set cmdheight=1
 set scrolloff=1
-
 set hidden             " allow buffer switching without saving
 set autoread           " auto reload if file saved externally
 set showcmd            " show asdnumber of chars/lines selected in status line:
@@ -166,10 +166,8 @@ nnoremap <silent> <leader>/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
 
 
 if has("autocmd")
-    "autocmd BufWritePost $MYVIMRC source $MYVIMRC " auto-source vimrc
     autocmd FocusLost * silent! wa " auto-save but don't complain about new buffers
     autocmd BufRead *imap set syntax=java
-    "cnoreabbrev w echoerr "No Guenther, you don't need to :w with \"autocmd FocusLost * silent! wa\""
     autocmd FocusLost * set nornu
     autocmd FocusGained * set rnu
     
@@ -203,7 +201,7 @@ let mapleader = ","
 let maplocalleader = "\\"
 
 " Leader mappings:
-nnoremap <tab> %
+nnoremap M %
 nnoremap <leader>= mlgg=G'l
 nnoremap <leader>B :call DeleteEmptyBuffers()<CR>
 nnoremap <leader>D :Bclose!<CR>
@@ -347,7 +345,7 @@ let g:syntastic_html_tidy_ignore_errors = [
 \]
 " CtrlP configuration:
 
-let g:ctrlp_map = '\'
+"let g:ctrlp_map = '\'
 "let g:ctrlp_use_caching = 1             " Enable caching
 "let g:ctrlp_clear_cache_on_exit = 0
 "let g:ctrlp_cache_dir = $CtrlPCache
