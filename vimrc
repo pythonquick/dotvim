@@ -18,90 +18,47 @@ so $MYVIM/plugin/bclose.vim
 filetype indent on
 filetype plugin on
 syntax on
-set guioptions-=m  "remove menu bar
-set guioptions-=T  "remove toolbar
-set guioptions-=r  "remove right-hand scroll bar
-set guioptions-=L  "remove left-hand scroll bar
-set shiftround
-set showmatch
-set ruler
-set incsearch
-set hlsearch
-set relativenumber
-set number
-set cmdheight=1
-set scrolloff=1
-set hidden             " allow buffer switching without saving
-set autoread           " auto reload if file saved externally
-set showcmd            " show asdnumber of chars/lines selected in status line:
-set ttyfast
-set nocompatible
-set laststatus=2
-set encoding=utf-8
-set ttimeoutlen=50
-set t_Co=256
-set visualbell
-set go-=T
-"set lines=999 columns=999
-set cursorline
-set autochdir " Change directory to the current buffer when opening files.
-set list
+set autochdir           " Change directory to the current buffer
+set autoread            " auto reload if file saved externally
+set cmdheight=1         " Line height of command row at bottom of screen
+set cursorline          " Highlight line that cursor is on
+set encoding=utf-8      " Default encoding
+set guioptions-=L       " remove left-hand scroll bar
+set guioptions-=T       " remove toolbar
+set guioptions-=m       " remove menu bar
+set guioptions-=r       " remove right-hand scroll bar
+set hidden              " allow buffer switching without saving
+set hlsearch            " Highlight search results
+set ignorecase          " Ignore case when searching
+set incsearch           " Incrementally search as you type search string
+set laststatus=2        " Always show status line
+set list                " Display the following unprintable characters:
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
-set showbreak=↪
-set path=.,..\\..\\root
+set nocompatible        " We don't need to be compatible with old vi
+set number              " Show current line number
+set path=.,..\\..\\root " Paths to search for gf command (file under cursor)
+set relativenumber      " Display relative line numbers
+set scrolloff=1         " Scroll to show at least 1 line above/below cursor
+set shiftround          " When shifting/tabbing, fill to multiple of shiftwidth
+set showbreak=↪         " Character showing line wrap
+set showcmd             " show number of chars/lines selected in status line
+set showmatch           " Briefly show matching bracket/paren
+set t_Co=256            " Use 256 colors in terminal mode
+set ttyfast             " Assume fast network connection for terminal mode
+set visualbell          " Visual 'bell' instead of beeping
 
 "}}}
 " Tabs, spaces, wrapping -------------------------------------------------- {{{
-set colorcolumn=80
-set expandtab
-set smartindent
-set tabstop=4
 set autoindent
 set backspace=indent,eol,start    "allow backspacing everything in insert mode
-set shiftwidth=4
+set colorcolumn=80
+set expandtab
 set linebreak
+set shiftwidth=4
+set smartindent
+set tabstop=4
 set wrap
 " ------------------------------------------------------------------------- }}}
-" Folding ----------------------------------------------------------------- {{{
-set foldmethod=marker
-set foldlevelstart=0
-
-" Space to toggle folds.
-nnoremap <Space> za
-vnoremap <Space> za
-
-" Make zO recursively open whatever fold we're in, even if it's partially open.
-nnoremap zO zczO
-
-" "Focus" the current line.  Basically:
-"
-" 1. Close all folds.
-" 2. Open just the folds containing the current line.
-" 3. Move the line to a little bit (15 lines) above the center of the screen.
-" 4. Pulse the cursor line.  My eyes are bad.
-"
-" This mapping wipes out the z mark, which I never use.
-"
-" I use :sus for the rare times I want to actually background Vim.
-nnoremap <c-z> mzzMzvzz15<c-e>`z:Pulse<cr>
-
-function! MyFoldText() " {{{
-    let line = getline(v:foldstart)
-
-    let nucolwidth = &fdc + &number * &numberwidth
-    let windowwidth = winwidth(0) - nucolwidth - 3
-    let foldedlinecount = v:foldend - v:foldstart
-
-    " expand tabs into spaces
-    let onetab = strpart('          ', 0, &tabstop)
-    let line = substitute(line, '\t', onetab, 'g')
-
-    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-endfunction " }}}
-set foldtext=MyFoldText()
-" }}}
 " Functions --------------------------------------------------------------- {{{
 function! EnsureExists(path)
     if !isdirectory(expand(a:path))
@@ -158,7 +115,32 @@ function! DoPrettyXML()
   " restore the filetype
   exe "set ft=" . l:origft
 endfunction
+
+
+function! MyFoldText()
+    let line = getline(v:foldstart)
+
+    let nucolwidth = &fdc + &number * &numberwidth
+    let windowwidth = winwidth(0) - nucolwidth - 3
+    let foldedlinecount = v:foldend - v:foldstart
+
+    " expand tabs into spaces
+    let onetab = strpart('          ', 0, &tabstop)
+    let line = substitute(line, '\t', onetab, 'g')
+
+    let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+endfunction
 " ---------- FUNCTIONS }}}
+" Folding ----------------------------------------------------------------- {{{
+set foldmethod=marker
+set foldlevelstart=0
+" Space to toggle folds.
+nnoremap <Space> za
+vnoremap <Space> za
+set foldtext=MyFoldText()
+" }}}
 " Searching --------------------------------------------------------------- {{{
 nnoremap <silent> <leader>/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
 
@@ -187,16 +169,16 @@ endif
 nnoremap H ^
 nnoremap L g_
 
+" Alternative esc mapping:
+inoremap jk <esc>
+inoremap kj <esc>
+inoremap <esc> <nop>
 
 " Remap arrow keys:
 nnoremap <left> :bprev<CR>
 nnoremap <right> :bnext<CR>
 nnoremap <up> :tabnext<CR>
 nnoremap <down> :tabprev<CR>
-
-" Scroll by screen line (even if line wraps multiple screen lines):
-"nnoremap <silent> j gj
-"nnoremap <silent> k gk
 
 let mapleader = ","
 let maplocalleader = "\\"
@@ -205,19 +187,20 @@ let maplocalleader = "\\"
 nnoremap <leader>= mlgg=G'l
 nnoremap <leader>B :call DeleteEmptyBuffers()<CR>
 nnoremap <leader>D :Bclose!<CR>
-nnoremap <leader>c :cd %:p:h<CR>:echom "Changed Dir to " . expand("%:p:h")<CR>
+nnoremap <leader>c :nohl<CR>
 nnoremap <leader>d :silent! write<CR>:Bclose<CR>
 nnoremap <leader>eA :e ~/projects/A4MobileTime<CR>
 nnoremap <leader>eb :e $MYVIM/bundle.vim<CR>
+nnoremap <leader>ee :e .<CR>
 nnoremap <leader>eP :e ~/projects<CR>
 nnoremap <leader>eT :e ~/Temp<CR>
 nnoremap <leader>et :e ~/Temp/Temp.txt<CR>
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
-nnoremap <leader>f :FufFile<CR>
+nnoremap <leader>h "hyiw:help <C-r>h<CR>
 nnoremap <leader>j :%!python -m json.tool<CR>
 nnoremap <leader>n :NERDTreeFind<CR>
-nnoremap <leader>s :SETLOCAL spell!<CR>
+nnoremap <leader>s :setlocal spell!<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>w ml:%s/\s\+$//e<CR>`l
@@ -225,17 +208,17 @@ nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
 nnoremap <leader>z zMzvzz
 nnoremap * *<c-o> " Search word, but stay on initial word
-nnoremap <F6> :colorscheme peachpuff<CR>
-nnoremap <F7> :set background=dark<CR>:colorscheme solarized<CR>
-nnoremap <F8> :set background=dark<CR>:colorscheme koehler<CR>
+nnoremap <F5> :set background=dark<CR>:colorscheme badwolf<CR>
+nnoremap <F6> :set background=dark<CR>:colorscheme molokai<CR>
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
-nnoremap <c-n> :cn<cr> "Quickfix next
-nnoremap <c-p> :cp<cr> "Quickfix prev
+nnoremap <c-n> :cn<cr>
+nnoremap <c-p> :cp<cr>
 nnoremap <c-/> :lnext<cr>
 
- " Center cursor when jumping to next search result:
+ " Center cursor when jumping to next/prev search result:
 nnoremap n nzz
+nnoremap N Nzz
 
 " Insert timestamp:
 nmap <F3> a<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
@@ -246,7 +229,7 @@ nmap M %
 vmap M %
 
 " change word to upper-case (useful for typing uppercase contants):
-"inoremap <c-i> <esc>hviwUe " change word to uppercase
+inoremap <c-k> <esc>hviwUea
 inoremap <c-f> <c-x><c-f>
 inoremap <c-l> <Del>       " Delete char forward
 noremap <space> za
@@ -288,31 +271,30 @@ set wildignore+=*.orig                           " Merge resolution files
 " Plugin configuration ---------------------------------------------------- {{{
 
 " EasyMotion configuration
-"let g:EasyMotion_leader_key = '\'
+" ------------------------
 let g:EasyMotion_mapping_b = '<C-h>'
 let g:EasyMotion_mapping_w = '<C-l>'
 let g:EasyMotion_mapping_j = '<C-j>'
 let g:EasyMotion_mapping_k = '<C-k>'
-let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890[],.;-='''
+let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.;'
 
 " NERDTree configuration:
+" -----------------------
 let NERDTreeQuitOnOpen = 1
 
 " Airline (Vim status line) configuration:
+" ----------------------------------------
 if !exists("g:airline_symbols")
   let g:airline_symbols = {}
 endif
 let g:airline_theme="powerlineish"
 let g:airline_powerline_fonts=1
-" let g:airline_section_warning = airline#section#create([ "syntastic" ])
 let g:airline#extensions#branch#empty_message = "No SCM"
 let g:airline#extensions#whitespace#enabled = 0
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
-"let g:airline#extensions#tabline#tab_nr_type = 1 " tab number
-"let g:airline#extensions#tabline#fnamecollapse = 1 " /a/m/model.rb
 let g:airline_inactive_collapse=0
 let g:airline#extensions#hunks#non_zero_only = 1 " git gutter
 let g:airline#extensions#tabline#buffer_nr_show = 1
@@ -331,6 +313,7 @@ else
 endif
 
 " Syntastic configuration:
+" ------------------------
 let g:syntastic_mode_map = { 'mode': 'active',
                             \ 'active_filetypes': ['javascript', 'c'],
                             \ 'passive_filetypes': ['puppet'] }
@@ -347,30 +330,33 @@ let g:syntastic_html_tidy_ignore_errors = [
     \"proprietary attribute \"role\"",
     \"proprietary attribute \"hidden\"",
 \]
-" CtrlP configuration:
 
-"let g:ctrlp_map = '\'
-"let g:ctrlp_use_caching = 1             " Enable caching
-"let g:ctrlp_clear_cache_on_exit = 0
-"let g:ctrlp_cache_dir = $CtrlPCache
-"let g:ctrlp_match_window_bottom = 1     " Match window at botom of screen
+" CtrlP configuration:
+" --------------------
+let g:ctrlp_map = '\'
+let g:ctrlp_use_caching = 1             " Enable caching
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_cache_dir = $CtrlPCache
+let g:ctrlp_match_window_bottom = 1     " Match window at bottom of screen
 
 " Snippet configuration:
+" ----------------------
 let g:snippets_dir = $MYVIM."/snippets"
 
-" Solarized colorscheme configuration:
-let g:solarized_termcolors=256
-let g:solarized_contrast="high"
+" Molokai colorscheme configuration:
+" ----------------------------------
+let g:molokai_original = 0
+
 
 " --------------------------------------------------------------------------}}}
 " Vim file/folder management ---------------------------------------------- {{{
 call EnsureExists('$MYVIM/.cache')
 " persistent undo
-if exists('+undofile')
-    set undofile
-    set undodir=$MYVIM/.cache/undo
-    call EnsureExists(&undodir)
-endif
+" if exists('+undofile')
+"     set undofile
+"     set undodir=$MYVIM/.cache/undo
+"     call EnsureExists(&undodir)
+" endif
 " backups
 set backup
 set backupdir=$MYVIM/.cache/backup
@@ -384,20 +370,13 @@ let $CtrlPCache='$MYVIM/.cache/ctrlp'
 call EnsureExists($CtrlPCache)
 " ------------------------------------------------------------------------- }}}
 " Miscellaneous ----------------------------------------------------------- {{{
-" Highlight long lines
-"highlight ColorColumn ctermbg=red
-"call matchadd('ColorColumn', '\%81v', 100)
 
 " vmath plugin configuration
 vmap <expr>  ++  VMATH_YankAndAnalyse()
 
 command! PrettyXML call DoPrettyXML()
-"colo solarized
-set background=dark
-let g:molokai_original = 0
-colo molokai
 " ------------------------------------------------------------------------- }}} 
-" GUI mode ---------------------------------------------------------------- {{{
+" GUI mode and Colorscheme ------------------------------------------------ {{{
 if has("gui_running")
     if has('win16') || has('win95') || has('win32') || has('win64')
         set guifont=Inconsolata-dz_for_Powerline:h13:cANSI
@@ -412,4 +391,18 @@ if has("gui_running")
     exec "hi NonText ctermfg=7 guifg=#135560"
     autocmd ColorScheme * hi NonText ctermfg=7 guifg=#135560
 endif
+
+set background=dark
+colo badwolf
 " ------------------------------------------------------------------------- }}}
+" Abbreviations ----------------------------------------------------------- {{{
+iabbrev adn and
+iabbrev functino function
+iabbrev teh the
+iabbrev tehn then
+iabbrev waht what
+" ------------------------------------------------------------------------- }}}
+" Disabled / Unused --------------------------------------------------------{{{
+"set go-=T
+"set ttimeoutlen=50
+" --------------------------------------------------------------------------}}}
