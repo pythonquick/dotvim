@@ -36,7 +36,9 @@ set list                " Display the following unprintable characters:
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 set nocompatible        " We don't need to be compatible with old vi
 set number              " Show current line number
-set path=.,..\\..\\root " Paths to search for gf command (file under cursor)
+set path=.              " Paths to search for gf command (file under cursor)
+set path+=..\\..\\root
+set path+=**
 set relativenumber      " Display relative line numbers
 set scrolloff=1         " Scroll to show at least 1 line above/below cursor
 set shiftround          " When shifting/tabbing, fill to multiple of shiftwidth
@@ -149,20 +151,28 @@ nnoremap <silent> <leader>/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
 
 
 if has("autocmd")
-    autocmd FocusLost * silent! wa " auto-save but don't complain about new buffers
-    autocmd BufRead *imap set syntax=java
-    autocmd FocusLost * set nornu
-    autocmd FocusGained * set rnu
-    
+    augroup filetype
+        autocmd!
+        autocmd BufRead *imap set syntax=java
+    augroup END
+
+    augroup focus
+        autocmd!
+        autocmd FocusLost * silent! wa " auto-save but don't complain about new buffers
+        autocmd FocusLost * set nornu
+        autocmd FocusGained * set rnu
+    augroup END
+
     " Make sure Vim returns to the same line when you reopen a file.
     augroup line_return
-        au!
-        au BufReadPost *
+        autocmd!
+        autocmd BufReadPost *
             \ if line("'\"") > 0 && line("'\"") <= line("$") |
             \     execute 'normal! g`"zvzz' |
             \ endif
-    augroup END 
+    augroup END
 endif
+test this out please(abc)
 "}}}
 " Key remapping ----------------------------------------------------------- {{{
 " Remap home keys for cursor positioning on line:
@@ -172,6 +182,8 @@ nnoremap L g_
 " Alternative esc mapping:
 inoremap jk <esc>
 inoremap kj <esc>
+
+" Training mappings:
 inoremap <esc> <nop>
 
 " Remap arrow keys:
@@ -199,6 +211,7 @@ nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
 nnoremap <leader>h "hyiw:help <C-r>h<CR>
 nnoremap <leader>j :%!python -m json.tool<CR>
+nnoremap <leader>m :w<CR>
 nnoremap <leader>n :NERDTreeFind<CR>
 nnoremap <leader>s :setlocal spell!<CR>
 nnoremap <leader>q :q<CR>
@@ -239,7 +252,7 @@ noremap <space> za
 iab <expr> dts strftime("%c")
 vmap ,x :!tidy -q -i -xml<CR>
 
-" shortcut for angle bracket text objects: 
+" shortcut for angle bracket text objects:
 onoremap ir i[
 onoremap ar a[
 vnoremap ir i[
@@ -375,7 +388,7 @@ call EnsureExists($CtrlPCache)
 vmap <expr>  ++  VMATH_YankAndAnalyse()
 
 command! PrettyXML call DoPrettyXML()
-" ------------------------------------------------------------------------- }}} 
+" ------------------------------------------------------------------------- }}}
 " GUI mode and Colorscheme ------------------------------------------------ {{{
 if has("gui_running")
     if has('win16') || has('win95') || has('win32') || has('win64')
