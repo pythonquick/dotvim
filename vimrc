@@ -358,7 +358,7 @@ let g:snippets_dir = $MYVIM."/snippets"
 
 " Molokai colorscheme configuration:
 " ----------------------------------
-let g:molokai_original = 0
+"let g:molokai_original = 0
 
 
 " --------------------------------------------------------------------------}}}
@@ -406,7 +406,7 @@ if has("gui_running")
 endif
 
 set background=dark
-colo badwolf
+colo jellybeans
 " ------------------------------------------------------------------------- }}}
 " Abbreviations ----------------------------------------------------------- {{{
 iabbrev adn and
