@@ -215,7 +215,8 @@ nnoremap <leader>n :NERDTreeFind<CR>
 nnoremap <leader>s :setlocal spell!<CR>
 nnoremap <leader>q :q<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
-nnoremap <leader>w ml:%s/\s\+$//e<CR>`l
+nnoremap <leader>w :write<CR>
+nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
 nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
 nnoremap <leader>z zMzvzz
