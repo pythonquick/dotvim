@@ -172,7 +172,6 @@ if has("autocmd")
             \ endif
     augroup END
 endif
-test this out please(abc)
 "}}}
 " Key remapping ----------------------------------------------------------- {{{
 " Remap home keys for cursor positioning on line:
