@@ -190,7 +190,7 @@ nnoremap L g_
 
 " Alternative esc mapping:
 inoremap jk <esc>
-yes
+
 " Fast save:
 inoremap ,w <esc>:write<CR>
 
