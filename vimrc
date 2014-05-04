@@ -6,6 +6,7 @@ else
 endif
 
 set rtp+=$MYVIM/bundle/vundle/
+set rtp+=$MYVIM
 call vundle#rc()
 
 
@@ -134,6 +135,15 @@ function! MyFoldText()
     let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
     return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
 endfunction
+
+
+" Show syntax highlighting groups for word under cursor
+function! <SID>SynStack()
+  if !exists("*synstack")
+    return
+  endif
+  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunc
 " ---------- FUNCTIONS }}}
 " Folding ----------------------------------------------------------------- {{{
 set foldmethod=marker
@@ -180,7 +190,9 @@ nnoremap L g_
 
 " Alternative esc mapping:
 inoremap jk <esc>
-inoremap kj <esc>
+yes
+" Fast save:
+inoremap ,w <esc>:write<CR>
 
 " Training mappings:
 inoremap <esc> <nop>
@@ -203,12 +215,14 @@ nnoremap <leader>d :silent! write<CR>:Bclose<CR>
 nnoremap <leader>eA :e ~/projects/A4MobileTime<CR>
 nnoremap <leader>eb :e $MYVIM/bundle.vim<CR>
 nnoremap <leader>ee :e .<CR>
+nnoremap <leader>ef :e /Users/Guenther/.vim/bundle/vundle/syntax/a4html.vim<CR>
 nnoremap <leader>eP :e ~/projects<CR>
 nnoremap <leader>eT :e ~/Temp<CR>
 nnoremap <leader>et :e ~/Temp/Temp.txt<CR>
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
-nnoremap <leader>h "hyiw:help <C-r>h<CR>
+"nnoremap <leader>h "hyiw:help <C-r>h<CR>
+nnoremap <leader>h :call HexHighlight()<CR>
 nnoremap <leader>j :%!python -m json.tool<CR>
 nnoremap <leader>m :w<CR>
 nnoremap <leader>n :NERDTreeFind<CR>
@@ -221,13 +235,14 @@ nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
 nnoremap <leader>z zMzvzz
 nnoremap * *<c-o> " Search word, but stay on initial word
-nnoremap <F5> :set background=dark<CR>:colorscheme badwolf<CR>
-nnoremap <F6> :set background=dark<CR>:colorscheme molokai<CR>
 nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
 nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
 nnoremap <c-n> :cn<cr>
 nnoremap <c-p> :cp<cr>
 nnoremap <c-/> :lnext<cr>
+
+" Show syntax highlighting groups for word under cursor
+nmap <C-S-P> :call <SID>SynStack()<CR>
 
  " Center cursor when jumping to next/prev search result:
 nnoremap n nzz
@@ -358,7 +373,7 @@ let g:snippets_dir = $MYVIM."/snippets"
 
 " Molokai colorscheme configuration:
 " ----------------------------------
-"let g:molokai_original = 0
+let g:molokai_original = 0
 
 
 " --------------------------------------------------------------------------}}}
@@ -406,7 +421,7 @@ if has("gui_running")
 endif
 
 set background=dark
-colo jellybeans
+colo gmolokai
 " ------------------------------------------------------------------------- }}}
 " Abbreviations ----------------------------------------------------------- {{{
 iabbrev adn and
