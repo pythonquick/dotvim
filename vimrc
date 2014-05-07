@@ -294,6 +294,8 @@ set wildignore+=*.luac                           " Lua byte code
 set wildignore+=migrations                       " Django migrations
 set wildignore+=*.pyc                            " Python byte code
 set wildignore+=*.orig                           " Merge resolution files
+set wildignore+=*.mdf                            " SQL Server database
+set wildignore+=*.ldf                            " SQL Server database
 
 " ------------------------------------------------------------------------- }}}
 " Plugin configuration ---------------------------------------------------- {{{
