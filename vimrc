@@ -296,6 +296,9 @@ set wildignore+=*.pyc                            " Python byte code
 set wildignore+=*.orig                           " Merge resolution files
 set wildignore+=*.mdf                            " SQL Server database
 set wildignore+=*.ldf                            " SQL Server database
+set wildignore+=*.zip
+set wildignore+=*.tar
+set wildignore+=*.jar
 
 " ------------------------------------------------------------------------- }}}
 " Plugin configuration ---------------------------------------------------- {{{
