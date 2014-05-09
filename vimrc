@@ -46,6 +46,7 @@ set shiftround          " When shifting/tabbing, fill to multiple of shiftwidth
 set showbreak=↪         " Character showing line wrap
 set showcmd             " show number of chars/lines selected in status line
 set showmatch           " Briefly show matching bracket/paren
+set smartcase           " auto-detect whehter to search case-sensitive or not
 set t_Co=256            " Use 256 colors in terminal mode
 set ttyfast             " Assume fast network connection for terminal mode
 set visualbell          " Visual 'bell' instead of beeping
@@ -224,10 +225,12 @@ nnoremap <leader>eV :e $MYVIM<CR>
 "nnoremap <leader>h "hyiw:help <C-r>h<CR>
 nnoremap <leader>h :call HexHighlight()<CR>
 nnoremap <leader>j :%!python -m json.tool<CR>
+nnoremap <leader>l :call ToggleLocationList()<CR>
 nnoremap <leader>m :w<CR>
 nnoremap <leader>n :NERDTreeFind<CR>
 nnoremap <leader>s :setlocal spell!<CR>
-nnoremap <leader>q :q<CR>
+nnoremap <leader>q :call ToggleQuickfixList()<CR>
+nnoremap <leader>Q :q<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>w :write<CR>
 nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
