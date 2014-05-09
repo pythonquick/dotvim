@@ -189,6 +189,12 @@ endif
 nnoremap H ^
 nnoremap L g_
 
+" Omnicompletion (C-x C-x) handling for popup menu. Allows C-n and C-p
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+inoremap <expr> <M-,> pumvisible() ? '<C-n>' : '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+inoremap ,. <C-X><C-O>
+
 " Alternative esc mapping:
 inoremap jk <esc>
 
