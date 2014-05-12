@@ -204,6 +204,10 @@ inoremap ,w <esc>:write<CR>
 " Training mappings:
 inoremap <esc> <nop>
 
+" scroll line instead of half page, keeping cursor on current screen position:
+nnoremap <C-d> <C-e>j
+nnoremap <C-u> <C-y>k
+
 " Remap arrow keys:
 nnoremap <left> :bprev<CR>
 nnoremap <right> :bnext<CR>
