@@ -64,6 +64,18 @@ set tabstop=4
 set wrap
 " ------------------------------------------------------------------------- }}}
 " Functions --------------------------------------------------------------- {{{
+
+
+function! SmartPaste(textToPaste)
+    let curPos = col('.')
+    let lineLen = col('$') - 1
+    if curPos == lineLen
+        execute "normal! a".a:textToPaste."\<Esc>"
+    else
+        execute "normal! i".a:textToPaste."\<Esc>"
+    endif
+endfunction
+
 function! EnsureExists(path)
     if !isdirectory(expand(a:path))
         call mkdir(expand(a:path))
@@ -187,7 +199,12 @@ endif
 " Key remapping ----------------------------------------------------------- {{{
 " Remap home keys for cursor positioning on line:
 nnoremap H ^
+vnoremap H ^
 nnoremap L g_
+vnoremap L g_
+
+" Remap Y to yank from cursor to end of line instead of yank complete line:
+nnoremap Y y$
 
 " Omnicompletion (C-x C-x) handling for popup menu. Allows C-n and C-p
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
@@ -246,13 +263,52 @@ nnoremap <leader>w :write<CR>
 nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
 nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
-nnoremap <leader>z zMzvzz
-nnoremap * *<c-o> " Search word, but stay on initial word
-nnoremap <leader>" viw<esc>a"<esc>hbi"<esc>lel
-nnoremap <leader>' viw<esc>a'<esc>hbi'<esc>lel
-nnoremap <c-n> :cn<cr>
-nnoremap <c-p> :cp<cr>
-nnoremap <c-/> :lnext<cr>
+nnoremap <leader>q :call ToggleQuickfixList()<CR>
+nnoremap <leader>Q :q<CR>
+nnoremap <leader>v :source $MYVIMRC<CR>
+nnoremap <leader>w :write<CR>
+nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
+nnoremap <leader>x :silent !./%<CR>
+nnoremap <leader>X :!./%<CR>
+" Register copy shortcuts:
+nnoremap <leader>,a "ayiw
+nnoremap <leader>,b "byiw
+nnoremap <leader>,c "cyiw
+nnoremap <leader>,d "dyiw
+nnoremap <leader>,e "eyiw
+nnoremap <leader>,f "fyiw
+nnoremap <leader>,g "gyiw
+" Register a copy shortcuts:
+nnoremap <leader>mA "aP
+nnoremap <leader>ma "ap
+vnoremap <leader>ma "ap
+" Register b copy shortcuts:
+nnoremap <leader>mB "bP
+nnoremap <leader>mb "bp
+vnoremap <leader>mb "bp
+" Register c copy shortcuts:
+nnoremap <leader>mC "cP
+nnoremap <leader>mc "cp
+vnoremap <leader>mc "cp
+" Register d copy shortcuts:
+nnoremap <leader>mD "dP
+nnoremap <leader>md "dp
+vnoremap <leader>md "dp
+" Register e copy shortcuts:
+nnoremap <leader>mE "eP
+nnoremap <leader>me "ep
+vnoremap <leader>me "ep
+" Register f copy shortcuts:
+nnoremap <leader>mF "fP
+nnoremap <leader>mf "fp
+vnoremap <leader>mf "fp
+" Register g copy shortcuts:
+nnoremap <leader>mG "gP
+nnoremap <leader>mg "gp
+vnoremap <leader>mg "gp
+
+" Search word, but stay on initial word:
+nnoremap * *<c-o> 
 
 " Show syntax highlighting groups for word under cursor
 nmap <C-S-P> :call <SID>SynStack()<CR>
@@ -275,9 +331,6 @@ inoremap <c-f> <c-x><c-f>
 inoremap <c-l> <Del>       " Delete char forward
 noremap <space> za
 
-"noremap <c-k> Ox<bs><esc>
-"noremap <c-j> ox<bs><esc>
-iab <expr> dts strftime("%c")
 vmap ,x :!tidy -q -i -xml<CR>
 
 " shortcut for angle bracket text objects:
@@ -322,7 +375,9 @@ let g:EasyMotion_mapping_b = '<C-h>'
 let g:EasyMotion_mapping_w = '<C-l>'
 let g:EasyMotion_mapping_j = '<C-j>'
 let g:EasyMotion_mapping_k = '<C-k>'
-let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.;'
+let g:EasyMotion_keys = 'abcdeFGHIJKLMnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.;'
+let g:EasyMotion_leader_key = '~'
+
 
 " NERDTree configuration:
 " -----------------------
@@ -343,7 +398,6 @@ let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline_inactive_collapse=0
 let g:airline#extensions#hunks#non_zero_only = 1 " git gutter
-let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_section_b = '%{getcwd()}'
 let g:airline_section_c = ''
 let g:airline_detect_whitespace=0
