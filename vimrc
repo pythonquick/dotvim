@@ -90,20 +90,6 @@ function! Relpath(filename)
 endfunction
 
 
-function! DeleteEmptyBuffers()
-    let [i, n; empty] = [1, bufnr('$')]
-    while i <= n
-        if bufexists(i) && bufname(i) == ''
-            call add(empty, i)
-        endif
-        let i += 1
-    endwhile
-    if len(empty) > 0
-        exe 'bdelete' join(empty)
-    endif
-endfunction
-
-
 function! DoPrettyXML()
   " save the filetype so we can restore it later
   let l:origft = &ft
@@ -236,7 +222,6 @@ let maplocalleader = "\\"
 
 " Leader mappings:
 nnoremap <leader>= mlgg=G'l
-nnoremap <leader>B :call DeleteEmptyBuffers()<CR>
 nnoremap <leader>D :Bclose!<CR>
 nnoremap <leader>c :nohl<CR>
 nnoremap <leader>d :silent! write<CR>:Bclose<CR>
@@ -327,6 +312,7 @@ vmap M %
 
 " change word to upper-case (useful for typing uppercase contants):
 inoremap <c-k> <esc>hviwUea
+
 inoremap <c-f> <c-x><c-f>
 inoremap <c-l> <Del>       " Delete char forward
 noremap <space> za
@@ -338,6 +324,11 @@ onoremap ir i[
 onoremap ar a[
 vnoremap ir i[
 vnoremap ar a[
+
+" other operator-pending mappings:
+" F for Function name before the first "(" character of current line:
+onoremap F :<c-u>normal! 0f(hviw<CR>
+
 
 "}}}
 " Wildmenu completion ----------------------------------------------------- {{{
