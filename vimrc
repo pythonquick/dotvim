@@ -1,14 +1,15 @@
 " Preamble ---------------------------------------------------------------- {{{
 if has('win16') || has('win95') || has('win32') || has('win64')
     let $MYVIM=$HOME.'/.vim'
+    let projdir = 'project'
 else
     let $MYVIM=$HOME.'/.vim'
+    let projdir = 'projects'
 endif
 
 set rtp+=$MYVIM/bundle/vundle/
 set rtp+=$MYVIM
 call vundle#rc()
-
 
 " vundle bundles / Plugins:
 so $MYVIM/bundle.vim
@@ -65,6 +66,34 @@ set wrap
 " ------------------------------------------------------------------------- }}}
 " Functions --------------------------------------------------------------- {{{
 
+function! GenCTags()
+    let cwd = getcwd()
+    let projects_root = finddir(g:projdir, ';')
+    let dir = cwd
+    " Find the project_dir which is the sub-directory of the projects_root
+    " and an ancester directory of current buffer's file.
+    let project_dir = dir
+    let root_not_reached = 1 " value 0 means project_dir could not be found
+    while (dir != projects_root) && root_not_reached
+        let project_dir = dir
+        let dir = fnamemodify(dir, ':h')
+        if dir == project_dir
+            let root_not_reached = 0
+        endif
+    endwhile
+    " Generate tags file in project_dir if one was found, otherwise in buffer
+    " dir
+    if root_not_reached
+        execute "cd " . project_dir
+        silent !ctags -R
+        execute "cd " . cwd
+        echo "Generated tags file in " . project_dir
+    else
+        silent !ctags -R
+        echo "Generated tags file in current buffer directory"
+    endif
+endfunction
+
 
 function! SmartPaste(textToPaste)
     let curPos = col('.')
@@ -75,6 +104,7 @@ function! SmartPaste(textToPaste)
         execute "normal! i".a:textToPaste."\<Esc>"
     endif
 endfunction
+
 
 function! EnsureExists(path)
     if !isdirectory(expand(a:path))
@@ -255,39 +285,54 @@ nnoremap <leader>w :write<CR>
 nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
 nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
-" Register copy shortcuts:
+
+" Register a copy shortcuts
 nnoremap <leader>,a "ayiw
+vnoremap <leader>,a "ay
+" Register b copy shortcuts
 nnoremap <leader>,b "byiw
+vnoremap <leader>,b "by
+" Register c copy shortcuts
 nnoremap <leader>,c "cyiw
+vnoremap <leader>,c "cy
+" Register d copy shortcuts
 nnoremap <leader>,d "dyiw
+vnoremap <leader>,d "dy
+" Register e copy shortcuts
 nnoremap <leader>,e "eyiw
+vnoremap <leader>,e "ey
+" Register f copy shortcuts
 nnoremap <leader>,f "fyiw
+vnoremap <leader>,f "fy
+" Register g copy shortcuts
 nnoremap <leader>,g "gyiw
-" Register a copy shortcuts:
+vnoremap <leader>,g "gy
+
+" Register a paste shortcuts:
 nnoremap <leader>mA "aP
 nnoremap <leader>ma "ap
 vnoremap <leader>ma "ap
-" Register b copy shortcuts:
+" Register b paste shortcuts:
 nnoremap <leader>mB "bP
 nnoremap <leader>mb "bp
 vnoremap <leader>mb "bp
-" Register c copy shortcuts:
+" Register c paste shortcuts:
 nnoremap <leader>mC "cP
 nnoremap <leader>mc "cp
 vnoremap <leader>mc "cp
-" Register d copy shortcuts:
+" Register d paste shortcuts:
 nnoremap <leader>mD "dP
 nnoremap <leader>md "dp
 vnoremap <leader>md "dp
-" Register e copy shortcuts:
+" Register e paste shortcuts:
 nnoremap <leader>mE "eP
 nnoremap <leader>me "ep
 vnoremap <leader>me "ep
-" Register f copy shortcuts:
+" Register f paste shortcuts:
 nnoremap <leader>mF "fP
 nnoremap <leader>mf "fp
 vnoremap <leader>mf "fp
-" Register g copy shortcuts:
+" Register g paste shortcuts:
 nnoremap <leader>mG "gP
 nnoremap <leader>mg "gp
 vnoremap <leader>mg "gp
@@ -305,6 +350,9 @@ nnoremap N Nzz
 " Insert timestamp:
 nmap <F3> a<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
 imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
+
+" ctags:
+nnoremap <F5> :call GenCTags()<CR>
 
 " Jump easier to matching bracket/paren/tag using M instead of %:
 nmap M %
@@ -358,15 +406,18 @@ set wildignore+=*.tar
 set wildignore+=*.jar
 
 " ------------------------------------------------------------------------- }}}
+" Ctags ------------------------------------------------------------------- {{{
+set tags=./tags;tags
+" ------------------------------------------------------------------------- }}}
 " Plugin configuration ---------------------------------------------------- {{{
 
 " EasyMotion configuration
 " ------------------------
-let g:EasyMotion_mapping_b = '<C-h>'
-let g:EasyMotion_mapping_w = '<C-l>'
-let g:EasyMotion_mapping_j = '<C-j>'
-let g:EasyMotion_mapping_k = '<C-k>'
-let g:EasyMotion_keys = 'abcdeFGHIJKLMnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.;'
+let g:EasyMotion_mapping_b = '[w'
+let g:EasyMotion_mapping_w = ']w'
+let g:EasyMotion_mapping_j = ']r'
+let g:EasyMotion_mapping_k = '[r'
+let g:EasyMotion_keys = 'abcdefghijklmNopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.;'
 let g:EasyMotion_leader_key = '~'
 
 
