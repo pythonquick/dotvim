@@ -24,6 +24,8 @@ set autochdir           " Change directory to the current buffer
 set autoread            " auto reload if file saved externally
 set cmdheight=1         " Line height of command row at bottom of screen
 set cursorline          " Highlight line that cursor is on
+set complete=.,w,b,u
+set complete-=i
 set encoding=utf-8      " Default encoding
 set guioptions-=L       " remove left-hand scroll bar
 set guioptions-=T       " remove toolbar
@@ -33,15 +35,16 @@ set hidden              " allow buffer switching without saving
 set hlsearch            " Highlight search results
 set ignorecase          " Ignore case when searching
 set incsearch           " Incrementally search as you type search string
+set include=
 set laststatus=2        " Always show status line
 set list                " Display the following unprintable characters:
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 set nocompatible        " We don't need to be compatible with old vi
 set number              " Show current line number
-set path=.              " Paths to search for gf command (file under cursor)
+                        " Paths to search for gf command (file under cursor):
+set path=.
 set path+=..\\..\\root
 set path+=**
-set relativenumber      " Display relative line numbers
 set scrolloff=1         " Scroll to show at least 1 line above/below cursor
 set shiftround          " When shifting/tabbing, fill to multiple of shiftwidth
 set showbreak=↪         " Character showing line wrap
@@ -84,11 +87,11 @@ function! GenCTags()
     " Generate tags file in project_dir if found, otherwise in buffer dir
     if root_not_reached
         execute "cd " . project_dir
-        silent !ctags -R --languages=javascript .
+        silent !ctags -R --languages=javascript,python .
         execute "cd " . cwd
         echo "Generated tags file in " . project_dir
     else
-        silent !ctags -R --languages=javascript .
+        silent !ctags -R --languages=javascript,python .
         echo "Generated tags file in current buffer directory"
     endif
 endfunction
@@ -197,8 +200,6 @@ if has("autocmd")
     augroup focus
         autocmd!
         autocmd FocusLost * silent! wa " auto-save but don't complain about new buffers
-        autocmd FocusLost * set nornu
-        autocmd FocusGained * set rnu
     augroup END
 
     " Make sure Vim returns to the same line when you reopen a file.
@@ -553,4 +554,3 @@ iabbrev waht what
 "set go-=T
 "set ttimeoutlen=50
 " --------------------------------------------------------------------------}}}
-
