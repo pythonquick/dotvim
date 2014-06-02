@@ -1,7 +1,7 @@
 " Preamble ---------------------------------------------------------------- {{{
 if has('win16') || has('win95') || has('win32') || has('win64')
     let $MYVIM=$HOME.'/.vim'
-    let projdir = 'project'
+    let projdir = 'C:\project'
 else
     let $MYVIM=$HOME.'/.vim'
     let projdir = 'projects'
@@ -81,15 +81,14 @@ function! GenCTags()
             let root_not_reached = 0
         endif
     endwhile
-    " Generate tags file in project_dir if one was found, otherwise in buffer
-    " dir
+    " Generate tags file in project_dir if found, otherwise in buffer dir
     if root_not_reached
         execute "cd " . project_dir
-        silent !ctags -R
+        silent !ctags -R --languages=javascript .
         execute "cd " . cwd
         echo "Generated tags file in " . project_dir
     else
-        silent !ctags -R
+        silent !ctags -R --languages=javascript .
         echo "Generated tags file in current buffer directory"
     endif
 endfunction
@@ -213,6 +212,12 @@ if has("autocmd")
 endif
 "}}}
 " Key remapping ----------------------------------------------------------- {{{
+" Remap window cursor jumps without the Ctrl-W prefix
+nnoremap <C-j> <C-w><C-j>
+nnoremap <C-h> <C-w><C-h>
+nnoremap <C-k> <C-w><C-k>
+nnoremap <C-l> <C-w><C-l>
+
 " Remap home keys for cursor positioning on line:
 nnoremap H ^
 vnoremap H ^
@@ -242,10 +247,10 @@ nnoremap <C-d> <C-e>j
 nnoremap <C-u> <C-y>k
 
 " Remap arrow keys:
-nnoremap <left> :bprev<CR>
-nnoremap <right> :bnext<CR>
-nnoremap <up> :tabnext<CR>
-nnoremap <down> :tabprev<CR>
+nnoremap <left> <nop>
+nnoremap <right> <nop>
+nnoremap <up> <nop>
+nnoremap <down> <nop>
 
 let mapleader = ","
 let maplocalleader = "\\"
@@ -548,3 +553,4 @@ iabbrev waht what
 "set go-=T
 "set ttimeoutlen=50
 " --------------------------------------------------------------------------}}}
+
