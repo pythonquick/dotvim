@@ -430,7 +430,7 @@ let g:EasyMotion_leader_key = '~'
 " NERDTree configuration:
 " -----------------------
 let NERDTreeQuitOnOpen = 1
-
+let NERDTreeMapActivateNode = '<space>'
 " Airline (Vim status line) configuration:
 " ----------------------------------------
 if !exists("g:airline_symbols")
