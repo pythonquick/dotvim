@@ -37,6 +37,7 @@ set ignorecase          " Ignore case when searching
 set incsearch           " Incrementally search as you type search string
 set include=
 set laststatus=2        " Always show status line
+set lazyredraw          " Do not redraw during macro execution
 set list                " Display the following unprintable characters:
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 set nocompatible        " We don't need to be compatible with old vi
@@ -219,6 +220,10 @@ nnoremap <C-h> <C-w><C-h>
 nnoremap <C-k> <C-w><C-k>
 nnoremap <C-l> <C-w><C-l>
 
+" Use sane regexes.
+nnoremap / /\v
+vnoremap / /\v
+
 " Remap home keys for cursor positioning on line:
 nnoremap H ^
 vnoremap H ^
@@ -270,13 +275,12 @@ nnoremap <leader>eT :e ~/Temp<CR>
 nnoremap <leader>et :e ~/Temp/Temp.txt<CR>
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
-"nnoremap <leader>h "hyiw:help <C-r>h<CR>
 nnoremap <leader>h :call HexHighlight()<CR>
 nnoremap <leader>j :%!python -m json.tool<CR>
 nnoremap <leader>l :call ToggleLocationList()<CR>
-nnoremap <leader>m :w<CR>
 nnoremap <leader>n :NERDTreeFind<CR>
-nnoremap <leader>s :setlocal spell!<CR>
+nnoremap <leader>sa :e ~/.vim/UltiSnips/all.snippets<CR>
+nnoremap <leader>ss :UltiSnipsEdit<CR>
 nnoremap <leader>q :call ToggleQuickfixList()<CR>
 nnoremap <leader>Q :q<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
@@ -285,12 +289,14 @@ nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
 nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
 nnoremap <leader>q :call ToggleQuickfixList()<CR>
-nnoremap <leader>Q :q<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>w :write<CR>
 nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
 nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
+
+" Quick-close current window
+nnoremap Q :q<CR>
 
 " Register a copy shortcuts
 nnoremap <leader>,a "ayiw
@@ -426,11 +432,15 @@ let g:EasyMotion_mapping_k = '[r'
 let g:EasyMotion_keys = 'abcdefghijklmNopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.;'
 let g:EasyMotion_leader_key = '~'
 
-
 " NERDTree configuration:
 " -----------------------
 let NERDTreeQuitOnOpen = 1
 let NERDTreeMapActivateNode = '<space>'
+
+" UltiSnips configuration:
+" ------------------------
+let g:UltiSnipsEditSplit = 'horizontal'
+
 " Airline (Vim status line) configuration:
 " ----------------------------------------
 if !exists("g:airline_symbols")
