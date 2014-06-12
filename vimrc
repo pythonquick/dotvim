@@ -24,7 +24,7 @@ set autochdir           " Change directory to the current buffer
 set autoread            " auto reload if file saved externally
 set cmdheight=1         " Line height of command row at bottom of screen
 set cursorline          " Highlight line that cursor is on
-set complete=.,w,b,u
+set complete=.,w,b,u,k
 set complete-=i
 set encoding=utf-8      " Default encoding
 set guioptions-=L       " remove left-hand scroll bar
@@ -52,6 +52,7 @@ set showbreak=↪         " Character showing line wrap
 set showcmd             " show number of chars/lines selected in status line
 set showmatch           " Briefly show matching bracket/paren
 set smartcase           " auto-detect whehter to search case-sensitive or not
+set spelllang=en_us     " English U.S. dictionary for spel checking
 set t_Co=256            " Use 256 colors in terminal mode
 set ttyfast             " Assume fast network connection for terminal mode
 set visualbell          " Visual 'bell' instead of beeping
@@ -246,9 +247,9 @@ vnoremap L g_
 nnoremap Y y$
 
 " Omnicompletion (C-x C-x) handling for popup menu. Allows C-n and C-p
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-inoremap <expr> <M-,> pumvisible() ? '<C-n>' : '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+"inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+"inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+"inoremap <expr> <M-,> pumvisible() ? '<C-n>' : '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
 inoremap ,. <C-X><C-O>
 
 " Alternative esc mapping:
@@ -276,7 +277,7 @@ let maplocalleader = "\\"
 " Leader mappings:
 nnoremap <leader>= mlgg=G'l
 nnoremap <leader>D :Bclose!<CR>
-nnoremap <leader>c :nohl<CR>
+nnoremap <leader>c :call HexHighlight()<CR>
 nnoremap <leader>d :silent! write<CR>:Bclose<CR>
 nnoremap <leader>eA :e ~/projects/A4MobileTime<CR>
 nnoremap <leader>eb :e $MYVIM/bundle.vim<CR>
@@ -287,7 +288,7 @@ nnoremap <leader>eT :e ~/Temp<CR>
 nnoremap <leader>et :e ~/Temp/Temp.txt<CR>
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
-nnoremap <leader>h :call HexHighlight()<CR>
+nnoremap <leader>h :nohl<CR>
 nnoremap <leader>j :%!python -m json.tool<CR>
 nnoremap <leader>l :call ToggleLocationList()<CR>
 nnoremap <leader>n :NERDTreeFind<CR>
@@ -306,6 +307,7 @@ nnoremap <leader>w :write<CR>
 nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
 nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
+nnoremap <leader>z 1z=]s
 
 " Quick-close current window
 nnoremap Q :q<CR>
@@ -383,10 +385,9 @@ nmap M %
 vmap M %
 
 " change word to upper-case (useful for typing uppercase contants):
-inoremap <c-k> <esc>hviwUea
+" inoremap <c-k> <esc>hviwUea
 
 inoremap <c-f> <c-x><c-f>
-inoremap <c-l> <Del>       " Delete char forward
 noremap <space> za
 
 vmap ,x :!tidy -q -i -xml<CR>
@@ -400,7 +401,6 @@ vnoremap ar a[
 " other operator-pending mappings:
 " F for Function name before the first "(" character of current line:
 onoremap F :<c-u>normal! 0f(hviw<CR>
-
 
 "}}}
 " Wildmenu completion ----------------------------------------------------- {{{
@@ -431,7 +431,9 @@ set wildignore+=*.jar
 
 " ------------------------------------------------------------------------- }}}
 " Ctags ------------------------------------------------------------------- {{{
+
 set tags=./tags;tags
+
 " ------------------------------------------------------------------------- }}}
 " Plugin configuration ---------------------------------------------------- {{{
 
