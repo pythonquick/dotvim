@@ -22,6 +22,7 @@ filetype plugin on
 syntax on
 set autochdir           " Change directory to the current buffer
 set autoread            " auto reload if file saved externally
+set backspace=indent,eol,start    "allow backspacing everything in insert mode
 set cmdheight=1         " Line height of command row at bottom of screen
 set cursorline          " Highlight line that cursor is on
 set complete=.,w,b,u,k
@@ -44,7 +45,10 @@ set nocompatible        " We don't need to be compatible with old vi
 set number              " Show current line number
                         " Paths to search for gf command (file under cursor):
 set path=.
-set path+=..\\..\\root
+set path+=..\\..\\scripts\\en-us
+set path+=..\\..\\root\\**
+set path+=..\\..\\include\\mssql
+set path+=..\\..\\include\\oracle
 set path+=**
 set scrolloff=1         " Scroll to show at least 1 line above/below cursor
 set shiftround          " When shifting/tabbing, fill to multiple of shiftwidth
@@ -53,6 +57,7 @@ set showcmd             " show number of chars/lines selected in status line
 set showmatch           " Briefly show matching bracket/paren
 set smartcase           " auto-detect whehter to search case-sensitive or not
 set spelllang=en_us     " English U.S. dictionary for spel checking
+set suffixesadd=.HTM
 set t_Co=256            " Use 256 colors in terminal mode
 set ttyfast             " Assume fast network connection for terminal mode
 set visualbell          " Visual 'bell' instead of beeping
@@ -60,7 +65,6 @@ set visualbell          " Visual 'bell' instead of beeping
 "}}}
 " Tabs, spaces, wrapping -------------------------------------------------- {{{
 set autoindent
-set backspace=indent,eol,start    "allow backspacing everything in insert mode
 set colorcolumn=80
 set expandtab
 set linebreak
@@ -304,7 +308,7 @@ nnoremap <leader>X :!./%<CR>
 nnoremap <leader>q :call ToggleQuickfixList()<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>w :write<CR>
-nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
+nnoremap <leader>W :%s/\s\+$//e<CR><C-o>
 nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
 nnoremap <leader>z 1z=]s
@@ -312,6 +316,13 @@ nnoremap <leader>z 1z=]s
 " Quick-close current window
 nnoremap Q :q<CR>
 
+" Alias the * (Star) clipboard register with s
+nnoremap "s "*
+vnoremap "s "*
+
+" Register * (Star) clipboard copy shortcuts
+nnoremap <leader>,s "*yiw
+vnoremap <leader>,s "*y
 " Register a copy shortcuts
 nnoremap <leader>,a "ayiw
 vnoremap <leader>,a "ay
@@ -334,6 +345,10 @@ vnoremap <leader>,f "fy
 nnoremap <leader>,g "gyiw
 vnoremap <leader>,g "gy
 
+" Register * (Star) paste shortcuts:
+nnoremap <leader>mS "*P
+nnoremap <leader>ms "*p
+vnoremap <leader>ms "*p
 " Register a paste shortcuts:
 nnoremap <leader>mA "aP
 nnoremap <leader>ma "ap
@@ -364,7 +379,7 @@ nnoremap <leader>mg "gp
 vnoremap <leader>mg "gp
 
 " Search word, but stay on initial word:
-nnoremap * *<c-o> 
+nnoremap * *<c-o>
 
 " Show syntax highlighting groups for word under cursor
 nmap <C-S-P> :call <SID>SynStack()<CR>
@@ -444,7 +459,7 @@ let g:EasyMotion_mapping_w = ']w'
 let g:EasyMotion_mapping_j = ']r'
 let g:EasyMotion_mapping_k = '[r'
 let g:EasyMotion_keys = 'abcdefghijklmNopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.;'
-let g:EasyMotion_leader_key = '~'
+let g:EasyMotion_leader_key = '!'
 
 " NERDTree configuration:
 " -----------------------
@@ -453,7 +468,7 @@ let NERDTreeMapActivateNode = '<space>'
 
 " UltiSnips configuration:
 " ------------------------
-let g:UltiSnipsEditSplit = 'horizontal'
+let g:UltiSnipsEditSplit = 'vertical'
 
 " Airline (Vim status line) configuration:
 " ----------------------------------------
@@ -578,3 +593,4 @@ iabbrev waht what
 "set go-=T
 "set ttimeoutlen=50
 " --------------------------------------------------------------------------}}}
+
