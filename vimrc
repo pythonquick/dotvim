@@ -439,7 +439,7 @@ if has("gui_running")
 endif
 
 " ctags:
-nnoremap <F5> :w|call GenCTags()<CR>
+nnoremap <F5> call GenCTags()<CR>
 
 " Jump easier to matching bracket/paren/tag using M instead of %:
 nmap M %
