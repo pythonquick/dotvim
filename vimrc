@@ -49,6 +49,8 @@ set path+=..\\..\\scripts\\en-us
 set path+=..\\..\\root\\**
 set path+=..\\..\\include\\mssql
 set path+=..\\..\\include\\oracle
+set path+=..\\..\\DBInstallScripts\mssql\PMA\\**
+set path+=..\\..\\DBInstallScripts\oracle\PMA\\**
 set path+=**
 set scrolloff=1         " Scroll to show at least 1 line above/below cursor
 set shiftround          " When shifting/tabbing, fill to multiple of shiftwidth
@@ -57,7 +59,8 @@ set showcmd             " show number of chars/lines selected in status line
 set showmatch           " Briefly show matching bracket/paren
 set smartcase           " auto-detect whehter to search case-sensitive or not
 set spelllang=en_us     " English U.S. dictionary for spel checking
-set suffixesadd=.HTM
+set suffixesadd+=.HTM
+set suffixesadd+=.sql
 set t_Co=256            " Use 256 colors in terminal mode
 set ttyfast             " Assume fast network connection for terminal mode
 set visualbell          " Visual 'bell' instead of beeping
@@ -193,6 +196,39 @@ function! <SID>SynStack()
   endif
   echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
 endfunc
+
+
+" Dim inactive windows using 'colorcolumn' setting
+" This tends to slow down redrawing, but is very useful.
+" Based on https://groups.google.com/d/msg/vim_use/IJU-Vk-QLJE/xz4hjPjCRBUJ
+" XXX: this will only work with lines containing text (i.e. not '~')
+" from 
+if exists('+colorcolumn')
+  function! s:DimInactiveWindows()
+    for i in range(1, tabpagewinnr(tabpagenr(), '$'))
+      let l:range = ""
+      if i != winnr()
+        if &wrap
+         " HACK: when wrapping lines is enabled, we use the maximum number
+         " of columns getting highlighted. This might get calculated by
+         " looking for the longest visible line and using a multiple of
+         " winwidth().
+         let l:width=256 " max
+        else
+         let l:width=winwidth(i)
+        endif
+        let l:range = join(range(1, l:width), ',')
+      endif
+      call setwinvar(i, '&colorcolumn', l:range)
+    endfor
+  endfunction
+  augroup DimInactiveWindows
+    au!
+    au WinEnter * call s:DimInactiveWindows()
+    au WinEnter * set cursorline
+    au WinLeave * set nocursorline
+  augroup END
+endif
 " ---------- FUNCTIONS }}}
 " Folding ----------------------------------------------------------------- {{{
 set foldmethod=marker
@@ -392,8 +428,18 @@ nnoremap N Nzz
 nmap <F3> a<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
 imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
 
+
+" Change font in GUI mode:
+if has("gui_running")
+    if has('win16') || has('win95') || has('win32') || has('win64')
+        nmap <F6> :set guifont=Inconsolata-dz_for_Powerline:cANSI:h13
+    else
+        nmap <F6> :set guifont=Inconsolata-dz\ for\ Powerline:h16
+    endif
+endif
+
 " ctags:
-nnoremap <F5> :call GenCTags()<CR>
+nnoremap <F5> :w|call GenCTags()<CR>
 
 " Jump easier to matching bracket/paren/tag using M instead of %:
 nmap M %
@@ -593,4 +639,5 @@ iabbrev waht what
 "set go-=T
 "set ttimeoutlen=50
 " --------------------------------------------------------------------------}}}
+
 
