@@ -176,7 +176,8 @@ function! MyFoldText()
     let line = getline(v:foldstart)
 
     let nucolwidth = &fdc + &number * &numberwidth
-    let windowwidth = winwidth(0) - nucolwidth - 3
+    "let windowwidth = winwidth(0) - nucolwidth - 30
+    let windowwidth = 85
     let foldedlinecount = v:foldend - v:foldstart
 
     " expand tabs into spaces
@@ -184,8 +185,9 @@ function! MyFoldText()
     let line = substitute(line, '\t', onetab, 'g')
 
     let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-    return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+    "let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    "return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
+    return line . '   ' . foldedlinecount . ' lines '
 endfunction
 
 
@@ -489,6 +491,27 @@ set wildignore+=*.ldf                            " SQL Server database
 set wildignore+=*.zip
 set wildignore+=*.tar
 set wildignore+=*.jar
+set wildignore+=*.cab
+set wildignore+=*.log
+set wildignore+=tags
+set wildignore+=errmsgs\\**
+set wildignore+=drillaround\\**
+set wildignore+=ImportData\\**
+set wildignore+=Logs\\**
+set wildignore+=help\\**
+set wildignore+=Patches\\**
+set wildignore+=Reports\\**
+set wildignore+=repsrce\\**
+set wildignore+=root\kendo\\**
+set wildignore+=..\\..\\errmsgs\\**
+set wildignore+=..\\..\\drillaround\\**
+set wildignore+=..\\..\\ImportData\\**
+set wildignore+=..\\..\\Logs\\**
+set wildignore+=..\\..\\help\\**
+set wildignore+=..\\..\\Patches\\**
+set wildignore+=..\\..\\Reports\\**
+set wildignore+=..\\..\\repsrce\\**
+set wildignore+=..\\..\\root\kendo\\**
 
 " ------------------------------------------------------------------------- }}}
 " Ctags ------------------------------------------------------------------- {{{
@@ -638,5 +661,4 @@ iabbrev waht what
 "set go-=T
 "set ttimeoutlen=50
 " --------------------------------------------------------------------------}}}
-
 
