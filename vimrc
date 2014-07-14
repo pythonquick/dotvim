@@ -118,17 +118,6 @@ function! GenCTags()
 endfunction
 
 
-function! SmartPaste(textToPaste)
-    let curPos = col('.')
-    let lineLen = col('$') - 1
-    if curPos == lineLen
-        execute "normal! a".a:textToPaste."\<Esc>"
-    else
-        execute "normal! i".a:textToPaste."\<Esc>"
-    endif
-endfunction
-
-
 function! EnsureExists(path)
     if !isdirectory(expand(a:path))
         call mkdir(expand(a:path))
@@ -174,20 +163,13 @@ endfunction
 
 function! MyFoldText()
     let line = getline(v:foldstart)
-
-    let nucolwidth = &fdc + &number * &numberwidth
-    "let windowwidth = winwidth(0) - nucolwidth - 30
     let windowwidth = 85
     let foldedlinecount = v:foldend - v:foldstart
-
-    " expand tabs into spaces
-    let onetab = strpart('          ', 0, &tabstop)
-    let line = substitute(line, '\t', onetab, 'g')
-
     let line = strpart(line, 0, windowwidth - 2 -len(foldedlinecount))
-    "let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
-    "return line . '…' . repeat(" ",fillcharcount) . foldedlinecount . '…' . ' '
-    return line . '   ' . foldedlinecount . ' lines '
+    let fillcharcount = windowwidth - len(line) - len(foldedlinecount)
+    let line = line . repeat(" ",fillcharcount) . foldedlinecount . ' lines' . ' '
+    let line = line . repeat(" ", 97 - len(line))
+    return line
 endfunction
 
 
@@ -200,38 +182,7 @@ function! <SID>SynStack()
 endfunc
 
 
-" Dim inactive windows using 'colorcolumn' setting
-" This tends to slow down redrawing, but is very useful.
-" Based on https://groups.google.com/d/msg/vim_use/IJU-Vk-QLJE/xz4hjPjCRBUJ
-" XXX: this will only work with lines containing text (i.e. not '~')
-" from 
-"if exists('+colorcolumn')
-"  function! s:DimInactiveWindows()
-"    for i in range(1, tabpagewinnr(tabpagenr(), '$'))
-"      let l:range = ""
-"      if i != winnr()
-"        if &wrap
-"         " HACK: when wrapping lines is enabled, we use the maximum number
-"         " of columns getting highlighted. This might get calculated by
-"         " looking for the longest visible line and using a multiple of
-"         " winwidth().
-"         let l:width=256 " max
-"        else
-"         let l:width=winwidth(i)
-"        endif
-"        let l:range = join(range(1, l:width), ',')
-"      endif
-"      call setwinvar(i, '&colorcolumn', l:range)
-"    endfor
-"  endfunction
-"  augroup DimInactiveWindows
-"    au!
-"    au WinEnter * call s:DimInactiveWindows()
-"    au WinEnter * set cursorline
-"    au WinLeave * set nocursorline
-"  augroup END
-"endif
-" ---------- FUNCTIONS }}}
+" Functions --------------------------------------------------------------- }}}
 " Folding ----------------------------------------------------------------- {{{
 set foldmethod=marker
 set foldlevelstart=0
@@ -661,4 +612,3 @@ iabbrev waht what
 "set go-=T
 "set ttimeoutlen=50
 " --------------------------------------------------------------------------}}}
-
