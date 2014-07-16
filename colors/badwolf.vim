@@ -290,9 +290,13 @@ call s:HL('PmenuThumb', 'brightgravel')
 " }}}
 " Diffs {{{
 
-call s:HL('DiffDelete', 'coal', 'coal')
-call s:HL('DiffAdd',    '',     'deepergravel')
-call s:HL('DiffChange', '',     'darkgravel')
+"call s:HL('DiffDelete', 'coal', 'coal')
+"call s:HL('DiffAdd',    '',     'deepergravel')
+"call s:HL('DiffChange', '',     'darkgravel')
+"call s:HL('DiffText',   'snow', 'deepergravel', 'bold')
+call s:HL('DiffDelete', 'taffy', 'taffy')
+call s:HL('DiffAdd',    '',     'lime')
+call s:HL('DiffChange', '',     'orange')
 call s:HL('DiffText',   'snow', 'deepergravel', 'bold')
 
 " }}}

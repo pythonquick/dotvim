@@ -309,30 +309,52 @@ nnoremap Q :q<CR>
 nnoremap "s "*
 vnoremap "s "*
 
+" Register a word-replace shortcuts
+nnoremap <leader>ra viw"ap
+vnoremap <leader>ra viw"ap
+" Register b word-replace shortcuts
+nnoremap <leader>rb viw"bp
+vnoremap <leader>rb viw"bp
+" Register c word-replace shortcuts
+nnoremap <leader>rc viw"cp
+vnoremap <leader>rc viw"cp
+" Register d word-replace shortcuts
+nnoremap <leader>rd viw"dp
+vnoremap <leader>rd viw"dp
+" Register e word-replace shortcuts
+nnoremap <leader>re viw"ep
+vnoremap <leader>re viw"ep
+" Register f word-replace shortcuts
+nnoremap <leader>rf viw"fp
+vnoremap <leader>rf viw"fp
+" Register g word-replace shortcuts
+nnoremap <leader>rg viw"gp
+vnoremap <leader>rg viw"gp
+
 " Register * (Star) clipboard copy shortcuts
-nnoremap <leader>,s "*yiw
-vnoremap <leader>,s "*y
+nnoremap <leader>,s mz"*yiw`z
+vnoremap <leader>,s mz"*y`z
 " Register a copy shortcuts
-nnoremap <leader>,a "ayiw
-vnoremap <leader>,a "ay
+nnoremap <leader>,a mz"ayiw`z
+vnoremap <leader>,a mz"ay`z
 " Register b copy shortcuts
-nnoremap <leader>,b "byiw
-vnoremap <leader>,b "by
+nnoremap <leader>,b mz"byiw`z
+vnoremap <leader>,b mz"by`z
 " Register c copy shortcuts
-nnoremap <leader>,c "cyiw
-vnoremap <leader>,c "cy
+nnoremap <leader>,c mz"cyiw`z
+vnoremap <leader>,c mz"cy`z
 " Register d copy shortcuts
-nnoremap <leader>,d "dyiw
-vnoremap <leader>,d "dy
+nnoremap <leader>,d mz"dyiw`z
+vnoremap <leader>,d mz"dy`z
 " Register e copy shortcuts
-nnoremap <leader>,e "eyiw
-vnoremap <leader>,e "ey
+nnoremap <leader>,e mz"eyiw`z
+vnoremap <leader>,e mz"ey`z
 " Register f copy shortcuts
-nnoremap <leader>,f "fyiw
-vnoremap <leader>,f "fy
+nnoremap <leader>,f mz"fyiw`z
+vnoremap <leader>,f mz"fy`z
 " Register g copy shortcuts
-nnoremap <leader>,g "gyiw
-vnoremap <leader>,g "gy
+nnoremap <leader>,g mz"gyiw`z
+vnoremap <leader>,g mz"gy`z
 
 " Register * (Star) paste shortcuts:
 nnoremap <leader>mS "*P
