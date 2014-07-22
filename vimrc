@@ -50,7 +50,11 @@ set path+=..\\..\\root\\**
 set path+=..\\..\\include\\mssql
 set path+=..\\..\\include\\oracle
 set path+=..\\..\\DBInstallScripts\mssql\PMA\\**
+set path+=..\\..\\..\\..\\DBInstallScripts\mssql\PMA\\**
+set path+=..\\..\\..\\..\\DBInstallScripts\mssql\PMA\\**
 set path+=..\\..\\DBInstallScripts\oracle\PMA\\**
+set path+=..\\..\\..\\..\\DBInstallScripts\oracle\PMA\\**
+set path+=..\\..\\..\\..\\DBInstallScripts\oracle\PMA\\**
 set path+=**
 set scrolloff=1         " Scroll to show at least 1 line above/below cursor
 set shiftround          " When shifting/tabbing, fill to multiple of shiftwidth
@@ -253,16 +257,14 @@ inoremap ,w <esc>:write<CR>
 
 " Training mappings:
 inoremap <esc> <nop>
-
-" scroll line instead of half page, keeping cursor on current screen position:
-nnoremap <C-d> <C-e>j
-nnoremap <C-u> <C-y>k
-
-" Remap arrow keys:
 nnoremap <left> <nop>
 nnoremap <right> <nop>
 nnoremap <up> <nop>
 nnoremap <down> <nop>
+
+" scroll line instead of half page, keeping cursor on current screen position:
+nnoremap <C-d> <C-e>j
+nnoremap <C-u> <C-y>k
 
 let mapleader = ","
 let maplocalleader = "\\"
@@ -277,8 +279,13 @@ nnoremap <leader>eb :e $MYVIM/bundle.vim<CR>
 nnoremap <leader>ee :e .<CR>
 nnoremap <leader>ef :e /Users/Guenther/.vim/bundle/vundle/syntax/a4html.vim<CR>
 nnoremap <leader>eP :e ~/projects<CR>
-nnoremap <leader>eT :e ~/Temp<CR>
-nnoremap <leader>et :e ~/Temp/Temp.txt<CR>
+if has('win16') || has('win95') || has('win32') || has('win64')
+    nnoremap <leader>eT :e c:\temp<CR>
+    nnoremap <leader>et :e c:/Temp/Temp.txt<CR>
+else
+    nnoremap <leader>eT :e ~/Temp<CR>
+    nnoremap <leader>et :e ~/Temp/Temp.txt<CR>
+endif
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
 nnoremap <leader>h :nohl<CR>
@@ -311,25 +318,47 @@ vnoremap "s "*
 
 " Register a word-replace shortcuts
 nnoremap <leader>ra viw"ap
-vnoremap <leader>ra viw"ap
+vnoremap <leader>ra "ap
 " Register b word-replace shortcuts
 nnoremap <leader>rb viw"bp
-vnoremap <leader>rb viw"bp
+vnoremap <leader>rb "bp
 " Register c word-replace shortcuts
 nnoremap <leader>rc viw"cp
-vnoremap <leader>rc viw"cp
+vnoremap <leader>rc "cp
 " Register d word-replace shortcuts
 nnoremap <leader>rd viw"dp
-vnoremap <leader>rd viw"dp
+vnoremap <leader>rd "dp
 " Register e word-replace shortcuts
 nnoremap <leader>re viw"ep
-vnoremap <leader>re viw"ep
+vnoremap <leader>re "ep
 " Register f word-replace shortcuts
 nnoremap <leader>rf viw"fp
-vnoremap <leader>rf viw"fp
+vnoremap <leader>rf "fp
 " Register g word-replace shortcuts
 nnoremap <leader>rg viw"gp
-vnoremap <leader>rg viw"gp
+vnoremap <leader>rg "gp
+
+" Register a word-cut shortcuts
+nnoremap <leader>ca viw"ad
+vnoremap <leader>ca "ad
+" Register b word-cut shortcuts
+nnoremap <leader>cb viw"bd
+vnoremap <leader>cb "bd
+" Register c word-cut shortcuts
+nnoremap <leader>cc viw"cd
+vnoremap <leader>cc "cd
+" Register d word-cut shortcuts
+nnoremap <leader>cd viw"dd
+vnoremap <leader>cd "dd
+" Register e word-cut shortcuts
+nnoremap <leader>ce viw"ed
+vnoremap <leader>ce "ed
+" Register f word-cut shortcuts
+nnoremap <leader>cf viw"fd
+vnoremap <leader>cf "fd
+" Register g word-cut shortcuts
+nnoremap <leader>cg viw"gd
+vnoremap <leader>cg "gd
 
 " Register * (Star) clipboard copy shortcuts
 nnoremap <leader>,s mz"*yiw`z
@@ -634,3 +663,4 @@ iabbrev waht what
 "set go-=T
 "set ttimeoutlen=50
 " --------------------------------------------------------------------------}}}
+
