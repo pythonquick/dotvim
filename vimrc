@@ -271,8 +271,9 @@ let maplocalleader = "\\"
 
 " Leader mappings:
 nnoremap <leader>= mlgg=G'l
-nnoremap <leader>D :Bclose!<CR>
+nnoremap <leader>a :%ya *<CR>
 nnoremap <leader>c :call HexHighlight()<CR>
+nnoremap <leader>D :Bclose!<CR>
 nnoremap <leader>d :silent! write<CR>:Bclose<CR>
 nnoremap <leader>eA :e ~/projects/A4MobileTime<CR>
 nnoremap <leader>eb :e $MYVIM/bundle.vim<CR>
@@ -289,13 +290,13 @@ endif
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
 nnoremap <leader>h :nohl<CR>
-nnoremap <leader>j :%!python -m json.tool<CR>
+nnoremap <leader>fj :%!python -m json.tool<CR>
 nnoremap <leader>l :call ToggleLocationList()<CR>
 nnoremap <leader>n :NERDTreeFind<CR>
-nnoremap <leader>sa :e ~/.vim/UltiSnips/all.snippets<CR>
-nnoremap <leader>ss :UltiSnipsEdit<CR>
 nnoremap <leader>q :call ToggleQuickfixList()<CR>
 nnoremap <leader>Q :q<CR>
+nnoremap <leader>sa :e ~/.vim/UltiSnips/all.snippets<CR>
+nnoremap <leader>ss :UltiSnipsEdit<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>w :write<CR>
 nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
@@ -307,7 +308,6 @@ nnoremap <leader>w :write<CR>
 nnoremap <leader>W :%s/\s\+$//e<CR><C-o>
 nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
-nnoremap <leader>z 1z=]s
 
 " Quick-close current window
 nnoremap Q :q<CR>
@@ -662,5 +662,6 @@ iabbrev waht what
 " Disabled / Unused --------------------------------------------------------{{{
 "set go-=T
 "set ttimeoutlen=50
+"nnoremap <leader>z 1z=]s
 " --------------------------------------------------------------------------}}}
 
