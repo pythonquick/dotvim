@@ -297,6 +297,11 @@ nnoremap <leader>q :call ToggleQuickfixList()<CR>
 nnoremap <leader>Q :q<CR>
 nnoremap <leader>sa :e ~/.vim/UltiSnips/all.snippets<CR>
 nnoremap <leader>ss :UltiSnipsEdit<CR>
+nnoremap <leader>tc :TernDoc<CR>
+nnoremap <leader>ty :TernType<CR>
+nnoremap <leader>tr :TernRef<CR>
+nnoremap <leader>tR :TernRename<CR>
+nnoremap <leader>tt :TernDef<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>w :write<CR>
 nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
