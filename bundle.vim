@@ -15,4 +15,7 @@ Bundle 'https://github.com/tpope/vim-abolish'
 Bundle 'https://github.com/othree/html5.vim/'
 "Bundle 'https://github.com/int3/vim-taglist-plus'
 Bundle 'https://github.com/marijnh/tern_for_vim'
+if has('win16') || has('win95') || has('win32') || has('win64')
+else
 Bundle 'https://github.com/Valloric/YouCompleteMe'
+endif
