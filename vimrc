@@ -275,7 +275,8 @@ nnoremap <leader>a :%ya *<CR>
 nnoremap <leader>c :call HexHighlight()<CR>
 nnoremap <leader>D :Bclose!<CR>
 nnoremap <leader>d :silent! write<CR>:Bclose<CR>
-nnoremap <leader>eA :e ~/projects/A4MobileTime<CR>
+nnoremap <leader>eA :e ~/A4Installs<CR>
+nnoremap <leader>eM :e ~/projects/A4MobileTime<CR>
 nnoremap <leader>eb :e $MYVIM/bundle.vim<CR>
 nnoremap <leader>ee :e .<CR>
 nnoremap <leader>ef :e /Users/Guenther/.vim/bundle/vundle/syntax/a4html.vim<CR>
@@ -301,7 +302,7 @@ nnoremap <leader>tc :TernDoc<CR>
 nnoremap <leader>ty :TernType<CR>
 nnoremap <leader>tr :TernRef<CR>
 nnoremap <leader>tR :TernRename<CR>
-nnoremap <leader>tt :TernDef<CR>
+nnoremap <leader>tt :TernDef<CR>zt
 nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>w :write<CR>
 nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
@@ -545,6 +546,10 @@ let NERDTreeQuitOnOpen = 1
 " ------------------------
 let g:UltiSnipsEditSplit = 'vertical'
 
+" TernJS configuration:
+" ---------------------
+let g:tern_show_argument_hints = 'no'
+
 " Airline (Vim status line) configuration:
 " ----------------------------------------
 if !exists("g:airline_symbols")
@@ -592,6 +597,7 @@ let g:syntastic_html_tidy_ignore_errors = [
     \"proprietary attribute \"role\"",
     \"proprietary attribute \"hidden\"",
 \]
+let g:syntastic_javascript_checkers = ['jshint']
 
 " CtrlP configuration:
 " --------------------
