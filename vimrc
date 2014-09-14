@@ -17,8 +17,7 @@ so $MYVIM/plugin/bclose.vim
 
 "}}}
 " Basic options ----------------------------------------------------------- {{{
-filetype indent on
-filetype plugin on
+filetype plugin indent on
 syntax on
 set autochdir           " Change directory to the current buffer
 set autoread            " auto reload if file saved externally
@@ -41,6 +40,7 @@ set laststatus=2        " Always show status line
 set lazyredraw          " Do not redraw during macro execution
 set list                " Display the following unprintable characters:
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
+set mouse=a
 set nocompatible        " We don't need to be compatible with old vi
 set number              " Show current line number
                         " Paths to search for gf command (file under cursor):
@@ -49,12 +49,23 @@ set path+=..\\..\\scripts\\en-us
 set path+=..\\..\\root\\**
 set path+=..\\..\\include\\mssql
 set path+=..\\..\\include\\oracle
-set path+=..\\..\\DBInstallScripts\mssql\PMA\\**
-set path+=..\\..\\..\\..\\DBInstallScripts\mssql\PMA\\**
-set path+=..\\..\\..\\..\\DBInstallScripts\mssql\PMA\\**
-set path+=..\\..\\DBInstallScripts\oracle\PMA\\**
-set path+=..\\..\\..\\..\\DBInstallScripts\oracle\PMA\\**
-set path+=..\\..\\..\\..\\DBInstallScripts\oracle\PMA\\**
+set path+=..\\..\\DBInstallScripts\\mssql\\PMA\\**
+set path+=..\\..\\..\\..\\DBInstallScripts\\mssql\\PMA\\**
+set path+=..\\..\\..\\..\\DBInstallScripts\\mssql\\PMA\\**
+set path+=..\\..\\DBInstallScripts\\oracle\\PMA\\**
+set path+=..\\..\\..\\..\\DBInstallScripts\\oracle\\PMA\\**
+set path+=..\\..\\..\\..\\DBInstallScripts\\oracle\\PMA\\**
+
+set path+=../../scripts/en-us
+set path+=../../root/**
+set path+=../../include/mssql
+set path+=../../include/oracle
+set path+=../../DBInstallScripts/mssql/PMA/**
+set path+=../../../../DBInstallScripts/mssql/PMA/**
+set path+=../../../../DBInstallScripts/mssql/PMA/**
+set path+=../../DBInstallScripts/oracle/PMA/**
+set path+=../../../../DBInstallScripts/oracle/PMA/**
+set path+=../../../../DBInstallScripts/oracle/PMA/**
 set path+=**
 set scrolloff=1         " Scroll to show at least 1 line above/below cursor
 set shiftround          " When shifting/tabbing, fill to multiple of shiftwidth
@@ -68,6 +79,7 @@ set suffixesadd+=.sql
 set t_Co=256            " Use 256 colors in terminal mode
 set ttyfast             " Assume fast network connection for terminal mode
 set visualbell          " Visual 'bell' instead of beeping
+set wrapscan            " Continue search if end of file reached
 
 "}}}
 " Tabs, spaces, wrapping -------------------------------------------------- {{{
@@ -206,6 +218,7 @@ if has("autocmd")
     augroup filetype
         autocmd!
         autocmd BufRead *imap set syntax=java
+        autocmd BufReadPost * set iskeyword=@,48-57,_,192-255
     augroup END
 
     augroup focus
@@ -251,12 +264,14 @@ inoremap ,. <C-X><C-O>
 
 " Alternative esc mapping:
 inoremap jk <esc>
+inoremap JK <esc>
+inoremap jK <esc>
+inoremap Jk <esc>
 
 " Fast save:
 inoremap ,w <esc>:write<CR>
 
 " Training mappings:
-inoremap <esc> <nop>
 nnoremap <left> <nop>
 nnoremap <right> <nop>
 nnoremap <up> <nop>
@@ -272,7 +287,6 @@ let maplocalleader = "\\"
 " Leader mappings:
 nnoremap <leader>= mlgg=G'l
 nnoremap <leader>a :%ya *<CR>
-nnoremap <leader>c :call HexHighlight()<CR>
 nnoremap <leader>D :Bclose!<CR>
 nnoremap <leader>d :silent! write<CR>:Bclose<CR>
 nnoremap <leader>eA :e ~/A4Installs<CR>
@@ -292,10 +306,13 @@ nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
 nnoremap <leader>h :nohl<CR>
 nnoremap <leader>fj :%!python -m json.tool<CR>
-nnoremap <leader>l :call ToggleLocationList()<CR>
+nnoremap <leader>k :set iskeyword=@,48-57,_,192-255<CR>
 nnoremap <leader>n :NERDTreeFind<CR>
-nnoremap <leader>q :call ToggleQuickfixList()<CR>
 nnoremap <leader>Q :q<CR>
+nnoremap <leader>rw :vertical resize +1<CR>
+nnoremap <leader>rW :vertical resize -1<CR>
+nnoremap <leader>rh :res +1<CR>
+nnoremap <leader>rH :res -1<CR>
 nnoremap <leader>sa :e ~/.vim/UltiSnips/all.snippets<CR>
 nnoremap <leader>ss :UltiSnipsEdit<CR>
 nnoremap <leader>tc :TernDoc<CR>
@@ -308,8 +325,8 @@ nnoremap <leader>w :write<CR>
 nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
 nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
-nnoremap <leader>q :call ToggleQuickfixList()<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
+nnoremap <leader>u yyp0v$hr
 nnoremap <leader>w :write<CR>
 nnoremap <leader>W :%s/\s\+$//e<CR><C-o>
 nnoremap <leader>x :silent !./%<CR>
@@ -343,6 +360,21 @@ vnoremap <leader>rf "fp
 " Register g word-replace shortcuts
 nnoremap <leader>rg viw"gp
 vnoremap <leader>rg "gp
+" Register h word-replace shortcuts
+nnoremap <leader>rh viw"hp
+vnoremap <leader>rh "hp
+" Register i word-replace shortcuts
+nnoremap <leader>ri viw"ip
+vnoremap <leader>ri "ip
+" Register j word-replace shortcuts
+nnoremap <leader>rj viw"jp
+vnoremap <leader>rj "jp
+" Register k word-replace shortcuts
+nnoremap <leader>rk viw"kp
+vnoremap <leader>rk "kp
+" Register l word-replace shortcuts
+nnoremap <leader>rl viw"lp
+vnoremap <leader>rl "lp
 
 " Register a word-cut shortcuts
 nnoremap <leader>ca viw"ad
@@ -365,6 +397,21 @@ vnoremap <leader>cf "fd
 " Register g word-cut shortcuts
 nnoremap <leader>cg viw"gd
 vnoremap <leader>cg "gd
+" Register h word-cut shortcuts
+nnoremap <leader>ch viw"hd
+vnoremap <leader>ch "hd
+" Register i word-cut shortcuts
+nnoremap <leader>ci viw"id
+vnoremap <leader>ci "id
+" Register j word-cut shortcuts
+nnoremap <leader>cj viw"jd
+vnoremap <leader>cj "jd
+" Register k word-cut shortcuts
+nnoremap <leader>ck viw"kd
+vnoremap <leader>ck "kd
+" Register l word-cut shortcuts
+nnoremap <leader>cl viw"ld
+vnoremap <leader>cl "ld
 
 " Register * (Star) clipboard copy shortcuts
 nnoremap <leader>,s mz"*yiw`z
@@ -390,6 +437,21 @@ vnoremap <leader>,f mz"fy`z
 " Register g copy shortcuts
 nnoremap <leader>,g mz"gyiw`z
 vnoremap <leader>,g mz"gy`z
+" Register h copy shortcuts
+nnoremap <leader>,h mz"hyiw`z
+vnoremap <leader>,h mz"hy`z
+" Register i copy shortcuts
+nnoremap <leader>,i mz"iyiw`z
+vnoremap <leader>,i mz"iy`z
+" Register j copy shortcuts
+nnoremap <leader>,j mz"jyiw`z
+vnoremap <leader>,j mz"jy`z
+" Register k copy shortcuts
+nnoremap <leader>,k mz"kyiw`z
+vnoremap <leader>,k mz"ky`z
+" Register l copy shortcuts
+nnoremap <leader>,l mz"lyiw`z
+vnoremap <leader>,l mz"ly`z
 
 " Register * (Star) paste shortcuts:
 nnoremap <leader>mS "*P
@@ -423,6 +485,26 @@ vnoremap <leader>mf "fp
 nnoremap <leader>mG "gP
 nnoremap <leader>mg "gp
 vnoremap <leader>mg "gp
+" Register h paste shortcuts:
+nnoremap <leader>mH "hP
+nnoremap <leader>mh "hp
+vnoremap <leader>mh "hp
+" Register i paste shortcuts:
+nnoremap <leader>mI "iP
+nnoremap <leader>mi "ip
+vnoremap <leader>mi "ip
+" Register j paste shortcuts:
+nnoremap <leader>mJ "jP
+nnoremap <leader>mj "jp
+vnoremap <leader>mj "jp
+" Register k paste shortcuts:
+nnoremap <leader>mK "kP
+nnoremap <leader>mk "kp
+vnoremap <leader>mk "kp
+" Register l paste shortcuts:
+nnoremap <leader>mL "lP
+nnoremap <leader>ml "lp
+vnoremap <leader>ml "lp
 
 " Search word, but stay on initial word:
 nnoremap * *<c-o>
@@ -535,7 +617,7 @@ let g:EasyMotion_mapping_b = '[w'
 let g:EasyMotion_mapping_w = ']w'
 let g:EasyMotion_mapping_j = ']r'
 let g:EasyMotion_mapping_k = '[r'
-let g:EasyMotion_keys = 'abcdefghijklmNopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890,.;'
+let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890;'
 let g:EasyMotion_leader_key = '!'
 
 " NERDTree configuration:
@@ -548,7 +630,12 @@ let g:UltiSnipsEditSplit = 'vertical'
 
 " TernJS configuration:
 " ---------------------
-let g:tern_show_argument_hints = 'no'
+let g:tern_show_argument_hints = 0
+let g:tern_show_signature_in_pum = 0
+
+" YCM configuration:
+--------------------
+set completeopt-=preview
 
 " Airline (Vim status line) configuration:
 " ----------------------------------------
@@ -590,10 +677,11 @@ let g:syntastic_html_tidy_ignore_errors = [
     \"trimming empty <h1>",
     \"trimming empty <li>",
     \"<img> lacks \"alt\" attribute",
-    \"<input> proprietary attribute \"pattern\"",
-    \"<input> proprietary attribute \"min\"",
-    \"<input> proprietary attribute \"max\"",
     \"<input> proprietary attribute \"autocomplete\"",
+    \"<input> proprietary attribute \"autofocus\"",
+    \"<input> proprietary attribute \"max\"",
+    \"<input> proprietary attribute \"min\"",
+    \"<input> proprietary attribute \"pattern\"",
     \"proprietary attribute \"role\"",
     \"proprietary attribute \"hidden\"",
 \]
@@ -643,6 +731,7 @@ call EnsureExists($CtrlPCache)
 vmap <expr>  ++  VMATH_YankAndAnalyse()
 
 command! PrettyXML call DoPrettyXML()
+
 " ------------------------------------------------------------------------- }}}
 " GUI mode and Colorscheme ------------------------------------------------ {{{
 if has("gui_running")
@@ -658,7 +747,34 @@ if has("gui_running")
     " Override listcar (e.g. end of line char) color:
     exec "hi NonText ctermfg=7 guifg=#135560"
     autocmd ColorScheme * hi NonText ctermfg=7 guifg=#135560
+
+    " Make wrapscan visually noticeable:
+    "hi WarningMsg ctermfg=white ctermbg=red guifg=White guibg=Red gui=None
 endif
+
+" Change cursor color and shape when in terminal:
+"if &term =~ '^xterm-256color'
+  " use an orange cursor in insert mode
+  let &t_SI = "\<Esc>]12;orange\x7"
+  " use a red cursor otherwise
+  let &t_EI = "\<Esc>]12;red\x7"
+  silent !echo -ne "\033]12;red\007"
+  " reset cursor when vim exits
+  autocmd VimLeave * silent !echo -ne "\033]112\007"
+  " use \003]12;gray\007 for gnome-terminal
+
+
+  " solid underscore
+  "let &t_SI .= "\<Esc>[4 q"
+  " solid block
+  let &t_EI .= "\<Esc>[2 q"
+  " 1 or 0 -> blinking block
+  " 3 -> blinking underscore
+  " Recent versions of xterm (282 or above) also support
+  " 5 -> blinking vertical bar
+  let &t_SI .= "\<Esc>[5 q"
+  " 6 -> solid vertical bar
+"endif
 
 set background=dark
 colo badwolf
@@ -675,4 +791,5 @@ iabbrev waht what
 "set ttimeoutlen=50
 "nnoremap <leader>z 1z=]s
 " --------------------------------------------------------------------------}}}
+
 

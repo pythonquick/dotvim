@@ -282,7 +282,7 @@ call s:HL('Ignore', 'gravel', '',      '')
 " }}}
 " Completion Menu {{{
 
-call s:HL('Pmenu', 'plain', 'deepergravel')
+call s:HL('Pmenu', 'plain', 'darkroast')
 call s:HL('PmenuSel', 'coal', 'tardis', 'bold')
 call s:HL('PmenuSbar', '', 'deepergravel')
 call s:HL('PmenuThumb', 'brightgravel')
