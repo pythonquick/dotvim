@@ -78,7 +78,7 @@ set suffixesadd+=.HTM
 set suffixesadd+=.sql
 set t_Co=256            " Use 256 colors in terminal mode
 set ttyfast             " Assume fast network connection for terminal mode
-set visualbell          " Visual 'bell' instead of beeping
+"set visualbell          " Visual 'bell' instead of beeping
 set wrapscan            " Continue search if end of file reached
 
 "}}}
@@ -218,6 +218,7 @@ if has("autocmd")
     augroup filetype
         autocmd!
         autocmd BufRead *imap set syntax=java
+        autocmd BufRead *sql set syntax=plsql
         autocmd BufReadPost * set iskeyword=@,48-57,_,192-255
     augroup END
 
@@ -287,6 +288,7 @@ let maplocalleader = "\\"
 " Leader mappings:
 nnoremap <leader>= mlgg=G'l
 nnoremap <leader>a :%ya *<CR>
+nnoremap <leader>c :call HexHighlight()<CR>
 nnoremap <leader>D :Bclose!<CR>
 nnoremap <leader>d :silent! write<CR>:Bclose<CR>
 nnoremap <leader>eA :e ~/A4Installs<CR>
@@ -306,8 +308,11 @@ nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
 nnoremap <leader>h :nohl<CR>
 nnoremap <leader>fj :%!python -m json.tool<CR>
+nnoremap <leader>g viwgf
 nnoremap <leader>k :set iskeyword=@,48-57,_,192-255<CR>
 nnoremap <leader>n :NERDTreeFind<CR>
+nnoremap <leader>p "*p
+nnoremap <leader>P "*P
 nnoremap <leader>Q :q<CR>
 nnoremap <leader>rw :vertical resize +1<CR>
 nnoremap <leader>rW :vertical resize -1<CR>
@@ -622,7 +627,8 @@ let g:EasyMotion_leader_key = '!'
 
 " NERDTree configuration:
 " -----------------------
-let NERDTreeQuitOnOpen = 1
+let NERDTreeQuitOnOpen = 0
+let NERDTreeIgnore = ['\.bak$', '\.jpg$', '\.png$', '\.gif$', '\.ico$', '\.orig$', '\.exe$', '\.dll$', '\.log$', '\.zip$', '\.tar$']
 
 " UltiSnips configuration:
 " ------------------------
@@ -633,8 +639,12 @@ let g:UltiSnipsEditSplit = 'vertical'
 let g:tern_show_argument_hints = 0
 let g:tern_show_signature_in_pum = 0
 
+" Colorizer configuration:
+"-------------------------
+let g:colorizer_nomap = 1
+
 " YCM configuration:
---------------------
+"-------------------
 set completeopt-=preview
 
 " Airline (Vim status line) configuration:
@@ -676,6 +686,7 @@ let g:syntastic_html_tidy_ignore_errors = [
     \"trimming empty <span>",
     \"trimming empty <h1>",
     \"trimming empty <li>",
+    \"'<' + '/' + letter not allowed here",
     \"<img> lacks \"alt\" attribute",
     \"<input> proprietary attribute \"autocomplete\"",
     \"<input> proprietary attribute \"autofocus\"",
@@ -749,7 +760,7 @@ if has("gui_running")
     autocmd ColorScheme * hi NonText ctermfg=7 guifg=#135560
 
     " Make wrapscan visually noticeable:
-    "hi WarningMsg ctermfg=white ctermbg=red guifg=White guibg=Red gui=None
+    hi WarningMsg ctermfg=white ctermbg=red guifg=White guibg=Red gui=None
 endif
 
 " Change cursor color and shape when in terminal:
