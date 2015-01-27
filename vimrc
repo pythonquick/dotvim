@@ -76,6 +76,7 @@ set smartcase           " auto-detect whehter to search case-sensitive or not
 set spelllang=en_us     " English U.S. dictionary for spel checking
 set suffixesadd+=.HTM
 set suffixesadd+=.sql
+set suffixesadd+=.js
 set t_Co=256            " Use 256 colors in terminal mode
 set ttyfast             " Assume fast network connection for terminal mode
 "set visualbell          " Visual 'bell' instead of beeping
@@ -287,10 +288,13 @@ let maplocalleader = "\\"
 
 " Leader mappings:
 nnoremap <leader>= mlgg=G'l
-nnoremap <leader>a :%ya *<CR>
+nnoremap <leader>ay :%ya *<CR>
+nnoremap <leader>ad :%de *<CR>
 nnoremap <leader>c :call HexHighlight()<CR>
 nnoremap <leader>D :Bclose!<CR>
-nnoremap <leader>d :silent! write<CR>:Bclose<CR>
+nnoremap <leader>d :Bclose<CR>
+nnoremap <leader>P "*P<CR>
+nnoremap <leader>p "*p<CR>
 nnoremap <leader>eA :e ~/A4Installs<CR>
 nnoremap <leader>eM :e ~/projects/A4MobileTime<CR>
 nnoremap <leader>eb :e $MYVIM/bundle.vim<CR>
@@ -309,6 +313,7 @@ nnoremap <leader>eV :e $MYVIM<CR>
 nnoremap <leader>h :nohl<CR>
 nnoremap <leader>fj :%!python -m json.tool<CR>
 nnoremap <leader>g viwgf
+vnoremap <leader>g gf
 nnoremap <leader>k :set iskeyword=@,48-57,_,192-255<CR>
 nnoremap <leader>n :NERDTreeFind<CR>
 nnoremap <leader>p "*p
@@ -584,16 +589,20 @@ set wildignore+=*.orig                           " Merge resolution files
 set wildignore+=*.mdf                            " SQL Server database
 set wildignore+=*.ldf                            " SQL Server database
 set wildignore+=*.zip
+set wildignore+=*.CAB
+set wildignore+=*.orig
 set wildignore+=*.tar
 set wildignore+=*.jar
 set wildignore+=*.cab
 set wildignore+=*.log
 set wildignore+=tags
+set wildignore+=*\\repsrce\\**
 set wildignore+=errmsgs\\**
 set wildignore+=drillaround\\**
 set wildignore+=ImportData\\**
 set wildignore+=Logs\\**
 set wildignore+=help\\**
+set wildignore+=*\\help\\**
 set wildignore+=Patches\\**
 set wildignore+=Reports\\**
 set wildignore+=repsrce\\**
@@ -693,6 +702,9 @@ let g:syntastic_html_tidy_ignore_errors = [
     \"<input> proprietary attribute \"max\"",
     \"<input> proprietary attribute \"min\"",
     \"<input> proprietary attribute \"pattern\"",
+    \"plain text isn't allowed in <tr>",
+    \"plain text isn't allowed in <tbody>",
+    \"plain text isn't allowed in <head>",
     \"proprietary attribute \"role\"",
     \"proprietary attribute \"hidden\"",
 \]
@@ -705,6 +717,9 @@ let g:ctrlp_use_caching = 1             " Enable caching
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_cache_dir = $CtrlPCache
 let g:ctrlp_match_window_bottom = 1     " Match window at bottom of screen
+if exists("g:ctrl_user_command")
+  unlet g:ctrlp_user_command
+endif
 
 " Snippet configuration:
 " ----------------------

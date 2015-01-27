@@ -17,6 +17,7 @@ Bundle 'https://github.com/sjl/vitality.vim'
 Bundle 'https://github.com/tommcdo/vim-exchange'
 Bundle 'https://github.com/rking/ag.vim'
 Bundle 'https://github.com/scrooloose/syntastic'
+Bundle 'https://github.com/mustache/vim-mustache-handlebars'
 if has('win16') || has('win95') || has('win32') || has('win64')
 else
 Bundle 'https://github.com/Valloric/YouCompleteMe'
