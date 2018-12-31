@@ -3,18 +3,12 @@ if has('win16') || has('win95') || has('win32') || has('win64')
     let $MYVIM=$HOME.'/.vim'
     let projdir = 'C:\project'
 else
-    let $MYVIM=$HOME.'/.vim'
+    let $MYVIM=$HOME.'/dotfiles/dotvim'
     let projdir = 'projects'
 endif
-
-set rtp+=$MYVIM/bundle/vundle/
+so $MYVIM/autoload/bclose.vim
 set rtp+=$MYVIM
-call vundle#rc()
-
-" vundle bundles / Plugins:
-so $MYVIM/bundle.vim
-so $MYVIM/plugin/bclose.vim
-
+runtime macros/matchit.vim
 "}}}
 " Basic options ----------------------------------------------------------- {{{
 filetype plugin indent on
@@ -26,7 +20,6 @@ set cmdheight=1         " Line height of command row at bottom of screen
 set cursorline          " Highlight line that cursor is on
 set complete=.,w,b,u,k
 set complete-=i
-set encoding=utf-8      " Default encoding
 set guioptions-=L       " remove left-hand scroll bar
 set guioptions-=T       " remove toolbar
 set guioptions-=m       " remove menu bar
@@ -42,31 +35,10 @@ set list                " Display the following unprintable characters:
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮
 set mouse=a
 set nocompatible        " We don't need to be compatible with old vi
-set number              " Show current line number
-                        " Paths to search for gf command (file under cursor):
+set nu                  " Show current line number
 set path=.
-set path+=..\\..\\scripts\\en-us
-set path+=..\\..\\root\\**
-set path+=..\\..\\include\\mssql
-set path+=..\\..\\include\\oracle
-set path+=..\\..\\DBInstallScripts\\mssql\\PMA\\**
-set path+=..\\..\\..\\..\\DBInstallScripts\\mssql\\PMA\\**
-set path+=..\\..\\..\\..\\DBInstallScripts\\mssql\\PMA\\**
-set path+=..\\..\\DBInstallScripts\\oracle\\PMA\\**
-set path+=..\\..\\..\\..\\DBInstallScripts\\oracle\\PMA\\**
-set path+=..\\..\\..\\..\\DBInstallScripts\\oracle\\PMA\\**
-
-set path+=../../scripts/en-us
-set path+=../../root/**
-set path+=../../include/mssql
-set path+=../../include/oracle
-set path+=../../DBInstallScripts/mssql/PMA/**
-set path+=../../../../DBInstallScripts/mssql/PMA/**
-set path+=../../../../DBInstallScripts/mssql/PMA/**
-set path+=../../DBInstallScripts/oracle/PMA/**
-set path+=../../../../DBInstallScripts/oracle/PMA/**
-set path+=../../../../DBInstallScripts/oracle/PMA/**
 set path+=**
+set path+=~/projects/MinimoServer/app/lib
 set scrolloff=1         " Scroll to show at least 1 line above/below cursor
 set shiftround          " When shifting/tabbing, fill to multiple of shiftwidth
 set showbreak=↪         " Character showing line wrap
@@ -79,9 +51,9 @@ set suffixesadd+=.sql
 set suffixesadd+=.js
 set t_Co=256            " Use 256 colors in terminal mode
 set ttyfast             " Assume fast network connection for terminal mode
-"set visualbell          " Visual 'bell' instead of beeping
+set visualbell          " Visual 'bell' instead of beeping
 set wrapscan            " Continue search if end of file reached
-
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 "}}}
 " Tabs, spaces, wrapping -------------------------------------------------- {{{
 set autoindent
@@ -94,87 +66,10 @@ set tabstop=4
 set wrap
 " ------------------------------------------------------------------------- }}}
 " Functions --------------------------------------------------------------- {{{
-
-
-command! -nargs=0 -bar Qargs execute 'args' QuickfixFilenames()
-function! QuickfixFilenames()
-" Building a hash ensures we get each buffer only once
-  let buffer_numbers = {}
-  for quickfix_item in getqflist()
-    let buffer_numbers[quickfix_item['bufnr']] = bufname(quickfix_item['bufnr'])
-  endfor
-  return join(map(values(buffer_numbers), 'fnameescape(v:val)'))
-endfunction
-
-
-function! GenCTags()
-    let cwd = getcwd()
-    let projects_root = finddir(g:projdir, ';')
-    let dir = cwd
-    " Find the project_dir which is the sub-directory of the projects_root
-    " and an ancester directory of current buffer's file.
-    let project_dir = dir
-    let root_not_reached = 1 " value 0 means project_dir could not be found
-    while (dir != projects_root) && root_not_reached
-        let project_dir = dir
-        let dir = fnamemodify(dir, ':h')
-        if dir == project_dir
-            let root_not_reached = 0
-        endif
-    endwhile
-    " Generate tags file in project_dir if found, otherwise in buffer dir
-    if root_not_reached
-        execute "cd " . project_dir
-        silent !ctags -R --languages=javascript,python .
-        execute "cd " . cwd
-        echo "Generated tags file in " . project_dir
-    else
-        silent !ctags -R --languages=javascript,python .
-        echo "Generated tags file in current buffer directory"
-    endif
-endfunction
-
-
 function! EnsureExists(path)
     if !isdirectory(expand(a:path))
         call mkdir(expand(a:path))
     endif
-endfunction
-
-
-function! Relpath(filename)
-    let cwd = getcwd()
-    let s = substitute(a:filename, l:cwd . "/" , "", "")
-    return s
-endfunction
-
-
-function! DoPrettyXML()
-  " save the filetype so we can restore it later
-  let l:origft = &ft
-  set ft=
-  " delete the xml header if it exists. This will
-  " permit us to surround the document with fake tags
-  " without creating invalid xml.
-  1s/<?xml .*?>//e
-  " insert fake tags around the entire document.
-  " This will permit us to pretty-format excerpts of
-  " XML that may contain multiple top-level elements.
-  0put ='<PrettyXML>'
-  $put ='</PrettyXML>'
-  silent %!xmllint --format -
-  " xmllint will insert an <?xml?> header. it's easy enough to delete
-  " if you don't want it.
-  " delete the fake tags
-  2d
-  $d
-  " restore the 'normal' indentation, which is one extra level
-  " too deep due to the extra tags we wrapped around the document.
-  silent %<
-  " back to home
-  1
-  " restore the filetype
-  exe "set ft=" . l:origft
 endfunction
 
 
@@ -188,17 +83,6 @@ function! MyFoldText()
     let line = line . repeat(" ", 97 - len(line))
     return line
 endfunction
-
-
-" Show syntax highlighting groups for word under cursor
-function! <SID>SynStack()
-  if !exists("*synstack")
-    return
-  endif
-  echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
-endfunc
-
-
 " Functions --------------------------------------------------------------- }}}
 " Folding ----------------------------------------------------------------- {{{
 set foldmethod=marker
@@ -208,24 +92,13 @@ nnoremap <Space> za
 vnoremap <Space> za
 set foldtext=MyFoldText()
 " }}}
-" Searching --------------------------------------------------------------- {{{
-nnoremap <silent> <leader>/ :execute 'vimgrep /'.@/.'/g %'<CR>:copen<CR>
-
-" ------------------------------------------------------------------------- }}}
 " Auto commands ----------------------------------------------------------- {{{
-
-
 if has("autocmd")
     augroup filetype
         autocmd!
         autocmd BufRead *imap set syntax=java
         autocmd BufRead *sql set syntax=plsql
         autocmd BufReadPost * set iskeyword=@,48-57,_,192-255
-    augroup END
-
-    augroup focus
-        autocmd!
-        autocmd FocusLost * silent! wa " auto-save but don't complain about new buffers
     augroup END
 
     " Make sure Vim returns to the same line when you reopen a file.
@@ -236,6 +109,17 @@ if has("autocmd")
             \     execute 'normal! g`"zvzz' |
             \ endif
     augroup END
+
+    augroup rubyfiles
+        autocmd!
+        autocmd FileType ruby setlocal sw=2 ts=2 sts=2
+        autocmd FileType ruby setlocal suffixesadd+=.rb
+        autocmd FileType ruby setlocal path+=~/projects/MinimoServer/app
+        autocmd FileType ruby setlocal path+=~/projects/MinimoServer/app/controllers/api/v1
+    augroup END
+
+    " When switching to neovim terminal buffer, go into insert mode
+    " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
 endif
 "}}}
 " Key remapping ----------------------------------------------------------- {{{
@@ -244,6 +128,16 @@ nnoremap <C-j> <C-w><C-j>
 nnoremap <C-h> <C-w><C-h>
 nnoremap <C-k> <C-w><C-k>
 nnoremap <C-l> <C-w><C-l>
+inoremap <C-j> <esc><C-w><C-j>
+inoremap <C-h> <esc><C-w><C-h>
+inoremap <C-k> <esc><C-w><C-k>
+inoremap <C-l> <esc><C-w><C-l>
+
+" Resize panes using arrow keys:
+nnoremap <Left> :vertical resize -1<CR>
+nnoremap <Right> :vertical resize +1<CR>
+nnoremap <Up> :resize -1<CR>
+nnoremap <Down> :resize +1<CR>
 
 " Use sane regexes.
 nnoremap / /\v
@@ -258,6 +152,8 @@ vnoremap L g_
 " Remap Y to yank from cursor to end of line instead of yank complete line:
 nnoremap Y y$
 
+nnoremap <silent> <F5> :!clear;python %<CR>
+
 " Omnicompletion (C-x C-x) handling for popup menu. Allows C-n and C-p
 "inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 "inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
@@ -270,14 +166,14 @@ inoremap JK <esc>
 inoremap jK <esc>
 inoremap Jk <esc>
 
+" Alternative esc mapping for terminal buffer:
+tnoremap jk <C-\><C-n>
+tnoremap JK <C-\><C-n>
+tnoremap jK <C-\><C-n>
+tnoremap Jk <C-\><C-n>
+
 " Fast save:
 inoremap ,w <esc>:write<CR>
-
-" Training mappings:
-nnoremap <left> <nop>
-nnoremap <right> <nop>
-nnoremap <up> <nop>
-nnoremap <down> <nop>
 
 " scroll line instead of half page, keeping cursor on current screen position:
 nnoremap <C-d> <C-e>j
@@ -290,16 +186,15 @@ let maplocalleader = "\\"
 nnoremap <leader>= mlgg=G'l
 nnoremap <leader>ay :%ya *<CR>
 nnoremap <leader>ad :%de *<CR>
-nnoremap <leader>c :call HexHighlight()<CR>
+nnoremap <leader>ar :%de<CR>"*P<CR>
+nnoremap <leader>b :cd..<CR>
 nnoremap <leader>D :Bclose!<CR>
 nnoremap <leader>d :Bclose<CR>
-nnoremap <leader>P "*P<CR>
-nnoremap <leader>p "*p<CR>
+
 nnoremap <leader>eA :e ~/A4Installs<CR>
 nnoremap <leader>eM :e ~/projects/A4MobileTime<CR>
-nnoremap <leader>eb :e $MYVIM/bundle.vim<CR>
+
 nnoremap <leader>ee :e .<CR>
-nnoremap <leader>ef :e /Users/Guenther/.vim/bundle/vundle/syntax/a4html.vim<CR>
 nnoremap <leader>eP :e ~/projects<CR>
 if has('win16') || has('win95') || has('win32') || has('win64')
     nnoremap <leader>eT :e c:\temp<CR>
@@ -307,30 +202,24 @@ if has('win16') || has('win95') || has('win32') || has('win64')
 else
     nnoremap <leader>eT :e ~/Temp<CR>
     nnoremap <leader>et :e ~/Temp/Temp.txt<CR>
+    nnoremap <leader>en :e ~/Temp/notifications.txt<CR>
 endif
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
 nnoremap <leader>h :nohl<CR>
 nnoremap <leader>fj :%!python -m json.tool<CR>
-nnoremap <leader>g viwgf
-vnoremap <leader>g gf
+nnoremap <leader>fp :Grepper -highlight<CR>
+nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>k :set iskeyword=@,48-57,_,192-255<CR>
 nnoremap <leader>n :NERDTreeFind<CR>
-nnoremap <leader>p "*p
-nnoremap <leader>P "*P
+nnoremap <leader>N :NERDTree<CR>
+nnoremap <leader>p :pc<CR>
 nnoremap <leader>Q :q<CR>
+nnoremap <leader>t :NERDTreeToggle<CR>
 nnoremap <leader>rw :vertical resize +1<CR>
 nnoremap <leader>rW :vertical resize -1<CR>
 nnoremap <leader>rh :res +1<CR>
 nnoremap <leader>rH :res -1<CR>
-nnoremap <leader>sa :e ~/.vim/UltiSnips/all.snippets<CR>
-nnoremap <leader>ss :UltiSnipsEdit<CR>
-nnoremap <leader>tc :TernDoc<CR>
-nnoremap <leader>ty :TernType<CR>
-nnoremap <leader>tr :TernRef<CR>
-nnoremap <leader>tR :TernRename<CR>
-nnoremap <leader>tt :TernDef<CR>zt
-nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>w :write<CR>
 nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
 nnoremap <leader>x :silent !./%<CR>
@@ -341,6 +230,11 @@ nnoremap <leader>w :write<CR>
 nnoremap <leader>W :%s/\s\+$//e<CR><C-o>
 nnoremap <leader>x :silent !./%<CR>
 nnoremap <leader>X :!./%<CR>
+
+" Ember file mappings
+nnoremap <leader>jt :e template.hbs<CR>
+nnoremap <leader>jc :e c*.js<CR>
+nnoremap <leader>js :e style.css<CR>
 
 " Quick-close current window
 nnoremap Q :q<CR>
@@ -516,11 +410,11 @@ nnoremap <leader>mL "lP
 nnoremap <leader>ml "lp
 vnoremap <leader>ml "lp
 
+" Copy visual selection to clipboard:
+vnoremap * "*y
+
 " Search word, but stay on initial word:
 nnoremap * *<c-o>
-
-" Show syntax highlighting groups for word under cursor
-nmap <C-S-P> :call <SID>SynStack()<CR>
 
  " Center cursor when jumping to next/prev search result:
 nnoremap n nzz
@@ -540,9 +434,6 @@ if has("gui_running")
     endif
 endif
 
-" ctags:
-nnoremap <F5> :call GenCTags()<CR>
-
 " Jump easier to matching bracket/paren/tag using M instead of %:
 nmap M %
 vmap M %
@@ -555,19 +446,47 @@ noremap <space> za
 
 vmap ,x :!tidy -q -i -xml<CR>
 
-" shortcut for angle bracket text objects:
-onoremap ir i[
-onoremap ar a[
-vnoremap ir i[
-vnoremap ar a[
-
 " other operator-pending mappings:
 " F for Function name before the first "(" character of current line:
 onoremap F :<c-u>normal! 0f(hviw<CR>
 
+if has('nvim')
+    " Window split settings
+    highlight TermCursor ctermfg=red guifg=red
+    set splitbelow
+    set splitright
+
+    " Terminal settings
+    tnoremap <Leader><ESC> <C-\><C-n>
+
+    " Window navigation function
+    " Make ctrl-h/j/k/l move between windows and auto-insert in terminals
+    func! s:mapMoveToWindowInDirection(direction)
+        func! s:maybeInsertMode(direction)
+            stopinsert
+            execute "wincmd" a:direction
+
+            if &buftype == 'terminal'
+                startinsert!
+            endif
+        endfunc
+
+        execute "tnoremap" "<silent>" "<C-" . a:direction . ">"
+                    \ "<C-\\><C-n>"
+                    \ ":call <SID>maybeInsertMode(\"" . a:direction . "\")<CR>"
+        execute "nnoremap" "<silent>" "<C-" . a:direction . ">"
+                    \ ":call <SID>maybeInsertMode(\"" . a:direction . "\")<CR>"
+    endfunc
+    for dir in ["h", "j", "l", "k"]
+        call s:mapMoveToWindowInDirection(dir)
+    endfor
+endif
+
+" Filetype-specific mappings:
+autocmd Filetype elixir inoremap <buffer> pyp \|><Space>
+
 "}}}
 " Wildmenu completion ----------------------------------------------------- {{{
-
 set wildmenu
 set wildmode=list:longest
 
@@ -595,12 +514,28 @@ set wildignore+=*.tar
 set wildignore+=*.jar
 set wildignore+=*.cab
 set wildignore+=*.log
+set wildignore+=*.ipa
+set wildignore+=*.exe
 set wildignore+=tags
 set wildignore+=*\\repsrce\\**
 set wildignore+=errmsgs\\**
 set wildignore+=drillaround\\**
 set wildignore+=ImportData\\**
 set wildignore+=Logs\\**
+set wildignore+=tmp\\**
+
+set wildignore+=*/tmp/*
+set wildignore+=*/bower_components/*
+set wildignore+=*/node_modules/*
+set wildignore+=*/vendor/*
+set wildignore+=*/dist/*
+
+set wildignore+=tmp/**
+set wildignore+=bower_components/**
+set wildignore+=node_modules/**
+set wildignore+=vendor/**
+set wildignore+=dist/**
+
 set wildignore+=help\\**
 set wildignore+=*\\help\\**
 set wildignore+=Patches\\**
@@ -619,49 +554,55 @@ set wildignore+=..\\..\\root\kendo\\**
 
 " ------------------------------------------------------------------------- }}}
 " Ctags ------------------------------------------------------------------- {{{
-
 set tags=./tags;tags
-
 " ------------------------------------------------------------------------- }}}
 " Plugin configuration ---------------------------------------------------- {{{
 
 " EasyMotion configuration
 " ------------------------
-let g:EasyMotion_mapping_b = '[w'
-let g:EasyMotion_mapping_w = ']w'
-let g:EasyMotion_mapping_j = ']r'
-let g:EasyMotion_mapping_k = '[r'
-let g:EasyMotion_keys = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890;'
-let g:EasyMotion_leader_key = '!'
+map <Leader><Leader>l <Plug>(easymotion-lineforward)
+map <Leader><Leader>j <Plug>(easymotion-j)
+map <Leader><Leader>k <Plug>(easymotion-k)
+map <Leader><Leader>h <Plug>(easymotion-linebackward)
+
+nmap <Leader><Leader>s <Plug>(easymotion-sn)
+nmap <Leader><Leader>t <Plug>(easymotion-t2)
+nmap <Leader><Leader>T <Plug>(easymotion-T2)
+map <Leader><Leader>b <Plug>(easymotion-b)
+map <Leader><Leader>w <Plug>(easymotion-w)
+map <Leader><Leader>f <Plug>(easymotion-f)
+map <Leader><Leader>F <Plug>(easymotion-F)
+
+let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
 " NERDTree configuration:
 " -----------------------
 let NERDTreeQuitOnOpen = 0
 let NERDTreeIgnore = ['\.bak$', '\.jpg$', '\.png$', '\.gif$', '\.ico$', '\.orig$', '\.exe$', '\.dll$', '\.log$', '\.zip$', '\.tar$']
 
-" UltiSnips configuration:
-" ------------------------
-let g:UltiSnipsEditSplit = 'vertical'
 
-" TernJS configuration:
-" ---------------------
-let g:tern_show_argument_hints = 0
-let g:tern_show_signature_in_pum = 0
+"" Neomake:
+"" --------
+"autocmd! BufWritePost * Neomake
+"let g:neomake_javascript_jshint_maker = {
+"    \ 'args': ['--verbose'],
+"    \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
+"    \ }
+""    \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
 
-" Colorizer configuration:
-"-------------------------
-let g:colorizer_nomap = 1
 
-" YCM configuration:
-"-------------------
-set completeopt-=preview
+"let g:neomake_javascript_enabled_makers = ['jshint']
+""let g:neomake_javascript_enabled_makers = ['eslint']
+"let g:neomake_airline = 1
+""let g:neomake_open_list = 1
+
 
 " Airline (Vim status line) configuration:
 " ----------------------------------------
 if !exists("g:airline_symbols")
   let g:airline_symbols = {}
 endif
-let g:airline_theme="powerlineish"
+"let g:airline_theme="powerlineish"
 let g:airline_powerline_fonts=1
 let g:airline#extensions#branch#empty_message = "No SCM"
 let g:airline#extensions#whitespace#enabled = 0
@@ -669,11 +610,11 @@ let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
+let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline_inactive_collapse=0
 let g:airline#extensions#hunks#non_zero_only = 1 " git gutter
-let g:airline_section_b = '%{getcwd()}'
-let g:airline_section_c = ''
-let g:airline_detect_whitespace=0
+let g:airline_section_c = '%{pathshorten(getcwd())}'
+"let g:airline_section_c = '%{FugitiveStatusline()}'
 if has("gui_running")
     let g:Powerline_symbols = 'fancy'
 else
@@ -687,14 +628,19 @@ endif
 
 " Syntastic configuration:
 " ------------------------
-let g:syntastic_mode_map = { 'mode': 'active',
-                            \ 'active_filetypes': ['javascript', 'c'],
-                            \ 'passive_filetypes': ['puppet'] }
+"let g:syntastic_mode_map = { 'mode': 'active',
+"                            \ 'active_filetypes': ['javascript', 'c'],
+"                            \ 'passive_filetypes': ['puppet'] }
 let g:syntastic_html_tidy_ignore_errors = [
+    \"discarding unexpected",
     \"trimming empty <i>",
     \"trimming empty <span>",
     \"trimming empty <h1>",
     \"trimming empty <li>",
+    \"unexpected or duplicate quote mark",
+    \"attribute name \"{{action\"",
+    \"attribute name \"is-",
+    \"}}\" lacks value",
     \"'<' + '/' + letter not allowed here",
     \"<img> lacks \"alt\" attribute",
     \"<input> proprietary attribute \"autocomplete\"",
@@ -702,17 +648,19 @@ let g:syntastic_html_tidy_ignore_errors = [
     \"<input> proprietary attribute \"max\"",
     \"<input> proprietary attribute \"min\"",
     \"<input> proprietary attribute \"pattern\"",
+    \"proprietary attribute \"bubbles\"",
     \"plain text isn't allowed in <tr>",
     \"plain text isn't allowed in <tbody>",
     \"plain text isn't allowed in <head>",
     \"proprietary attribute \"role\"",
-    \"proprietary attribute \"hidden\"",
+    \"<script> inserting \"type\" attribute",
+    \"proprietary attribute \"hidden\""
 \]
-let g:syntastic_javascript_checkers = ['jshint']
+"let g:syntastic_javascript_checkers = ['jshint']
 
 " CtrlP configuration:
 " --------------------
-let g:ctrlp_map = '\'
+nnoremap \ :CtrlP<CR>
 let g:ctrlp_use_caching = 1             " Enable caching
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_cache_dir = $CtrlPCache
@@ -721,32 +669,24 @@ if exists("g:ctrl_user_command")
   unlet g:ctrlp_user_command
 endif
 
-" Snippet configuration:
-" ----------------------
-let g:snippets_dir = $MYVIM."/snippets"
-
-" Molokai colorscheme configuration:
-" ----------------------------------
-let g:molokai_original = 0
-
+" vim-mustache-handlebars
+" Enable abbreviations:
+let g:mustache_abbreviations = 1
 
 " --------------------------------------------------------------------------}}}
 " Vim file/folder management ---------------------------------------------- {{{
 call EnsureExists('$MYVIM/.cache')
-" persistent undo
-" if exists('+undofile')
-"     set undofile
-"     set undodir=$MYVIM/.cache/undo
-"     call EnsureExists(&undodir)
-" endif
-" backups
+
+" backups:
 set backup
 set backupdir=$MYVIM/.cache/backup
 call EnsureExists(&backupdir)
-" swap files
+
+" swap files:
 set directory=$MYVIM/.cache/swap
 set noswapfile
 call EnsureExists(&directory)
+
 " CtrlP cache:
 let $CtrlPCache='$MYVIM/.cache/ctrlp'
 call EnsureExists($CtrlPCache)
@@ -756,15 +696,14 @@ call EnsureExists($CtrlPCache)
 " vmath plugin configuration
 vmap <expr>  ++  VMATH_YankAndAnalyse()
 
-command! PrettyXML call DoPrettyXML()
-
 " ------------------------------------------------------------------------- }}}
 " GUI mode and Colorscheme ------------------------------------------------ {{{
 if has("gui_running")
     if has('win16') || has('win95') || has('win32') || has('win64')
         set guifont=Inconsolata-dz_for_Powerline:h13:cANSI
     else
-        set guifont=Inconsolata-dz\ for\ Powerline:h16
+        "set guifont=Inconsolata-dz\ for\ Powerline:h16
+        set guifont=Fira Code:h16
     endif
     " Override colorscheme cursor background on highlighted search result:
     exec "hi Cursor guifg=bg guibg=Green"
@@ -778,32 +717,10 @@ if has("gui_running")
     hi WarningMsg ctermfg=white ctermbg=red guifg=White guibg=Red gui=None
 endif
 
-" Change cursor color and shape when in terminal:
-"if &term =~ '^xterm-256color'
-  " use an orange cursor in insert mode
-  let &t_SI = "\<Esc>]12;orange\x7"
-  " use a red cursor otherwise
-  let &t_EI = "\<Esc>]12;red\x7"
-  silent !echo -ne "\033]12;red\007"
-  " reset cursor when vim exits
-  autocmd VimLeave * silent !echo -ne "\033]112\007"
-  " use \003]12;gray\007 for gnome-terminal
-
-
-  " solid underscore
-  "let &t_SI .= "\<Esc>[4 q"
-  " solid block
-  let &t_EI .= "\<Esc>[2 q"
-  " 1 or 0 -> blinking block
-  " 3 -> blinking underscore
-  " Recent versions of xterm (282 or above) also support
-  " 5 -> blinking vertical bar
-  let &t_SI .= "\<Esc>[5 q"
-  " 6 -> solid vertical bar
-"endif
-
 set background=dark
 colo badwolf
+
+
 " ------------------------------------------------------------------------- }}}
 " Abbreviations ----------------------------------------------------------- {{{
 iabbrev adn and
@@ -812,10 +729,46 @@ iabbrev teh the
 iabbrev tehn then
 iabbrev waht what
 " ------------------------------------------------------------------------- }}}
-" Disabled / Unused --------------------------------------------------------{{{
-"set go-=T
-"set ttimeoutlen=50
-"nnoremap <leader>z 1z=]s
+" Plugins-------------------------------------------------------------------{{{
+call plug#begin('$MYVIM/plugged')
+" List below are plugins to be loaded using the vim-plug plugin loader:
+" See https://github.com/junegunn/vim-plug for more details.
+Plug 'https://github.com/bling/vim-airline'
+Plug 'https://github.com/ctrlpvim/ctrlp.vim'
+Plug 'https://github.com/easymotion/vim-easymotion'
+Plug 'https://github.com/tpope/vim-surround'
+Plug 'https://github.com/tpope/vim-unimpaired'
+Plug 'https://github.com/scrooloose/nerdtree'
+Plug 'https://github.com/tmhedberg/matchit'
+Plug 'https://github.com/tpope/vim-abolish'
+Plug 'https://github.com/Valloric/ListToggle'
+Plug 'https://github.com/wellle/targets.vim'
+Plug 'https://github.com/vim-scripts/hexHighlight.vim'
+Plug 'https://github.com/tommcdo/vim-exchange'
+Plug 'https://github.com/mustache/vim-mustache-handlebars'
+Plug 'https://github.com/benekastah/neomake'
+Plug 'https://github.com/tomtom/tcomment_vim'
+Plug 'https://github.com/ap/vim-css-color'
+Plug 'https://github.com/elixir-editors/vim-elixir'
+Plug 'https://github.com/tpope/vim-fugitive.git'
+Plug 'https://github.com/mhinz/vim-grepper'
+
+" Ruby:
+Plug 'https://github.com/kana/vim-textobj-user'
+Plug 'https://github.com/nelstrom/vim-textobj-rubyblock'
+Plug 'https://github.com/tpope/vim-rails'
+Plug 'https://github.com/vim-ruby/vim-ruby'
+Plug 'https://github.com/tpope/vim-bundler'
+Plug 'https://github.com/tpope/vim-rake'
+Plug 'https://github.com/tpope/rbenv-ctags'
+
+if has('nvim')
+    Plug 'Shougo/neocomplete'
+    Plug 'Shougo/neosnippet'
+    Plug 'Shougo/neosnippet-snippets'
+    Plug('roxma/nvim-completion-manager')
+else
+endif
+
+call plug#end()
 " --------------------------------------------------------------------------}}}
-
-
