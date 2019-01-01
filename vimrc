@@ -116,6 +116,7 @@ if has("autocmd")
         autocmd FileType ruby setlocal suffixesadd+=.rb
         autocmd FileType ruby setlocal path+=~/projects/MinimoServer/app
         autocmd FileType ruby setlocal path+=~/projects/MinimoServer/app/controllers/api/v1
+        autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
     augroup END
 
     " When switching to neovim terminal buffer, go into insert mode
@@ -596,6 +597,12 @@ let NERDTreeIgnore = ['\.bak$', '\.jpg$', '\.png$', '\.gif$', '\.ico$', '\.orig$
 "let g:neomake_airline = 1
 ""let g:neomake_open_list = 1
 
+" Solargraph:
+" -----------
+let g:LanguageClient_autoStop = 0
+let g:LanguageClient_serverCommands = {
+    \ 'ruby': ['tcp://localhost:7658']
+    \ }
 
 " Airline (Vim status line) configuration:
 " ----------------------------------------
@@ -763,8 +770,8 @@ Plug 'https://github.com/tpope/vim-rake'
 Plug 'https://github.com/tpope/rbenv-ctags'
 
 if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'fishbullet/deoplete-ruby'
+  Plug 'https://github.com/Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'https://github.com/uplus/deoplete-solargraph'
 else
   Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'

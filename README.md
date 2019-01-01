@@ -1,8 +1,9 @@
 # Installation:
 
-1.   Clone this repo to a local directory. For example to clone to the `.vim` directory under the home directory, run the following command: 
+1.   Clone this repo to a local directory. For example to clone to the `~/dotfiles/dotvim` directory under the home directory, run the following command: 
 
-    git clone git://github.com/pythonquick/dotvim.git ~/.vim
+    mkdir -p ~/dotfiles
+    git clone git://github.com/pythonquick/dotvim.git ~/dotfiles/dotvim
 
 2.   Install font(s) from ~/.vim/fonts directory
 3.   From .vim directory, run script to setup files:
@@ -11,13 +12,14 @@
      winsetup.bat
 
 3.2 On *nix, in this repo's directory, run following command:
-3.2.1 for neovim run:
+3.2.1 for neovim run: Say the repo was cloned into directory ~/dotfiles/dotvim, run the following commands:
 
-    ln -s vimrc ~/.config/nvim/init.vim
+    mkdir -p ~/.config/nvim
+    ln -s ~/dotfiles/dotvim/vimrc ~/.config/nvim/init.vim
 
-3.2.2 for vim run:
+3.2.2 for vim run: Say the repo was cloned into directory ~/dotvim, run the following commands:
 
-    ln -s vimrc ~/.vimrc
+    ln -s ~/dotfiles/dotvim/vimrc ~/.vimrc
 
 4.   Start VIM and run :PlugInstall to download and install plugins listed in vimrc file
 
@@ -40,6 +42,9 @@ See [Time Pope's ctags for rbenv](https://github.com/tpope/rbenv-ctags) plugin r
 The neovim auto-completion plugin [Deoplete](https://github.com/shougo/deoplete.nvim)
 requires neovim with python3 support. Follow the setup instructions on the 
 [Deoplete](https://github.com/shougo/deoplete.nvim) page.
+
+For Ruby autocompletion, setup the `solargraph` language server and plugin.
+See [deoplete-solargraph](https://github.com/uplus/deoplete-solargraph)
 
 # Notes for setup on Windows machines:
 
