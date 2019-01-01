@@ -35,6 +35,12 @@ whenever merging, committing or checking out.
 See [Time Pope's ctags for rbenv](https://github.com/tpope/rbenv-ctags) plugin readme.
 
 
+# Notes for auto-completion plugin on neovim
+
+The neovim auto-completion plugin [Deoplete](https://github.com/shougo/deoplete.nvim)
+requires neovim with python3 support. Follow the setup instructions on the 
+[Deoplete](https://github.com/shougo/deoplete.nvim) page.
+
 # Notes for setup on Windows machines:
 
 On Windows, set up context menu "Edit with Vim" by importing a .reg file with following content.
