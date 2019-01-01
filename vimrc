@@ -763,12 +763,14 @@ Plug 'https://github.com/tpope/vim-rake'
 Plug 'https://github.com/tpope/rbenv-ctags'
 
 if has('nvim')
-    Plug 'Shougo/neocomplete'
-    Plug 'Shougo/neosnippet'
-    Plug 'Shougo/neosnippet-snippets'
-    Plug('roxma/nvim-completion-manager')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'fishbullet/deoplete-ruby'
 else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
+let g:deoplete#enable_at_startup = 1
 
 call plug#end()
 " --------------------------------------------------------------------------}}}
