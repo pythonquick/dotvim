@@ -571,18 +571,18 @@ set tags=./tags;tags
 
 " EasyMotion configuration
 " ------------------------
-map <Leader><Leader>l <Plug>(easymotion-lineforward)
-map <Leader><Leader>j <Plug>(easymotion-j)
-map <Leader><Leader>k <Plug>(easymotion-k)
-map <Leader><Leader>h <Plug>(easymotion-linebackward)
+map <Leader>.l <Plug>(easymotion-lineforward)
+map <Leader>.j <Plug>(easymotion-j)
+map <Leader>.k <Plug>(easymotion-k)
+map <Leader>.h <Plug>(easymotion-linebackward)
 
-nmap <Leader><Leader>s <Plug>(easymotion-sn)
-nmap <Leader><Leader>t <Plug>(easymotion-t2)
-nmap <Leader><Leader>T <Plug>(easymotion-T2)
-map <Leader><Leader>b <Plug>(easymotion-b)
-map <Leader><Leader>w <Plug>(easymotion-w)
-map <Leader><Leader>f <Plug>(easymotion-f)
-map <Leader><Leader>F <Plug>(easymotion-F)
+nmap <Leader>.s <Plug>(easymotion-sn)
+nmap <Leader>.t <Plug>(easymotion-t2)
+nmap <Leader>.T <Plug>(easymotion-T2)
+map <Leader>.b <Plug>(easymotion-b)
+map <Leader>.w <Plug>(easymotion-w)
+map <Leader>.f <Plug>(easymotion-f)
+map <Leader>.F <Plug>(easymotion-F)
 
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
