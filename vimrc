@@ -119,6 +119,14 @@ if has("autocmd")
         autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
     augroup END
 
+    augroup javascriptfiles
+        autocmd!
+        autocmd FileType javascript setlocal sw=2 ts=2 sts=2
+        autocmd FileType javascript setlocal suffixesadd+=.rb
+        autocmd FileType javascript setlocal path+=~/projects/MinimoServer/frontend/app
+        autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
+    augroup END
+
     " When switching to neovim terminal buffer, go into insert mode
     " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
 endif
