@@ -211,6 +211,8 @@ nnoremap <leader>h :nohl<CR>
 nnoremap <leader>fj :%!python -m json.tool<CR>
 nnoremap <leader>fp :Grepper -highlight<CR>
 nnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>k :set iskeyword=@,48-57,_,192-255<CR>
 nnoremap <leader>n :NERDTreeFind<CR>
 nnoremap <leader>N :NERDTree<CR>
