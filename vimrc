@@ -204,18 +204,16 @@ nnoremap <leader>b :cd..<CR>
 nnoremap <leader>D :Bclose!<CR>
 nnoremap <leader>d :Bclose<CR>
 
-nnoremap <leader>eA :e ~/A4Installs<CR>
-nnoremap <leader>eM :e ~/projects/A4MobileTime<CR>
-
-nnoremap <leader>ee :e .<CR>
-nnoremap <leader>eP :e ~/projects<CR>
 if has('win16') || has('win95') || has('win32') || has('win64')
     nnoremap <leader>eT :e c:\temp<CR>
     nnoremap <leader>et :e c:/Temp/Temp.txt<CR>
 else
-    nnoremap <leader>eT :e ~/Temp<CR>
+    nnoremap <leader>ea :e ~/Temp/airtable.txt<CR>
+    nnoremap <leader>ed :e ~/Temp/disc.txt<CR>
     nnoremap <leader>et :e ~/Temp/Temp.txt<CR>
     nnoremap <leader>en :e ~/Temp/notifications.txt<CR>
+    nnoremap <leader>es :e ~/Temp/st.txt<CR>
+    nnoremap <leader>ef :e ~/Temp/spec-failures.txt<CR>
 endif
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
@@ -549,22 +547,11 @@ set wildignore+=bower_components/**
 set wildignore+=node_modules/**
 set wildignore+=vendor/**
 set wildignore+=dist/**
+set wildignore+=*/vendor/**
+set wildignore+=vendor
+set wildignore+=vendor/**
+set wildignore+=vendor/*
 
-set wildignore+=help\\**
-set wildignore+=*\\help\\**
-set wildignore+=Patches\\**
-set wildignore+=Reports\\**
-set wildignore+=repsrce\\**
-set wildignore+=root\kendo\\**
-set wildignore+=..\\..\\errmsgs\\**
-set wildignore+=..\\..\\drillaround\\**
-set wildignore+=..\\..\\ImportData\\**
-set wildignore+=..\\..\\Logs\\**
-set wildignore+=..\\..\\help\\**
-set wildignore+=..\\..\\Patches\\**
-set wildignore+=..\\..\\Reports\\**
-set wildignore+=..\\..\\repsrce\\**
-set wildignore+=..\\..\\root\kendo\\**
 
 " ------------------------------------------------------------------------- }}}
 " Ctags ------------------------------------------------------------------- {{{
