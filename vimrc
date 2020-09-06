@@ -120,13 +120,29 @@ if has("autocmd")
         autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
     augroup END
 
+    augroup cssfiles
+        autocmd!
+        autocmd FileType css setlocal sw=2 ts=2 sts=2
+        autocmd FileType css setlocal suffixesadd+=.css
+        autocmd FileType ruby setlocal omnifunc=LanguageClient#complete
+    augroup END
+
     augroup javascriptfiles
         autocmd!
         autocmd FileType javascript setlocal sw=2 ts=2 sts=2
-        autocmd FileType javascript setlocal suffixesadd+=.rb
+        autocmd FileType javascript setlocal suffixesadd+=.js
         autocmd FileType javascript setlocal path+=~/projects/MinimoServer/frontend/app
         autocmd FileType javascript setlocal omnifunc=LanguageClient#complete
     augroup END
+
+    augroup handlebarsfiles
+        autocmd!
+        autocmd FileType html.handlebars setlocal sw=2 ts=2 sts=2
+        autocmd FileType html.handlebars setlocal suffixesadd+=.hbs
+    augroup END
+
+    " Disable auto-completion for text files:
+    autocmd FileType text let b:coc_suggest_disable = 1
 
     " When switching to neovim terminal buffer, go into insert mode
     " autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
@@ -496,6 +512,7 @@ endif
 
 " Filetype-specific mappings:
 autocmd Filetype elixir inoremap <buffer> pyp \|><Space>
+autocmd Filetype javascript nmap <buffer> <c-]> gd
 
 "}}}
 " Wildmenu completion ----------------------------------------------------- {{{
