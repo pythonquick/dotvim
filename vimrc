@@ -643,10 +643,19 @@ let g:ctrlp_match_window_bottom = 1     " Match window at bottom of screen
 if exists("g:ctrl_user_command")
   unlet g:ctrlp_user_command
 endif
+if executable('ag')
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+endif
 
 " vim-mustache-handlebars
 " Enable abbreviations:
 let g:mustache_abbreviations = 1
+
+" grepper (for ag searching)
+let g:grepper = {}            " initialize g:grepper with empty dictionary
+let g:grepper.simple_prompt = 0
+
 
 " --------------------------------------------------------------------------}}}
 " Vim file/folder management ---------------------------------------------- {{{
