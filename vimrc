@@ -218,36 +218,49 @@ endif
 nnoremap <leader>ev :e $MYVIMRC<CR>
 nnoremap <leader>eV :e $MYVIM<CR>
 nnoremap <leader>h :nohl<CR>
-nnoremap <leader>fj :%!python -m json.tool<CR>
-nnoremap <leader>fp :Grepper -highlight<CR>
+
+" indentation mappings:
+nnoremap <leader>ij :%!python -m json.tool<CR>
+
+" Shortcuts for invoking ag (silver searcher) in common directories:
+"nnoremap <leader>ff :Grepper -grepprg ag $* --vimgrep ~/projects/MinimoServer/frontend/app<CR>
+nnoremap <leader>ff :Grepper -grepprg ag $* --vimgrep ~/projects/MinimoServer/frontend/app<CR>
+nnoremap <leader>fa :Grepper -grepprg ag $* --vimgrep ~/projects/MinimoServer/app ~/projects/MinimoServer/config<CR>
+nnoremap <leader>fc :Grepper -grepprg ag $* --vimgrep ~/projects/MinimoServer/spec/cypress_tests/cypress<CR>
+nnoremap <leader>fr :Grepper -dir repo -grepprg ag $* --vimgrep<CR>
+"nnoremap <leader>fs :Grepper -grepprg ag $* --vimgrep ~/projects/MinimoServer/spec<CR>
+nnoremap <leader>fs :Grepper -grepprg ag $* --vimgrep ~/projects/MinimoServer/spec --ruby<CR>
+
+nnoremap <leader>wff :Grepper -cword -grepprg ag $* --vimgrep ~/projects/MinimoServer/frontend/app<CR>
+nnoremap <leader>wfa :Grepper -cword -grepprg ag $* --vimgrep ~/projects/MinimoServer/app<CR>
+nnoremap <leader>wfs :Grepper -cword -grepprg ag $* --vimgrep ~/projects/MinimoServer/spec<CR>
+nnoremap <leader>wfr :Grepper -dir repo -cword -grepprg ag $* --vimgrep<CR>
+
+nnoremap <leader>fS "syiw:Grepper -grepprg ag $* --vimgrep ~/projects/MinimoServer/spec<CR>a<C-r>s
+
+" Shortcut for invoking ag (silver searcher) from current directory:
+nnoremap <leader>fp :Grepper -grepprg ag $* --vimgrep<CR>
+
+" Shortcuts for git (fugitive plugin):
 nnoremap <leader>gb :Gblame<CR>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gs :Gstatus<CR>
+
+" Insert timestamp:
+nnoremap <leader>ts a<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+
 nnoremap <leader>k :set iskeyword=@,48-57,_,192-255<CR>
+nnoremap <leader>M :%s/\n//
 nnoremap <leader>n :NERDTreeFind<CR>
 nnoremap <leader>N :NERDTree<CR>
 nnoremap <leader>p :pc<CR>
 nnoremap <leader>Q :q<CR>
-nnoremap <leader>t :NERDTreeToggle<CR>
-nnoremap <leader>rw :vertical resize +1<CR>
-nnoremap <leader>rW :vertical resize -1<CR>
-nnoremap <leader>rh :res +1<CR>
-nnoremap <leader>rH :res -1<CR>
 nnoremap <leader>w :write<CR>
 nnoremap <leader>W ml:%s/\s\+$//e<CR>`l
-nnoremap <leader>x :silent !./%<CR>
-nnoremap <leader>X :!./%<CR>
 nnoremap <leader>v :source $MYVIMRC<CR>
 nnoremap <leader>u yyp0v$hr
 nnoremap <leader>w :write<CR>
 nnoremap <leader>W :%s/\s\+$//e<CR><C-o>
-nnoremap <leader>x :silent !./%<CR>
-nnoremap <leader>X :!./%<CR>
-
-" Ember file mappings
-nnoremap <leader>jt :e template.hbs<CR>
-nnoremap <leader>jc :e c*.js<CR>
-nnoremap <leader>js :e style.css<CR>
 
 " Quick-close current window
 nnoremap Q :q<CR>
@@ -567,12 +580,8 @@ map <Leader>.k <Plug>(easymotion-k)
 map <Leader>.h <Plug>(easymotion-linebackward)
 
 nmap <Leader>.s <Plug>(easymotion-sn)
-nmap <Leader>.t <Plug>(easymotion-t2)
-nmap <Leader>.T <Plug>(easymotion-T2)
 map <Leader>.b <Plug>(easymotion-b)
 map <Leader>.w <Plug>(easymotion-w)
-map <Leader>.f <Plug>(easymotion-f)
-map <Leader>.F <Plug>(easymotion-F)
 
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
