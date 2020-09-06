@@ -594,13 +594,6 @@ let g:gitgutter_terminal_reports_focus=0
 let NERDTreeQuitOnOpen = 0
 let NERDTreeIgnore = ['\.bak$', '\.jpg$', '\.png$', '\.gif$', '\.ico$', '\.orig$', '\.exe$', '\.dll$', '\.log$', '\.zip$', '\.tar$', '^node_modules$', '^tmp$']
 
-" Solargraph:
-" -----------
-let g:LanguageClient_autoStop = 0
-let g:LanguageClient_serverCommands = {
-    \ 'ruby': ['tcp://localhost:7658']
-    \ }
-
 " Swift plugin:
 let g:swift_version_check = 0
 
@@ -716,7 +709,6 @@ let g:coc_global_extensions = [
    \ 'coc-snippets',
    \ 'coc-json',
    \ 'coc-tsserver',
-   \ 'coc-solargraph'
    \ ]
 "    \ 'coc-eslint',
 " ------------------------------------------------------------------------- }}}
@@ -762,7 +754,6 @@ Plug 'https://github.com/airblade/vim-gitgutter'
 
 if has('nvim')
   "Plug 'https://github.com/Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  " Plug 'https://github.com/uplus/deoplete-solargraph'
 else
   "Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
