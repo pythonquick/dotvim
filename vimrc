@@ -724,7 +724,8 @@ let g:coc_global_extensions = [
 call plug#begin('$MYVIM/plugged')
 " List below are plugins to be loaded using the vim-plug plugin loader:
 " See https://github.com/junegunn/vim-plug for more details.
-Plug 'https://github.com/bling/vim-airline'
+Plug 'https://github.com/vim-airline/vim-airline'
+Plug 'https://github.com/vim-airline/vim-airline-themes'
 Plug 'https://github.com/ctrlpvim/ctrlp.vim'
 Plug 'https://github.com/easymotion/vim-easymotion'
 Plug 'https://github.com/tpope/vim-surround'
@@ -737,13 +738,16 @@ Plug 'https://github.com/wellle/targets.vim'
 Plug 'https://github.com/vim-scripts/hexHighlight.vim'
 Plug 'https://github.com/tommcdo/vim-exchange'
 Plug 'https://github.com/mustache/vim-mustache-handlebars'
-Plug 'https://github.com/benekastah/neomake'
-Plug 'https://github.com/tomtom/tcomment_vim'
 Plug 'https://github.com/ap/vim-css-color'
 Plug 'https://github.com/elixir-editors/vim-elixir'
 Plug 'https://github.com/tpope/vim-fugitive.git'
+Plug 'https://github.com/tommcdo/vim-fugitive-blame-ext.git'
 Plug 'https://github.com/mhinz/vim-grepper'
+Plug 'https://github.com/yalesov/vim-emblem'
+Plug 'https://github.com/bluk/swifty-vim'
 
+" LSP / Completion
+" Plug 'neoclide/coc.nvim', {'branch': 'release'} 
 " Ruby:
 Plug 'https://github.com/kana/vim-textobj-user'
 Plug 'https://github.com/nelstrom/vim-textobj-rubyblock'
@@ -753,11 +757,14 @@ Plug 'https://github.com/tpope/vim-bundler'
 Plug 'https://github.com/tpope/vim-rake'
 Plug 'https://github.com/tpope/rbenv-ctags'
 
+Plug 'https://github.com/airblade/vim-gitgutter'
+
+
 if has('nvim')
-  Plug 'https://github.com/Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  Plug 'https://github.com/uplus/deoplete-solargraph'
+  "Plug 'https://github.com/Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  " Plug 'https://github.com/uplus/deoplete-solargraph'
 else
-  Plug 'Shougo/deoplete.nvim'
+  "Plug 'Shougo/deoplete.nvim'
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
