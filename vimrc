@@ -585,26 +585,14 @@ map <Leader>.w <Plug>(easymotion-w)
 
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
+" Airblade configuration
+" ----------------------
+let g:gitgutter_terminal_reports_focus=0
+
 " NERDTree configuration:
 " -----------------------
 let NERDTreeQuitOnOpen = 0
-let NERDTreeIgnore = ['\.bak$', '\.jpg$', '\.png$', '\.gif$', '\.ico$', '\.orig$', '\.exe$', '\.dll$', '\.log$', '\.zip$', '\.tar$']
-
-
-"" Neomake:
-"" --------
-"autocmd! BufWritePost * Neomake
-"let g:neomake_javascript_jshint_maker = {
-"    \ 'args': ['--verbose'],
-"    \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
-"    \ }
-""    \ 'errorformat': '%A%f: line %l\, col %v\, %m \(%t%*\d\)',
-
-
-"let g:neomake_javascript_enabled_makers = ['jshint']
-""let g:neomake_javascript_enabled_makers = ['eslint']
-"let g:neomake_airline = 1
-""let g:neomake_open_list = 1
+let NERDTreeIgnore = ['\.bak$', '\.jpg$', '\.png$', '\.gif$', '\.ico$', '\.orig$', '\.exe$', '\.dll$', '\.log$', '\.zip$', '\.tar$', '^node_modules$', '^tmp$']
 
 " Solargraph:
 " -----------
@@ -613,66 +601,37 @@ let g:LanguageClient_serverCommands = {
     \ 'ruby': ['tcp://localhost:7658']
     \ }
 
+" Swift plugin:
+let g:swift_version_check = 0
+
 " Airline (Vim status line) configuration:
 " ----------------------------------------
+
 if !exists("g:airline_symbols")
   let g:airline_symbols = {}
 endif
-"let g:airline_theme="powerlineish"
+let g:airline_theme='cool'
 let g:airline_powerline_fonts=1
+let g:Powerline_symbols = 'fancy'
 let g:airline#extensions#branch#empty_message = "No SCM"
 let g:airline#extensions#whitespace#enabled = 0
-let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 let g:airline#extensions#tabline#formatter = 'unique_tail_improved'
 let g:airline_inactive_collapse=0
-let g:airline#extensions#hunks#non_zero_only = 1 " git gutter
 let g:airline_section_c = '%{pathshorten(getcwd())}'
-"let g:airline_section_c = '%{FugitiveStatusline()}'
-if has("gui_running")
-    let g:Powerline_symbols = 'fancy'
-else
-    let g:airline_left_sep=''
-    let g:airline_right_sep=''
-    let g:airline#extensions#tabline#left_sep = ''
-    let g:airline#extensions#tabline#left_alt_sep = ''
-    let g:airline#extensions#tabline#right_sep = ''
-    let g:airline#extensions#tabline#right_alt_sep = ''
-endif
-
-" Syntastic configuration:
-" ------------------------
-"let g:syntastic_mode_map = { 'mode': 'active',
-"                            \ 'active_filetypes': ['javascript', 'c'],
-"                            \ 'passive_filetypes': ['puppet'] }
-let g:syntastic_html_tidy_ignore_errors = [
-    \"discarding unexpected",
-    \"trimming empty <i>",
-    \"trimming empty <span>",
-    \"trimming empty <h1>",
-    \"trimming empty <li>",
-    \"unexpected or duplicate quote mark",
-    \"attribute name \"{{action\"",
-    \"attribute name \"is-",
-    \"}}\" lacks value",
-    \"'<' + '/' + letter not allowed here",
-    \"<img> lacks \"alt\" attribute",
-    \"<input> proprietary attribute \"autocomplete\"",
-    \"<input> proprietary attribute \"autofocus\"",
-    \"<input> proprietary attribute \"max\"",
-    \"<input> proprietary attribute \"min\"",
-    \"<input> proprietary attribute \"pattern\"",
-    \"proprietary attribute \"bubbles\"",
-    \"plain text isn't allowed in <tr>",
-    \"plain text isn't allowed in <tbody>",
-    \"plain text isn't allowed in <head>",
-    \"proprietary attribute \"role\"",
-    \"<script> inserting \"type\" attribute",
-    \"proprietary attribute \"hidden\""
-\]
-"let g:syntastic_javascript_checkers = ['jshint']
+let g:airline_left_sep=''
+let g:airline_right_sep=''
+let g:airline#extensions#tabline#left_sep = ''
+let g:airline#extensions#tabline#left_alt_sep = ''
+let g:airline#extensions#tabline#right_sep = ''
+let g:airline#extensions#tabline#right_alt_sep = ''
+let g:airline_symbols.branch = '⎇'
+let g:airline_symbols.paste = 'ρ'
+let g:airline_symbols.paste = 'Þ'
+let g:airline_symbols.paste = '∥'
+let g:airline_symbols.whitespace = 'Ξ'
 
 " CtrlP configuration:
 " --------------------
@@ -766,7 +725,6 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
-let g:deoplete#enable_at_startup = 1
 
 call plug#end()
 " --------------------------------------------------------------------------}}}
