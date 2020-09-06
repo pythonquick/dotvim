@@ -178,25 +178,11 @@ vnoremap L g_
 " Remap Y to yank from cursor to end of line instead of yank complete line:
 nnoremap Y y$
 
-nnoremap <silent> <F5> :!clear;python %<CR>
-
-" Omnicompletion (C-x C-x) handling for popup menu. Allows C-n and C-p
-"inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-"inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-"inoremap <expr> <M-,> pumvisible() ? '<C-n>' : '<C-x><C-o><C-n><C-p><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
-inoremap ,. <C-X><C-O>
-
 " Alternative esc mapping:
 inoremap jk <esc>
-inoremap JK <esc>
-inoremap jK <esc>
-inoremap Jk <esc>
 
 " Alternative esc mapping for terminal buffer:
 tnoremap jk <C-\><C-n>
-tnoremap JK <C-\><C-n>
-tnoremap jK <C-\><C-n>
-tnoremap Jk <C-\><C-n>
 
 " Fast save:
 inoremap ,w <esc>:write<CR>
@@ -213,6 +199,7 @@ nnoremap <leader>= mlgg=G'l
 nnoremap <leader>ay :%ya *<CR>
 nnoremap <leader>ad :%de *<CR>
 nnoremap <leader>ar :%de<CR>"*P<CR>
+nnoremap <leader>c :!`git rev-parse --show-toplevel`/.git/hooks/ctags >/dev/null<CR>
 nnoremap <leader>b :cd..<CR>
 nnoremap <leader>D :Bclose!<CR>
 nnoremap <leader>d :Bclose<CR>
@@ -448,9 +435,7 @@ nnoremap * *<c-o>
 nnoremap n nzz
 nnoremap N Nzz
 
-" Insert timestamp:
-nmap <F3> a<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
-imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
+
 
 
 " Change font in GUI mode:
@@ -733,29 +718,9 @@ vmap <expr>  ++  VMATH_YankAndAnalyse()
 
 " ------------------------------------------------------------------------- }}}
 " GUI mode and Colorscheme ------------------------------------------------ {{{
-if has("gui_running")
-    if has('win16') || has('win95') || has('win32') || has('win64')
-        set guifont=Inconsolata-dz_for_Powerline:h13:cANSI
-    else
-        "set guifont=Inconsolata-dz\ for\ Powerline:h16
-        set guifont=Fira Code:h16
-    endif
-    " Override colorscheme cursor background on highlighted search result:
-    exec "hi Cursor guifg=bg guibg=Green"
-    autocmd ColorScheme * hi Cursor guifg=bg guibg=Green
-
-    " Override listcar (e.g. end of line char) color:
-    exec "hi NonText ctermfg=7 guifg=#135560"
-    autocmd ColorScheme * hi NonText ctermfg=7 guifg=#135560
-
-    " Make wrapscan visually noticeable:
-    hi WarningMsg ctermfg=white ctermbg=red guifg=White guibg=Red gui=None
-endif
-
+set guifont=Fira\ Mono\ for\ Powerline
 set background=dark
 colo badwolf
-
-
 " ------------------------------------------------------------------------- }}}
 " Abbreviations ----------------------------------------------------------- {{{
 iabbrev adn and
