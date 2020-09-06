@@ -52,6 +52,7 @@ set suffixesadd+=.js
 set t_Co=256            " Use 256 colors in terminal mode
 set ttyfast             " Assume fast network connection for terminal mode
 set visualbell          " Visual 'bell' instead of beeping
+set updatetime=100      " Change default update time from 4 seconds to 100ms
 set wrapscan            " Continue search if end of file reached
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 "}}}
