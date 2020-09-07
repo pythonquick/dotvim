@@ -166,6 +166,9 @@ nnoremap <Down> :resize +1<CR>
 nnoremap / /\v
 vnoremap / /\v
 
+" FZF Fuzzy-finder:
+nnoremap \ :GFiles<CR>
+
 " Remap home keys for cursor positioning on line:
 nnoremap H ^
 vnoremap H ^
@@ -582,6 +585,9 @@ map <Leader>.w <Plug>(easymotion-w)
 
 let g:EasyMotion_startofline = 0 " keep cursor column when JK motion
 
+" FZF configuration
+
+
 " Airblade configuration
 " ----------------------
 let g:gitgutter_terminal_reports_focus=0
@@ -623,21 +629,6 @@ let g:airline_symbols.paste = 'Þ'
 let g:airline_symbols.paste = '∥'
 let g:airline_symbols.whitespace = 'Ξ'
 
-" CtrlP configuration:
-" --------------------
-nnoremap \ :CtrlP<CR>
-let g:ctrlp_use_caching = 1             " Enable caching
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_cache_dir = $CtrlPCache
-let g:ctrlp_match_window_bottom = 1     " Match window at bottom of screen
-if exists("g:ctrl_user_command")
-  unlet g:ctrlp_user_command
-endif
-if executable('ag')
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-endif
-
 " vim-mustache-handlebars
 " Enable abbreviations:
 let g:mustache_abbreviations = 1
@@ -660,10 +651,6 @@ call EnsureExists(&backupdir)
 set directory=$MYVIM/.cache/swap
 set noswapfile
 call EnsureExists(&directory)
-
-" CtrlP cache:
-let $CtrlPCache='$MYVIM/.cache/ctrlp'
-call EnsureExists($CtrlPCache)
 " ------------------------------------------------------------------------- }}}
 " Miscellaneous ----------------------------------------------------------- {{{
 
@@ -689,7 +676,6 @@ call plug#begin('$MYVIM/plugged')
 " See https://github.com/junegunn/vim-plug for more details.
 Plug 'https://github.com/vim-airline/vim-airline'
 Plug 'https://github.com/vim-airline/vim-airline-themes'
-Plug 'https://github.com/ctrlpvim/ctrlp.vim'
 Plug 'https://github.com/easymotion/vim-easymotion'
 Plug 'https://github.com/tpope/vim-surround'
 Plug 'https://github.com/tpope/vim-unimpaired'
@@ -708,6 +694,8 @@ Plug 'https://github.com/tommcdo/vim-fugitive-blame-ext.git'
 Plug 'https://github.com/mhinz/vim-grepper'
 Plug 'https://github.com/yalesov/vim-emblem'
 Plug 'https://github.com/bluk/swifty-vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 
 " LSP / Completion
 " Ruby:
